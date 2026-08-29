@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import {
   fetchBrcFeed, fetchGateStatus, fetchWebcast, fetchNws, fetchReddit, fetchBluesky,
-  fetchMastodon, fetchConditions, fetchCameraStatus, normalizeBanners, normalizeTraffic, CAMERAS,
+  fetchMastodon, fetchConditions, fetchCameraStatus, fetchManBurn, bmirFromSchedule,
+  normalizeBanners, normalizeTraffic, CAMERAS,
 } from "@/lib/sources";
 import { mergeSamples, tocToSamples, trafficToSamples } from "@/lib/parse";
 import { mergeIntoArchive } from "@/lib/history";
@@ -23,7 +24,7 @@ export async function GET() {
     }
   };
 
-  const [feed, gate, webcast, nws, reddit, bsky, masto, conditions, cams] = await Promise.all([
+  const [feed, gate, webcast, nws, reddit, bsky, masto, conditions, cams, manBurn] = await Promise.all([
     settle("brc_feed", fetchBrcFeed()),
     settle("brc_gate_status", fetchGateStatus()),
     settle("brc_webcast", fetchWebcast()),
@@ -33,6 +34,7 @@ export async function GET() {
     settle("mastodon", fetchMastodon()),
     settle("open_meteo", fetchConditions()),
     settle("cameras", fetchCameraStatus()),
+    settle("man_burn", fetchManBurn()),
   ]);
 
   const serverTime = feed?.serverTime ?? Date.now();
@@ -66,6 +68,15 @@ export async function GET() {
     webcast,
     conditions,
     cameras: cams ?? Object.entries(CAMERAS).map(([id, c]) => ({ id, label: c.label, where: c.where, ageSec: null, ok: false })),
+    bmir: feed ? bmirFromSchedule(feed.synced?.dj_schedule, Boolean(feed.feeds?.["BMIR Stream"])) : null,
+    manBurnAt: manBurn ?? null,
+    flags: {
+      trafficVisible: feed?.synced?.traffic_visibility !== false,
+      gateVisible: Boolean(feed?.synced?.gate_status_visibility),
+      routeDiagramVisible: Boolean(feed?.synced?.route_diagram_visibility),
+      placeholderMode: Boolean(feed?.synced?.placeholder_mode),
+      trafficWindowHours: feed?.synced?.traffic_window_hours ?? null,
+    },
     sourceHealth: health,
   };
 

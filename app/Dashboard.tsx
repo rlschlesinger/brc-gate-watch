@@ -185,6 +185,48 @@ export default function Dashboard({ historical }: { historical: Historical }) {
           </div>
         ))}
 
+        {live?.flags?.placeholderMode && (
+          <div className="alert crit">
+            <div className="h">⚠ Official dashboard is in placeholder mode</div>
+            <div>
+              Burning Man has switched brcdashboard.burningman.org to demo data. The travel times above are
+              <strong> not real readings</strong> until they switch it back.
+            </div>
+          </div>
+        )}
+
+        {/* -------------------------------------------------- gate status */}
+        <section className="card">
+          <h2>
+            Gate lanes
+            <span className="tag">{live?.flags?.gateVisible ? "reporting" : "not yet reporting"}</span>
+          </h2>
+          {live?.flags?.gateVisible && live?.gate ? (
+            <div className="grid2">
+              <div className="stat">
+                <div className="k">Inbound</div>
+                <div className="v" style={{ fontSize: 16 }}>{live.gate.inbound ?? "—"}</div>
+              </div>
+              <div className="stat">
+                <div className="k">Outbound</div>
+                <div className="v" style={{ fontSize: 16 }}>{live.gate.outbound ?? "—"}</div>
+              </div>
+              {live.gate.status && (
+                <div className="stat" style={{ gridColumn: "1 / -1" }}>
+                  <div className="k">Status</div>
+                  <div className="v" style={{ fontSize: 16 }}>{live.gate.status}</div>
+                </div>
+              )}
+            </div>
+          ) : (
+            <p className="sub" style={{ marginTop: 0 }}>
+              The Gate publishes open/closed lane status on its own switch, and has it turned off right now — the
+              endpoint is live and returning nulls, not broken. This panel fills in the moment they flip it on,
+              usually around gate open.
+            </p>
+          )}
+        </section>
+
         {/* --------------------------------------------------- 24h stats */}
         {stats && (
           <div className="grid2">
@@ -316,6 +358,19 @@ export default function Dashboard({ historical }: { historical: Historical }) {
         )}
 
         {/* ------------------------------------------------------ weather */}
+        {live?.forecasts?.length === 0 && live?.weatherText && live.weatherText.length > 0 && (
+          <section className="card">
+            <h2>Playa forecast<span className="tag">as posted by BRC</span></h2>
+            <div className="feed">
+              {live.weatherText.map((w, i) => (
+                <div className="item" key={i}>
+                  <div className="body" style={{ whiteSpace: "pre-line" }}>{w}</div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
         {live?.forecasts && live.forecasts.length > 0 && (
           <section className="card">
             <h2>Playa forecast<span className="tag">NWS Reno</span></h2>
@@ -382,6 +437,66 @@ export default function Dashboard({ historical }: { historical: Historical }) {
           </section>
         )}
 
+        {/* ------------------------------------------------------ webcast */}
+        {live?.webcast && (
+          <section className="card">
+            <h2>
+              BRC webcast
+              <span className="tag">{live.webcast.available ? "live" : "off air"}</span>
+            </h2>
+            {live.webcast.available && live.webcast.playbackId ? (
+              <div style={{ position: "relative", paddingTop: "56.25%", borderRadius: 10, overflow: "hidden", border: "1px solid var(--line)" }}>
+                <iframe
+                  src={`https://lvpr.tv/?v=${live.webcast.playbackId}`}
+                  allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+                  allowFullScreen
+                  title="Black Rock City webcast"
+                  style={{ position: "absolute", inset: 0, width: "100%", height: "100%", border: 0 }}
+                />
+              </div>
+            ) : (
+              <p className="sub" style={{ marginTop: 0 }}>
+                Off air. Burning Man streams from the playa during the burns; this player appears on its own when
+                they go live.
+              </p>
+            )}
+          </section>
+        )}
+
+        {/* --------------------------------------------------------- BMIR */}
+        {live?.bmir && (
+          <section className="card">
+            <h2>
+              BMIR 94.5
+              <span className="tag">{live.bmir.enabled ? "on air" : "off"}</span>
+            </h2>
+            <div className="grid2">
+              <div className="stat">
+                <div className="k">On air now</div>
+                <div className="v" style={{ fontSize: 17 }}>
+                  {live.bmir.onAir?.dj ?? "—"}
+                  {live.bmir.onAir && (
+                    <small> · till {pt(live.bmir.onAir.end, { hour: "numeric", minute: "2-digit" })}</small>
+                  )}
+                </div>
+              </div>
+              <div className="stat">
+                <div className="k">Up next</div>
+                <div className="v" style={{ fontSize: 17 }}>
+                  {live.bmir.next?.dj ?? "—"}
+                  {live.bmir.next && (
+                    <small> · {pt(live.bmir.next.start, { hour: "numeric", minute: "2-digit" })}</small>
+                  )}
+                </div>
+              </div>
+            </div>
+            <p className="sub">
+              <a href={live.bmir.streamUrl} target="_blank" rel="noreferrer">Open the stream ↗</a> — 94.5 FM once
+              you are close enough, and GARS 95.1 carries traffic information on the approach.
+            </p>
+          </section>
+        )}
+
         {/* ------------------------------------------------------- health */}
         <section className="card">
           <h2>Source status</h2>
@@ -405,6 +520,9 @@ export default function Dashboard({ historical }: { historical: Historical }) {
           <br />
           All times Pacific. Refreshes every 60s while open; last good response is cached for when you lose signal.
           {live?.archiveUpdatedAt && ` Archive: ${live.archiveCount ?? 0} readings.`}
+          {live?.manBurnAt && ` The Man burns ${pt(live.manBurnAt, { weekday: "long", hour: "numeric", minute: "2-digit" })} PT.`}
+          {live?.flags?.trafficWindowHours &&
+            ` Upstream publishes a ${live.flags.trafficWindowHours}h rolling window.`}
           <br />
           Not affiliated with Burning Man Project.
         </footer>

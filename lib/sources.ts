@@ -34,6 +34,7 @@ export type BrcFeed = {
     traffic_visibility?: boolean;
     gate_status_visibility?: boolean;
     placeholder_mode?: boolean;
+    route_diagram_visibility?: boolean;
     traffic_window_hours?: number;
     dj_schedule?: any[];
   };
@@ -50,6 +51,44 @@ export async function fetchGateStatus(): Promise<GateStatus> {
   const r = await get(`${BRC}/api/gate-status`);
   if (!r.ok) throw new Error(`gate-status ${r.status}`);
   return (await r.json()) as GateStatus;
+}
+
+/**
+ * The Man burn time is only in the SSR payload, in SvelteKit's deduplicated
+ * format. Pulling the ISO string out directly is cruder than walking the graph
+ * but survives their format changing under us.
+ */
+export async function fetchManBurn(): Promise<string | null> {
+  const r = await get(`${BRC}/__data.json`);
+  if (!r.ok) throw new Error(`__data ${r.status}`);
+  const m = (await r.text()).match(/"(20\d{2}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2})"/);
+  if (!m) throw new Error("man burn not found");
+  return new Date(m[1]).toISOString();
+}
+
+export type Bmir = {
+  enabled: boolean;
+  onAir: { dj: string; start: string; end: string } | null;
+  next: { dj: string; start: string } | null;
+  streamUrl: string;
+};
+
+/** Who is on BMIR right now, derived from the schedule the dashboard ships. */
+export function bmirFromSchedule(schedule: any[] | undefined, enabled: boolean, now = Date.now()): Bmir {
+  const out: Bmir = { enabled, onAir: null, next: null, streamUrl: "https://stream.daz.radio/live/playlist.m3u8" };
+  if (!Array.isArray(schedule)) return out;
+  const sets = schedule.flatMap((d) => (Array.isArray(d?.sets) ? d.sets : []));
+  for (const st of sets) {
+    if (typeof st?.start !== "number" || typeof st?.end !== "number") continue;
+    if (now >= st.start && now < st.end) {
+      out.onAir = { dj: String(st.dj ?? "TBD"), start: new Date(st.start).toISOString(), end: new Date(st.end).toISOString() };
+    }
+  }
+  const upcoming = sets
+    .filter((st) => typeof st?.start === "number" && st.start > now)
+    .sort((a, b) => a.start - b.start)[0];
+  if (upcoming) out.next = { dj: String(upcoming.dj ?? "TBD"), start: new Date(upcoming.start).toISOString() };
+  return out;
 }
 
 export async function fetchWebcast(): Promise<{ available: boolean; playbackId: string | null }> {

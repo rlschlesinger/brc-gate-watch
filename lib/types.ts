@@ -75,5 +75,20 @@ export type LivePayload = {
     dust: "calm" | "dusty" | "whiteout" | "unknown";
   } | null;
   cameras: { id: string; label: string; where: string; ageSec: number | null; ok: boolean }[];
+  bmir: {
+    enabled: boolean;
+    onAir: { dj: string; start: string; end: string } | null;
+    next: { dj: string; start: string } | null;
+    streamUrl: string;
+  } | null;
+  manBurnAt: string | null;
+  /** operator switches on the official dashboard, mirrored so the page can be honest */
+  flags: {
+    trafficVisible: boolean;
+    gateVisible: boolean;
+    routeDiagramVisible: boolean;
+    placeholderMode: boolean;
+    trafficWindowHours: number | null;
+  };
   sourceHealth: Record<string, "ok" | "empty" | "error">;
 };
