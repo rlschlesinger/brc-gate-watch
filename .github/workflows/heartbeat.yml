@@ -1,13 +1,11 @@
 name: heartbeat
-
-# The wait-time archive is built by /api/live folding the dashboard's rolling
-# window into blob storage. That only happens when something calls it — so ping
-# it on a schedule rather than relying on someone having the page open.
 on:
-  schedule:
-    - cron: "*/10 * * * *"
   workflow_dispatch:
-
+  schedule:
+    # Keeps /api/live warm so it folds the dashboard's rolling window into the
+    # archive even when nobody has the page open.
+    - cron: '*/10 * * * *'
+permissions: {}
 jobs:
   poll:
     runs-on: ubuntu-latest
@@ -15,10 +13,6 @@ jobs:
     steps:
       - name: Poll live endpoint
         run: |
-          out=$(curl -sS --max-time 45 https://brc-gate-watch.vercel.app/api/live)
-          echo "$out" | python3 -c "
-import json,sys
-d=json.load(sys.stdin)
-print('archive:', d.get('archiveCount'), 'readings | current:', d['current'])
-print('health:', d['sourceHealth'])
-"
+          curl -sS --max-time 45 https://brc-gate-watch.vercel.app/api/live \
+            -o live.json -w 'HTTP %{http_code} in %{time_total}s\n'
+          jq -r '"archive: \(.archiveCount) readings | current: \(.current.minutes) min | health: \(.sourceHealth)"' live.json
