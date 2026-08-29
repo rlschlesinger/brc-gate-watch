@@ -86,6 +86,8 @@ Verify the data side with `curl -s https://brc-gate-watch.vercel.app/api/live | 
 | 66 | **MEDIAN / AVG / MIN / MAX selector** | drives the ranking, the heatmap and the day bars together; the copy under each restates which one is showing |
 | 67 | Day bars always keep the worst | the faint bar behind stays `max` whatever is selected, so switching cannot hide a bad day |
 | 68 | Per-year figures on every ranked row | a calm median hiding one brutal year stays visible |
+| 68b | **Playa glyphs on the tabs** | game-icons.net hand-drawn silhouettes, CC BY 3.0, same set as The Guide; `currentColor` so they take the tab ink |
+| 68c | Icon attribution | `ATTRIBUTION.md` + a credit line in the INFO footer — the licence requires it |
 | 69 | Live social card | `/opengraph-image` renders the real current wait, sparkline and 24h median/min/max, in Barlow Condensed |
 | 70 | Equal-height bar labels | unlabelled columns reserve the same space, or the row camels |
 

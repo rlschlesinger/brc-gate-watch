@@ -84,24 +84,26 @@ h1,h2,h3{margin:0}
 .tabbar button{
   flex:1;min-width:0;min-height:56px;padding:6px 2px;
   border:none;border-right:1px solid var(--rule);background:transparent;color:var(--ink2);
-  font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.08em;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
+  font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.08em;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
 }
 .tabbar button:last-child{border-right:none}
 .tabbar button[data-on="1"]{background:var(--ink);color:var(--paper)}
-.tabbar button .pip{width:18px;height:4px;background:currentColor;opacity:.35}
-.tabbar button[data-on="1"] .pip{opacity:1}
+.tabbar button svg{opacity:.55;transition:opacity .12s linear}
+.tabbar button[data-on="1"] svg{opacity:1}
+.tabbar button .lbl{line-height:1}
+/* Sits in the button corner rather than beside the glyph, so it never crowds it. */
 .tabbar button .flag{
-  position:absolute;top:6px;right:calc(50% - 22px);width:7px;height:7px;background:var(--r4);
+  position:absolute;top:6px;right:8px;width:7px;height:7px;background:var(--r4);
 }
+@media (min-width:760px){ .tabbar button .flag{top:10px;right:12px} }
 .tabbar button{position:relative}
 @media (min-width:760px){
   .tabbar{
     position:static;border-top:none;border-bottom:2px solid var(--ink);padding-bottom:0;
     max-width:1120px;margin:0 auto;
   }
-  .tabbar button{min-height:46px;flex-direction:row;gap:8px;font-size:11px;letter-spacing:.14em}
-  .tabbar button .pip{width:8px;height:8px}
+  .tabbar button{min-height:48px;flex-direction:row;gap:9px;font-size:11px;letter-spacing:.14em}
 }
 
 /* compact current-wait strip, shown on every tab but NOW */

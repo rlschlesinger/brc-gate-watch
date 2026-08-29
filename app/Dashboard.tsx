@@ -5,6 +5,8 @@ import { LiveChart } from "./components/Charts";
 import HistoricalSection from "./components/Historical";
 import WhenToLeave from "./components/WhenToLeave";
 import ThemeToggle from "./components/ThemeToggle";
+import Glyph from "./components/Glyph";
+import { TAB_ICON } from "@/lib/icons";
 import { ago, fmtClock, fmtMins, waitColor, waitWord } from "@/lib/format";
 import { STATS, type Historical, type Stat } from "@/lib/historical";
 import type { LivePayload, WaitSample } from "@/lib/types";
@@ -173,8 +175,8 @@ export default function Dashboard({ historical }: { historical: Historical }) {
               aria-current={tab === t.id ? "page" : undefined}
               onClick={() => go(t.id)}
             >
-              <span className="pip" />
-              {t.label}
+              <Glyph name={TAB_ICON[t.id]} />
+              <span className="lbl">{t.label}</span>
               {t.id === "road" && staleCam && <span className="flag" title="a camera frame is stale" />}
               {t.id === "now" && urgentCount > 0 && <span className="flag" title="active alert" />}
             </button>
@@ -625,6 +627,11 @@ export default function Dashboard({ historical }: { historical: Historical }) {
           {live?.archiveCount ? ` · ${live.archiveCount} readings archived` : ""}
           {live?.manBurnAt ? ` · the Man burns ${pt(live.manBurnAt, { weekday: "long", hour: "numeric", minute: "2-digit" })} PT` : ""}
           {live?.flags?.trafficWindowHours ? ` · upstream publishes a ${live.flags.trafficWindowHours}h rolling window` : ""}
+        </div>
+        <div>
+          Tab glyphs from{" "}
+          <a href="https://game-icons.net" target="_blank" rel="noreferrer">game-icons.net</a>{" "}
+          under CC BY 3.0 — delapouite and lorc. Full attribution in the repo.
         </div>
         <div>Unofficial · not affiliated with Burning Man Project</div>
       </footer>
