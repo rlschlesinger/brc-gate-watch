@@ -1,0 +1,11 @@
+{
+  "name": "Gate Watch · Black Rock City 2026",
+  "short_name": "Gate Watch",
+  "description": "Live Gravel-to-Gate travel times for Burning Man 2026.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0d0a07",
+  "theme_color": "#0d0a07",
+  "orientation": "portrait",
+  "icons": [{ "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}

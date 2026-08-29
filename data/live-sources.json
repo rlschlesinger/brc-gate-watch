@@ -1,0 +1,1160 @@
+{
+  "generated_at": "2026-08-29T15:05:00Z",
+  "generated_by": "live source reconnaissance for brc-gate-wait",
+  "event_context": {
+    "gate_opens": "2026-08-30T00:01:00-07:00",
+    "man_burns": "2026-09-05T21:00:00-07:00",
+    "playa_coords": {
+      "lat": 40.7864,
+      "lon": -119.2065
+    },
+    "brc_airport_88NV": {
+      "lat": 40.7538,
+      "lon": -119.2119
+    },
+    "gerlach": {
+      "lat": 40.6535,
+      "lon": -119.3565
+    },
+    "reno": {
+      "lat": 39.5296,
+      "lon": -119.8138
+    }
+  },
+  "probe_conditions": {
+    "from": "residential US IP 162.206.185.194",
+    "caveat": "Reddit and public.api.bsky.app 403s may be partly IP-reputation dependent; Vercel serverless IPs are generally treated WORSE by Reddit, not better"
+  },
+  "primary_target": {
+    "url": "https://brcdashboard.burningman.org/",
+    "stack": "SvelteKit 2 / Svelte 5 SPA, Cloudflare edge, AWS ALB origin",
+    "data_transport": "client-side polling of a single JSON endpoint; no websocket, no Firebase, no Airtable, no Google Sheets, no S3/CloudFront JSON",
+    "client_poll_interval_ms": 3000,
+    "client_backoff": "doubles on error to a 15000 ms ceiling",
+    "etag_revalidation": true,
+    "routes": [
+      "/",
+      "/bmir",
+      "/kiosk",
+      "/toc",
+      "/weather",
+      "/admin/*",
+      "/audit",
+      "/login",
+      "/logout"
+    ],
+    "third_party_hosts": [
+      "googletagmanager.com (GTM-KLZPCP2)",
+      "fonts.googleapis.com",
+      "lvpr.tv",
+      "stream.daz.radio",
+      "x.com/bmantraffic"
+    ],
+    "endpoints": {
+      "/api/feed/public": {
+        "method": "GET",
+        "public": true
+      },
+      "/api/feed/bmir": {
+        "method": "GET",
+        "public": false,
+        "http": 403
+      },
+      "/api/feed/toc": {
+        "method": "GET",
+        "public": false,
+        "http": 403
+      },
+      "/api/gate-status": {
+        "method": "GET",
+        "public": true
+      },
+      "/api/webcast-status": {
+        "method": "GET",
+        "public": true
+      },
+      "/__data.json": {
+        "method": "GET",
+        "public": true
+      },
+      "/api/weather": {
+        "method": "GET",
+        "public": false,
+        "http": 403
+      },
+      "/api/audit": {
+        "method": "GET",
+        "public": false,
+        "http": 403
+      },
+      "/api/man-burn": {
+        "method": "PATCH",
+        "public": false
+      },
+      "/api/traffic-visibility": {
+        "method": "PATCH",
+        "public": false
+      },
+      "/api/gate-status-visibility": {
+        "method": "PATCH",
+        "public": false
+      },
+      "/api/route-diagram-visibility": {
+        "method": "PATCH",
+        "public": false
+      },
+      "/api/man-burn-visibility": {
+        "method": "PATCH",
+        "public": false
+      },
+      "/api/placeholder-mode": {
+        "method": "PATCH",
+        "public": false
+      },
+      "/api/bmir-default-dj": {
+        "method": "PUT",
+        "public": false
+      },
+      "/api/messages": {
+        "method": "POST",
+        "public": false
+      },
+      "/api/admin/*": {
+        "public": false,
+        "note": "channels, config, logs, messages, sync, tweets, users, google, simulated-time"
+      }
+    },
+    "not_found": [
+      "/robots.txt",
+      "/manifest.json",
+      "/sitemap.xml",
+      "/api/status",
+      "/data.json",
+      "/_next/data/*"
+    ]
+  },
+  "sources": [
+    {
+      "id": "brc_feed_public",
+      "name": "BRC Dashboard aggregate feed",
+      "rank": 1,
+      "tier": "primary",
+      "url": "https://brcdashboard.burningman.org/api/feed/public",
+      "method": "GET",
+      "auth": "none",
+      "headers_required": {},
+      "headers_recommended": {
+        "If-None-Match": "<etag from previous response>"
+      },
+      "cors": {
+        "allows_browser": false,
+        "acao": null,
+        "preflight_status": 403,
+        "needs_server_proxy": true
+      },
+      "status": "live",
+      "verified_at": "2026-08-29T14:55:05Z",
+      "http_status": 200,
+      "response_headers": {
+        "content-type": "application/json",
+        "cache-control": "public, s-maxage=3",
+        "etag": "W/\"6cbda82cb7b5c4dae963bdcb9fe23937a2465751\""
+      },
+      "poll_seconds": 60,
+      "poll_min_seconds": 30,
+      "provides": [
+        "gate_travel_time_text",
+        "gate_wait_history_toc",
+        "weather_forecast",
+        "weather_alert_text",
+        "bmir_dj_schedule",
+        "operator_messages",
+        "source_health_flags",
+        "visibility_flags"
+      ],
+      "sample": {
+        "version": "W/\"6cbda82cb7b5c4dae963bdcb9fe23937a2465751\"",
+        "serverTime": 1788015305010,
+        "feeds": {
+          "@bmantraffic": true,
+          "BMIR Stream": true,
+          "Weather": true,
+          "Webcast": false
+        },
+        "channelsEnabled": {
+          "public_banner": true
+        },
+        "messages": [
+          {
+            "id": "YdRtMR7onTx5YZ31R2Dy6",
+            "subject": "{\"color\":\"blue\",\"title\":\"Travel safe and see you soon!\"}",
+            "content": "As you travel to BRC, take your time, drive safely, obey all traffic laws, and keep an eye on the BRC Dashboard for travel times and weather condition updates.",
+            "priority": 0,
+            "created_at": "2026-08-29T01:54:29.662Z",
+            "last_updated": null,
+            "pinned": false,
+            "expires_at": null,
+            "severity": "standard",
+            "source_dept": null,
+            "channels": [
+              {
+                "id": "public_banner",
+                "name": "public banner"
+              }
+            ]
+          }
+        ],
+        "synced": {
+          "traffic": [
+            {
+              "id": "2093713550128873614",
+              "text": "The current travel time from Gravel to Gate is 20 minutes. \ud83c\udfce\ufe0f",
+              "note_tweet": null,
+              "created_at": "2026-08-29T14:53:04.000Z",
+              "author": {
+                "name": "Burning Man Traffic",
+                "username": "bmantraffic"
+              }
+            },
+            {
+              "id": "2093698477134061728",
+              "text": "The current travel time from Gravel to Gate is 40 minutes. \ud83d\ude97",
+              "note_tweet": null,
+              "created_at": "2026-08-29T13:53:10.000Z",
+              "author": {
+                "name": "Burning Man Traffic",
+                "username": "bmantraffic"
+              }
+            }
+          ],
+          "traffic_window_hours": 12,
+          "toc": [
+            [
+              "7:30 AM",
+              "0 h, 40 m",
+              ""
+            ],
+            [
+              "7:00 AM",
+              "0 h, 40 m",
+              ""
+            ],
+            [
+              "6:30 AM",
+              "0 h, 40 m",
+              ""
+            ]
+          ],
+          "weather_forecasts": [
+            {
+              "date": "2026-08-29",
+              "high": "87",
+              "low": "54",
+              "message": "Sunny, with a high near 87. Southwest wind 0 to 20 mph. Possible gusts to 30 mph.",
+              "icon": "windy",
+              "windDirection": "SW",
+              "gust": "30",
+              "dayIcon": "windy",
+              "dayMessage": "Sunny, with a high near 87. Southwest wind 0 to 20 mph. Possible gusts to 30 mph.",
+              "dayGust": "30",
+              "dayWindDirection": "SW",
+              "nightIcon": "cloudy",
+              "nightMessage": "Mostly clear, with a low around 54. West wind 0 to 20 mph. Possible gusts to 25 mph.",
+              "nightGust": "25",
+              "nightWindDirection": "W"
+            }
+          ],
+          "dj_schedule": [
+            {
+              "label": "Thu 8/27",
+              "date": "2026-08-27",
+              "start": 1787814000000,
+              "sets": [
+                {
+                  "dj": "Organism",
+                  "start": 1787857200000,
+                  "end": 1787864400000
+                },
+                {
+                  "dj": "4Day",
+                  "start": 1787864400000,
+                  "end": 1787871600000
+                }
+              ]
+            }
+          ],
+          "gate_status_visibility": false,
+          "traffic_visibility": true,
+          "route_diagram_visibility": true,
+          "placeholder_mode": false
+        },
+        "weatherUpdatedAt": 1788008736304
+      },
+      "parsing_notes": [
+        "synced.traffic[].text is free-form English with emoji; parse tolerantly and fall back to raw text",
+        "observed forms: 'N minutes', 'N hours', 'N hours, M minutes', 'N hours M minutes'; punctuation inconsistent (e.g. '3 hours..')",
+        "messages[].subject is a JSON string inside a string; double-parse",
+        "synced.toc rows are [time_label_PT, 'H h, M m', note], newest first, no date component"
+      ],
+      "reliability": "high \u2014 this is Burning Man's own production feed and the only free live mirror of @bmantraffic; single point of failure"
+    },
+    {
+      "id": "brc_gate_status",
+      "name": "BRC Dashboard gate status",
+      "rank": 2,
+      "tier": "primary",
+      "url": "https://brcdashboard.burningman.org/api/gate-status",
+      "method": "GET",
+      "auth": "none",
+      "cors": {
+        "allows_browser": false,
+        "acao": null,
+        "needs_server_proxy": true
+      },
+      "status": "dormant_pre_event",
+      "verified_at": "2026-08-29T14:54:21Z",
+      "http_status": 200,
+      "response_headers": {
+        "content-type": "application/json",
+        "cache-control": "public, max-age=10"
+      },
+      "poll_seconds": 30,
+      "sample": {
+        "inbound": null,
+        "outbound": null,
+        "status": null
+      },
+      "parsing_notes": [
+        "values are null because synced.gate_status_visibility is false in /api/feed/public",
+        "expect inbound/outbound to populate at or after gate open 2026-08-30T00:01-07:00",
+        "render null as 'not yet reporting', not as an error"
+      ],
+      "reliability": "high once populated; shape is stable and deployed"
+    },
+    {
+      "id": "brc_sveltekit_data",
+      "name": "BRC Dashboard SSR layout payload",
+      "rank": 3,
+      "tier": "secondary",
+      "url": "https://brcdashboard.burningman.org/__data.json",
+      "method": "GET",
+      "auth": "none",
+      "cors": {
+        "allows_browser": false,
+        "acao": null,
+        "needs_server_proxy": true
+      },
+      "status": "live",
+      "verified_at": "2026-08-29T14:54:24Z",
+      "http_status": 200,
+      "response_headers": {
+        "content-type": "application/json",
+        "cache-control": "private, no-store"
+      },
+      "poll_seconds": 300,
+      "provides": [
+        "man_burn_countdown",
+        "weather_alert_active",
+        "gate_status_visible",
+        "placeholder_mode"
+      ],
+      "sample": {
+        "type": "data",
+        "nodes": [
+          {
+            "type": "data",
+            "data": [
+              {
+                "user": 1,
+                "weatherAlert": 2,
+                "gateStatus": 6,
+                "gateStatusVisible": 3,
+                "placeholderMode": 3,
+                "manBurn": 7,
+                "manBurnVisible": 12,
+                "simulatedNow": 1,
+                "canAudit": 3
+              },
+              null,
+              {
+                "active": 3,
+                "text": 4,
+                "severity": 5,
+                "icon": 4
+              },
+              false,
+              "",
+              "advisory",
+              {
+                "inbound": 1,
+                "outbound": 1
+              },
+              {
+                "state": 8,
+                "burnsAt": 9,
+                "burningText": 10,
+                "ashesText": 11
+              },
+              "countdown",
+              "2026-09-05T21:00:00-07:00",
+              "The Man Burns",
+              "The Man is dead. Long live The Man",
+              true
+            ],
+            "uses": {}
+          },
+          null
+        ]
+      },
+      "parsing_notes": [
+        "SvelteKit deduplicated format: integer values are indices into the same flat array; resolve before use",
+        "resolved: manBurn.burnsAt = 2026-09-05T21:00:00-07:00; weatherAlert.active = false; gateStatusVisible = false",
+        "simulatedNow exists because admins can time-shift the dashboard; do not treat timestamps as absolute"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "brc_webcast_status",
+      "name": "BRC live webcast availability",
+      "rank": 4,
+      "tier": "secondary",
+      "url": "https://brcdashboard.burningman.org/api/webcast-status",
+      "method": "GET",
+      "auth": "none",
+      "cors": {
+        "allows_browser": false,
+        "acao": null,
+        "needs_server_proxy": true
+      },
+      "status": "live",
+      "verified_at": "2026-08-29T14:54:22Z",
+      "http_status": 200,
+      "response_headers": {
+        "cache-control": "public, s-maxage=15, stale-while-revalidate=30"
+      },
+      "poll_seconds": 60,
+      "sample": {
+        "available": false,
+        "playbackId": "890as2fty0cqqajf"
+      },
+      "parsing_notes": [
+        "when available=true embed https://lvpr.tv/?v={playbackId}",
+        "confirmed genuinely down: playback.livepeer.studio/asset/hls/890as2fty0cqqajf/index.m3u8 returns 'No playback URL found'"
+      ],
+      "reliability": "high"
+    },
+    {
+      "id": "nws_alerts",
+      "name": "NWS active alerts for the playa",
+      "rank": 5,
+      "tier": "secondary",
+      "url": "https://api.weather.gov/alerts/active?point=40.7864,-119.2065",
+      "method": "GET",
+      "auth": "none",
+      "headers_recommended": {
+        "User-Agent": "brc-gate-wait (contact@example.com)"
+      },
+      "cors": {
+        "allows_browser": true,
+        "acao": "*",
+        "needs_server_proxy": false
+      },
+      "status": "live",
+      "verified_at": "2026-08-29T14:54:49Z",
+      "http_status": 200,
+      "poll_seconds": 300,
+      "provides": [
+        "dust_storm_warning",
+        "high_wind_advisory",
+        "any_nws_alert"
+      ],
+      "sample": {
+        "@context": {
+          "@version": "1.1"
+        },
+        "type": "FeatureCollection",
+        "features": [],
+        "title": "Current watches, warnings, and advisories for 40.7864 N, 119.2065 W",
+        "updated": "2026-08-29T14:54:49+00:00"
+      },
+      "parsing_notes": [
+        "features:[] means NO ACTIVE ALERTS (an all-clear), not missing data",
+        "send a descriptive User-Agent with contact info per NWS policy or you will be throttled"
+      ],
+      "reliability": "very high \u2014 US government, CORS-enabled, free"
+    },
+    {
+      "id": "nws_forecast",
+      "name": "NWS gridpoint forecast (playa)",
+      "rank": 6,
+      "tier": "secondary",
+      "url": "https://api.weather.gov/gridpoints/REV/76,159/forecast",
+      "method": "GET",
+      "auth": "none",
+      "related_urls": {
+        "hourly": "https://api.weather.gov/gridpoints/REV/76,159/forecast/hourly",
+        "raw_grid": "https://api.weather.gov/gridpoints/REV/76,159",
+        "stations": "https://api.weather.gov/gridpoints/REV/76,159/stations",
+        "points_lookup": "https://api.weather.gov/points/40.7864,-119.2065"
+      },
+      "cors": {
+        "allows_browser": true,
+        "acao": "*",
+        "needs_server_proxy": false
+      },
+      "status": "live",
+      "verified_at": "2026-08-29T14:52:59Z",
+      "http_status": 200,
+      "poll_seconds": 1800,
+      "parsing_notes": [
+        "grid resolved from lat/lon: office REV, gridX 76, gridY 159, tz America/Los_Angeles",
+        "nearest obs stations are remote RAWS (BLUN2 Bluewing Mtn, FOXN2 Fox Mtn, BUFN2 Buffalo Creek, MJBN2 Majuba)",
+        "nearest reliable METAR is KLOL Lovelock, ~60mi east \u2014 too far to represent playa dust"
+      ],
+      "reliability": "very high"
+    },
+    {
+      "id": "open_meteo",
+      "name": "Open-Meteo current wind/gust/visibility",
+      "rank": 7,
+      "tier": "secondary",
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=40.7864&longitude=-119.2065&current=temperature_2m,wind_speed_10m,wind_gusts_10m,wind_direction_10m,visibility&hourly=wind_gusts_10m,visibility&wind_speed_unit=mph&temperature_unit=fahrenheit&timezone=America%2FLos_Angeles&forecast_days=2",
+      "method": "GET",
+      "auth": "none",
+      "cors": {
+        "allows_browser": true,
+        "acao": "*",
+        "needs_server_proxy": false
+      },
+      "status": "live",
+      "verified_at": "2026-08-29T15:01:00Z",
+      "http_status": 200,
+      "poll_seconds": 900,
+      "provides": [
+        "wind_gusts",
+        "visibility_dust_proxy",
+        "temperature"
+      ],
+      "sample": {
+        "current": {
+          "time": "2026-08-29T08:00",
+          "interval": 900,
+          "temperature_2m": 59.2,
+          "wind_speed_10m": 3.1,
+          "wind_gusts_10m": 11.0,
+          "wind_direction_10m": 94,
+          "visibility": 16600.0
+        },
+        "current_units": {
+          "temperature_2m": "\u00b0F",
+          "wind_speed_10m": "mp/h",
+          "wind_gusts_10m": "mp/h",
+          "visibility": "m"
+        }
+      },
+      "parsing_notes": [
+        "visibility is in metres and is the only free dust proxy available for this location",
+        "it is a MODEL output, not a sensor reading \u2014 label it as forecast, never as observation"
+      ],
+      "reliability": "high, but modelled not measured"
+    },
+    {
+      "id": "bluesky_search",
+      "name": "Bluesky public post search",
+      "rank": 8,
+      "tier": "chatter",
+      "url": "https://api.bsky.app/xrpc/app.bsky.feed.searchPosts?q=%22burning%20man%22%20gate&limit=25&sort=latest",
+      "method": "GET",
+      "auth": "none",
+      "cors": {
+        "allows_browser": true,
+        "acao": "*",
+        "needs_server_proxy": false
+      },
+      "status": "live",
+      "verified_at": "2026-08-29T14:58:00Z",
+      "http_status": 200,
+      "poll_seconds": 300,
+      "sample": {
+        "posts": [
+          {
+            "author": {
+              "handle": "keenethery.bsky.social"
+            },
+            "record": {
+              "createdAt": "2026-08-28T13:49:36.698Z",
+              "text": "Burning Man has started. We aren't attending this year. I'm receiving the Gravel to Gate times via X."
+            }
+          }
+        ]
+      },
+      "parsing_notes": [
+        "HOST MATTERS: public.api.bsky.app returned 403 (BunnyCDN edge block) on every attempt from a residential IP; api.bsky.app is the same AppView and works",
+        "useful queries: '\"gravel to gate\"', '\"burning man\" gate', 'brc gate wait'",
+        "human chatter only \u2014 never treat as a wait-time source"
+      ],
+      "reliability": "medium \u2014 works reliably, but content is unstructured and low volume"
+    },
+    {
+      "id": "gerlach_webcam",
+      "name": "Gerlach webcam (Bruno's Country Club, looking south toward Empire)",
+      "rank": 9,
+      "tier": "secondary",
+      "url": "https://webcam.burningman.org/",
+      "method": "GET",
+      "auth": "none",
+      "cors": {
+        "allows_browser": false,
+        "acao": null,
+        "needs_server_proxy": false,
+        "note": "no ACAO header, but <img src> does not require CORS; proxy only if you must read pixels or check staleness client-side"
+      },
+      "status": "serving_but_stale",
+      "verified_at": "2026-08-29T15:03:00Z",
+      "http_status": 200,
+      "response_headers": {
+        "content-type": "image/jpeg",
+        "content-length": "148870",
+        "last-modified": "Sat, 29 Aug 2026 08:32:41 GMT",
+        "etag": "\"24586-65a2b6991001c\""
+      },
+      "poll_seconds": 60,
+      "parsing_notes": [
+        "ONLY camera anywhere on the NV-447 corridor",
+        "STALE AT PROBE TIME: Last-Modified was 08:32 UTC (01:32 PT) while wall clock was 15:03 UTC (08:03 PT) \u2014 ~6.5 hours old",
+        "two fetches 65s apart returned byte-identical images (md5 a827dc356072b0a6399b9442c39cf774)",
+        "MANDATORY: HEAD the URL, read Last-Modified, and show 'camera offline' if older than ~10 minutes",
+        "cache-bust with ?t={epoch}",
+        "BM documents it as refreshing once per minute but maintained by one staffer and often down"
+      ],
+      "discovered_via": "https://burningman.org/wp-json/wp/v2/pages?search=gerlach%20webcam (page id 3468)",
+      "reliability": "low-medium \u2014 genuinely the right camera, but unreliable uptime; must be freshness-gated"
+    },
+    {
+      "id": "nvroads_camera_stills",
+      "name": "Nevada DOT 511 camera stills",
+      "rank": 10,
+      "tier": "secondary",
+      "url": "https://www.nvroads.com/map/cctv/7105",
+      "method": "GET",
+      "auth": "none",
+      "cors": {
+        "allows_browser": false,
+        "acao": null,
+        "needs_server_proxy": false,
+        "note": "returns image/jpeg directly; fine in <img src>"
+      },
+      "status": "live",
+      "verified_at": "2026-08-29T14:57:00Z",
+      "http_status": 200,
+      "response_headers": {
+        "content-type": "image/jpeg",
+        "content-length": "7529"
+      },
+      "poll_seconds": 60,
+      "related_urls": {
+        "all_camera_positions": "https://www.nvroads.com/map/mapIcons/Cameras",
+        "camera_metadata_datatables": "https://www.nvroads.com/List/GetData/Cameras"
+      },
+      "corridor_cameras": [
+        {
+          "id": 7105,
+          "lat": 39.6024,
+          "lon": -119.3357,
+          "name": "I80 EB Wadsworth Truck Check",
+          "still": "https://www.nvroads.com/map/cctv/7105",
+          "note": "THE 447 turnoff \u2014 most informative camera; 60-90 min upstream of the gate"
+        },
+        {
+          "id": 7137,
+          "lat": 39.6171,
+          "lon": -119.266,
+          "name": "I80 @ Fernley N E",
+          "still": "https://www.nvroads.com/map/cctv/7137"
+        },
+        {
+          "id": 7138,
+          "lat": 39.6171,
+          "lon": -119.2661,
+          "name": "I80 @ Fernley S W",
+          "still": "https://www.nvroads.com/map/cctv/7138"
+        },
+        {
+          "id": 7211,
+          "lat": 39.589,
+          "lon": -119.4284,
+          "name": "I-80 @ Derby Dam",
+          "still": "https://www.nvroads.com/map/cctv/7211"
+        },
+        {
+          "id": 7107,
+          "lat": 39.566,
+          "lon": -119.4867,
+          "name": "I80 @ USA Parkway",
+          "still": "https://www.nvroads.com/map/cctv/7107"
+        },
+        {
+          "id": 7152,
+          "lat": 39.5528,
+          "lon": -119.7526,
+          "name": "Pyramid @ York Way (Reno, NV-445 route)",
+          "still": "https://www.nvroads.com/map/cctv/7152"
+        },
+        {
+          "id": 7123,
+          "lat": 39.5343,
+          "lon": -119.7533,
+          "name": "I80 @ Pyramid Way (Reno)",
+          "still": "https://www.nvroads.com/map/cctv/7123"
+        }
+      ],
+      "parsing_notes": [
+        "all 643 cameras enumerated and filtered: there is NO camera on NV-447, and none at Nixon, Empire or Gerlach",
+        "northernmost useful camera is 7105 at Wadsworth",
+        "site's own config: resources.CameraRefreshRateMs = 60000",
+        "camera metadata also carries HLS videoUrl on d2wse2.its.nv.gov for some sites"
+      ],
+      "reliability": "high for the approach; tells you nothing about the queue itself"
+    },
+    {
+      "id": "nvroads_layers",
+      "name": "Nevada DOT 511 layer data (DataTables)",
+      "rank": 11,
+      "tier": "secondary",
+      "url": "https://www.nvroads.com/List/GetData/Incidents",
+      "method": "POST",
+      "auth": "none",
+      "request_body": "draw=1&start=0&length=100",
+      "request_content_type": "application/x-www-form-urlencoded",
+      "cors": {
+        "allows_browser": false,
+        "acao": null,
+        "needs_server_proxy": true
+      },
+      "status": "live",
+      "verified_at": "2026-08-29T14:58:00Z",
+      "http_status": 200,
+      "poll_seconds": 300,
+      "layers": {
+        "Cameras": {
+          "http": 200,
+          "records": 643,
+          "useful": true
+        },
+        "Incidents": {
+          "http": 200,
+          "records": 2,
+          "useful": true,
+          "note": "statewide; zero in corridor today, but a 447 incident would be valuable"
+        },
+        "Closures": {
+          "http": 200,
+          "records": 11,
+          "useful": true,
+          "note": "zero in corridor"
+        },
+        "RoadConditions": {
+          "http": 200,
+          "records": 434,
+          "useful": false,
+          "note": "SR-447 rows exist but are 'No Report' and last updated 2024/2025 \u2014 DO NOT DISPLAY"
+        },
+        "MessageSigns": {
+          "http": 200,
+          "records": 713,
+          "useful": "marginal",
+          "note": "4 near Fernley, all message fields currently empty"
+        },
+        "WeatherStations": {
+          "http": 200,
+          "records": 185,
+          "useful": false,
+          "note": "nearest is I-80 @ Derby Dam, ~70mi from Gerlach"
+        },
+        "RestAreas": {
+          "http": 200,
+          "records": 35,
+          "useful": false
+        },
+        "Events": {
+          "http": 500
+        },
+        "TrafficEvents": {
+          "http": 500
+        },
+        "Roadwork": {
+          "http": 500
+        },
+        "TrafficSpeeds": {
+          "http": 500,
+          "note": "/map/mapIcons/TrafficSpeeds returns {\"item2\":[]} \u2014 NDOT publishes no speed data here"
+        },
+        "Alerts": {
+          "http": 500
+        },
+        "Plows": {
+          "http": 500
+        }
+      },
+      "sample_stale_row": {
+        "DT_RowId": 50920,
+        "id": 50920,
+        "area": "Reno",
+        "roadway": "SR-447",
+        "description": "From Gerlach, Nevada to California border",
+        "stale": false,
+        "primaryCondition": "No Report",
+        "secondaryConditions": [],
+        "lastUpdated": "3/2/24, 11:18 AM"
+      },
+      "parsing_notes": [
+        "length parameter is silently capped at 100; paginate with start",
+        "platform is Castle Rock/CARS OneStop (ASP.NET + DataTables), NOT ArcGIS",
+        "the 500s are the app erroring on nonexistent layer names, not transient faults"
+      ],
+      "reliability": "mixed \u2014 Cameras/Incidents/Closures good; RoadConditions is a stale-data trap"
+    },
+    {
+      "id": "mastodon_tag",
+      "name": "Mastodon public hashtag timeline",
+      "rank": 12,
+      "tier": "chatter",
+      "url": "https://mastodon.social/api/v1/timelines/tag/burningman?limit=20",
+      "method": "GET",
+      "auth": "none",
+      "cors": {
+        "allows_browser": true,
+        "acao": "*",
+        "needs_server_proxy": false
+      },
+      "status": "live",
+      "verified_at": "2026-08-29T15:00:00Z",
+      "http_status": 200,
+      "poll_seconds": 300,
+      "rate_limit": {
+        "x-ratelimit-limit": 300,
+        "x-ratelimit-remaining": 297,
+        "x-ratelimit-reset": "2026-08-29T15:05:00.579200Z"
+      },
+      "parsing_notes": [
+        "/api/v2/search?type=statuses returns empty without auth \u2014 use the hashtag timeline instead",
+        "newest post at probe: 2026-08-29T14:02:13.434Z"
+      ],
+      "reliability": "medium \u2014 works, but very low Burning Man volume"
+    },
+    {
+      "id": "osrm_baseline",
+      "name": "OSRM free-flow drive time Reno -> Gerlach -> Gate",
+      "rank": 13,
+      "tier": "secondary",
+      "url": "https://router.project-osrm.org/route/v1/driving/-119.8138,39.5296;-119.3565,40.6535;-119.2065,40.7864?overview=false",
+      "method": "GET",
+      "auth": "none",
+      "cors": {
+        "allows_browser": true,
+        "acao": "*",
+        "needs_server_proxy": false
+      },
+      "status": "live",
+      "verified_at": "2026-08-29T14:59:00Z",
+      "http_status": 200,
+      "poll_seconds": 3600,
+      "sample": {
+        "code": "Ok",
+        "routes": [
+          {
+            "duration": 11536.6,
+            "distance": 196100,
+            "legs": [
+              {
+                "duration": 7560,
+                "distance": 171100
+              },
+              {
+                "duration": 3960,
+                "distance": 25000
+              }
+            ]
+          }
+        ]
+      },
+      "parsing_notes": [
+        "Reno -> Gerlach -> Gate = 196.1 km / 3.20 h free-flow (126 min + 66 min legs)",
+        "OSRM HAS NO TRAFFIC MODEL \u2014 this number will not move when 40,000 vehicles queue",
+        "use strictly as the free-flow denominator against which @bmantraffic is the delay",
+        "volunteer demo server, fair-use only, no uptime guarantee"
+      ],
+      "reliability": "medium \u2014 the number is correct but is a baseline, not a live measurement"
+    },
+    {
+      "id": "adsb",
+      "name": "ADS-B aircraft near BRC airport (88NV)",
+      "rank": 14,
+      "tier": "nice_to_have",
+      "url": "https://api.adsb.lol/v2/lat/40.7538/lon/-119.2119/dist/25",
+      "method": "GET",
+      "auth": "none",
+      "related_urls": {
+        "mirror": "https://opendata.adsb.fi/api/v2/lat/40.7538/lon/-119.2119/dist/25"
+      },
+      "cors": {
+        "allows_browser": false,
+        "acao": null,
+        "needs_server_proxy": true
+      },
+      "status": "live",
+      "verified_at": "2026-08-29T15:01:14Z",
+      "http_status": 200,
+      "poll_seconds": 60,
+      "sample": {
+        "ac": [
+          {
+            "hex": "a3fe6a",
+            "type": "adsb_icao",
+            "flight": "N3567F  ",
+            "r": "N3567F",
+            "t": "C182",
+            "alt_baro": 8700,
+            "alt_geom": 8925,
+            "gs": 104.3,
+            "track": 175.6,
+            "squawk": "1200",
+            "category": "A1"
+          }
+        ]
+      },
+      "parsing_notes": [
+        "api.airplanes.live returns 403 asking you to email them first \u2014 do not use it",
+        "both adsb.lol and adsb.fi verified working with no key"
+      ],
+      "reliability": "medium \u2014 fun 'airport is active' signal, not operationally important"
+    },
+    {
+      "id": "bm_wp_rest",
+      "name": "burningman.org / journal.burningman.org WordPress REST",
+      "rank": 15,
+      "tier": "nice_to_have",
+      "url": "https://journal.burningman.org/wp-json/wp/v2/posts?per_page=10",
+      "method": "GET",
+      "auth": "none",
+      "cors": {
+        "allows_browser": true,
+        "acao": "default WP REST read policy",
+        "needs_server_proxy": false
+      },
+      "status": "live",
+      "verified_at": "2026-08-29T14:56:00Z",
+      "http_status": 200,
+      "poll_seconds": 3600,
+      "parsing_notes": [
+        "burningman.org/wp-json/wp/v2/posts returns [] \u2014 the main site posts nothing",
+        "journal.burningman.org returns real posts; newest at probe id 72467 dated 2026-08-26",
+        "pages endpoint is how the Gerlach webcam was found: /wp-json/wp/v2/pages?search=gerlach%20webcam",
+        "NO gate-status page exists: /gate-status/ 404, /programs/black-rock-city/participate/getting-there/ 404, bm.gate.status does not resolve",
+        "api.burningman.org responds 200 at root but exposes no discoverable versioned API (/api/v1/ 404)"
+      ],
+      "reliability": "high but editorial \u2014 not an operational feed"
+    }
+  ],
+  "dead_or_keyed": [
+    {
+      "id": "reddit",
+      "name": "Reddit r/BurningMan",
+      "status": "dead",
+      "reason": "blocked and rate-limited",
+      "tests": [
+        {
+          "url": "https://www.reddit.com/r/BurningMan/new.json?limit=50",
+          "http": 403,
+          "note": "403 with browser UA AND with custom UA"
+        },
+        {
+          "url": "https://www.reddit.com/r/BurningMan/search.json?q=gate&restrict_sr=1&sort=new",
+          "http": 403
+        },
+        {
+          "url": "https://old.reddit.com/r/BurningMan/new.json",
+          "http": 403
+        },
+        {
+          "url": "https://api.reddit.com/r/BurningMan/new",
+          "http": 403
+        },
+        {
+          "url": "https://www.reddit.com/r/BurningMan.rss",
+          "http": 200,
+          "note": "first call only"
+        },
+        {
+          "url": "https://www.reddit.com/r/BurningMan/new/.rss?limit=25",
+          "http": 429,
+          "headers": {
+            "x-ratelimit-used": "1",
+            "x-ratelimit-remaining": "0.0",
+            "x-ratelimit-reset": "45"
+          },
+          "note": "budget exhausted after a SINGLE request"
+        }
+      ],
+      "vercel_note": "Worse on Vercel, not better: serverless egress comes from shared cloud IP ranges that Reddit throttles far more aggressively than residential IPs.",
+      "only_supported_path": "OAuth via https://oauth.reddit.com (script app, client credentials, descriptive User-Agent, ~100 QPM)",
+      "recommendation": "drop from the design unless you are willing to register an app and store credentials"
+    },
+    {
+      "id": "twitter_x",
+      "name": "X / Twitter @bmantraffic (free routes)",
+      "status": "dead",
+      "reason": "no free route returns current posts",
+      "tests": [
+        {
+          "url": "https://nitter.net/bmantraffic/rss",
+          "http": 410,
+          "note": "Gone"
+        },
+        {
+          "url": "https://nitter.poast.org/bmantraffic/rss",
+          "http": 0,
+          "note": "connection failure"
+        },
+        {
+          "url": "https://xcancel.com/bmantraffic/rss",
+          "http": 400
+        },
+        {
+          "url": "https://cdn.syndication.twimg.com/timeline/profile?screen_name=bmantraffic",
+          "http": 200,
+          "size": 0,
+          "note": "200 with a ZERO-BYTE body; retried with &dnt=true, same. Endpoint retired."
+        },
+        {
+          "url": "https://syndication.twitter.com/srv/timeline-profile/screen-name/bmantraffic",
+          "http": 200,
+          "size": 235688,
+          "note": "TRAP. Returns parseable __NEXT_DATA__ with 100 tweets, but date range is 2017-08-23 to 2025-08-26. Year histogram: {2023:67, 2022:10, 2019:6, 2025:6, 2018:5, 2024:5, 2017:1}. ZERO posts from 2026. Dominated by 2023 mudpocalypse 'Do not travel to Black Rock City!' notices. Polling this would render 3-year-old emergency closures as today's gate status.",
+          "cors": "no ACAO"
+        },
+        {
+          "url": "https://cdn.syndication.twimg.com/tweet-result?id=2093713550128873614",
+          "http": 200,
+          "note": "DOES work and returns current data (verified against the live 14:53:04Z '20 minutes' post), but requires knowing the tweet id in advance \u2014 and the only free source of current ids is /api/feed/public, which already gives you the text. Circular; no added value."
+        }
+      ],
+      "conclusion": "BM's own /api/feed/public is the ONLY free live mirror of @bmantraffic. Anything else needs a paid X API tier (~$200/mo Basic). Treat the feed as a single point of failure and show 'unavailable' on error rather than substituting a stale mirror."
+    },
+    {
+      "id": "air_quality",
+      "name": "Air quality / dust sensors near Gerlach",
+      "status": "dead",
+      "reason": "no free option exists near Gerlach",
+      "tests": [
+        {
+          "url": "https://api.purpleair.com/v1/sensors?fields=pm2.5&nwlng=-119.7&nwlat=41.0&selng=-119.0&selat=40.4",
+          "http": 403,
+          "note": "key required; PurpleAir also charges API points"
+        },
+        {
+          "url": "https://api.openaq.org/v3/locations?coordinates=40.6535,-119.3565&radius=25000",
+          "http": 401,
+          "body": "{\"message\": \"Unauthorized. A valid API key must be provided in the X-API-Key header.\"}"
+        },
+        {
+          "provider": "Windy",
+          "note": "Point Forecast and Webcams APIs both require a registered key"
+        }
+      ],
+      "fallback": "Open-Meteo 'visibility' (see open_meteo) is the only free dust proxy, and it is a model output not a measurement"
+    },
+    {
+      "id": "keyed_routing",
+      "name": "Traffic-aware routing providers",
+      "status": "key_required",
+      "tests": [
+        {
+          "url": "https://api.tomtom.com/routing/1/calculateRoute/...?traffic=true",
+          "http": 401
+        },
+        {
+          "url": "https://api.mapbox.com/directions/v5/mapbox/driving-traffic/...",
+          "http": 401
+        },
+        {
+          "url": "https://router.hereapi.com/v8/routes?...",
+          "http": 401
+        },
+        {
+          "url": "https://maps.googleapis.com/maps/api/distancematrix/json?...",
+          "http": 200,
+          "body": "{\"error_message\":\"You must use an API key to authenticate each request to Google Maps Platform APIs.\"}"
+        }
+      ],
+      "recommendation": "TomTom free tier (2,500 req/day) is the most practical if you want a real traffic-aware Reno->Gerlach time; all require a server-side key"
+    },
+    {
+      "id": "bmir_nowplaying",
+      "name": "BMIR now-playing / status JSON",
+      "status": "dead",
+      "reason": "does not exist",
+      "tests": [
+        {
+          "url": "https://bmir.org/wp-json/",
+          "http": 404,
+          "note": "not WordPress"
+        },
+        {
+          "url": "https://stream.daz.radio/status-json.xsl",
+          "http": 404,
+          "note": "falls through to SPA shell"
+        },
+        {
+          "url": "https://stream.daz.radio/live/status_json.xsl",
+          "http": 404
+        }
+      ],
+      "working_streams": {
+        "hls_used_by_dashboard": "https://stream.daz.radio/live/playlist.m3u8",
+        "iheart_mirror": "https://stream.revma.ihrhls.com/zc8378"
+      },
+      "hls_verified": "200, #EXT-X-PROGRAM-DATE-TIME:2026-08-29T14:59:29.295+00:00",
+      "use_instead": "synced.dj_schedule in /api/feed/public \u2014 carries epoch-ms start/end per DJ set"
+    },
+    {
+      "id": "other_webcams",
+      "name": "Other playa / corridor webcams",
+      "status": "dead",
+      "findings": [
+        "blackrockdesert.org (Friends of Black Rock High Rock): fetched 291KB, no webcam, no stream, no JSON feed",
+        "OpenSnow and WeatherBug 'Gerlach cams' are aggregator pages with no documented public JSON API and no camera actually in Gerlach",
+        "no public YouTube live stream for the gate; burningman.org/live-webcast/ is driven by the Livepeer id in /api/webcast-status, currently available:false",
+        "webcam.burningman.org is the only real corridor camera \u2014 see gerlach_webcam"
+      ]
+    }
+  ],
+  "architecture_recommendation": {
+    "server_side_collector_60s": [
+      "brc_feed_public",
+      "brc_gate_status",
+      "brc_sveltekit_data",
+      "brc_webcast_status",
+      "gerlach_webcam (HEAD for Last-Modified)",
+      "nvroads_layers (Incidents)",
+      "adsb"
+    ],
+    "browser_direct_cors_ok": [
+      "nws_alerts",
+      "nws_forecast",
+      "open_meteo",
+      "bluesky_search",
+      "mastodon_tag",
+      "osrm_baseline",
+      "nvroads_camera_stills (as <img>)"
+    ],
+    "integrity_rules": [
+      "stamp every panel with the SOURCE timestamp, not the fetch time \u2014 synced.traffic[0].created_at can be an hour old by design",
+      "gate the Gerlach webcam on Last-Modified; it was 6.5h stale at probe time",
+      "never render NVRoads RoadConditions for SR-447 \u2014 permanently 'No Report' since 2024",
+      "never render the Twitter syndication timeline \u2014 newest post is Aug 2025",
+      "mirror BM's own *_visibility flags and the feeds health map",
+      "when /api/feed/public fails, show 'unavailable' \u2014 there is NO second live source for gate wait times"
+    ]
+  }
+}
