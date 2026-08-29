@@ -127,3 +127,24 @@ so it must keep meaning wait time and nothing else.
 
 - `serverTime` — the upstream feed's own clock. Kept in `/api/live` for
   diagnostics; staleness on the page is measured from `fetchedAt` instead.
+
+
+## Verification
+
+`npm test` runs both suites; `npm run test:live` asserts against the deployed API.
+
+| Suite | What it proves | Count |
+| --- | --- | --- |
+| `scripts/test_lib.mjs` | `@bmantraffic` text parsing (incl. ranges and exodus rejection), TOC duration parsing, Pacific anchoring of the crossing table, merge/dedupe precedence, ramp thresholds and monotonicity, clock formatting, cross-year `combine` | 70 |
+| `scripts/verify_data.py` | every cell and day satisfies min ≤ median ≤ max and min ≤ mean ≤ max; day stats bracket their cells; 2024/25 rebuilt from the raw bmantravel source; 2018/19/22 independently rebuilt from the post archive; every cell traces to a source reading; offsets match calendar dates; arrival and exodus never overlap; ranking years are actually dense | 3,950 |
+| `scripts/check_live.mjs` | no reading in the future or older than 30h, `current` equals the newest reading, every travel-time post parsed, camera ages sane, archive ≥ live window | 125 |
+
+**Invariants that must keep holding**
+
+- A statistic shown anywhere must be the selected one. Mixing them — a median-derived
+  "quietest" line next to a minimum-derived bar — reads as a swap even when the
+  maths is right.
+- `parseTravelMinutes` (live) and `travel_minutes` (builder) must agree on the
+  same sentence. Ranges collapse to their midpoint in both.
+- Bucket statistics come from raw readings, never from pre-aggregated per-hour
+  medians, or min/max understate the spread.

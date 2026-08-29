@@ -14,6 +14,15 @@ export function parseTravelMinutes(text: string): number | null {
   const after = t.split(/\bis\b/).slice(1).join(" is ");
   const scope = after || t;
 
+  // Ranges ("1-2 hours", "45 to 60 minutes") collapse to their midpoint. Taking
+  // the upper bound instead would silently disagree with how the historical
+  // builder reads the very same wording.
+  const range = scope.match(/(\d+)\s*(?:-|–|—|to)\s*(\d+)\s*(hours?|hrs?|minutes?|mins?)/);
+  if (range) {
+    const mid = (parseInt(range[1], 10) + parseInt(range[2], 10)) / 2;
+    return Math.round(/^h/.test(range[3]) ? mid * 60 : mid);
+  }
+
   const h = scope.match(/(\d+(?:\.\d+)?)\s*(?:hours?|hrs?|h\b)/);
   const m = scope.match(/(\d+)\s*(?:minutes?|mins?|m\b)/);
   if (!h && !m) {

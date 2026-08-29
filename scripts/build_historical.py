@@ -81,13 +81,9 @@ def build_direction(year_block, keep):
             buckets.setdefault((h // BUCKET) * BUCKET, []).append(v)
         for h, vals in sorted(buckets.items()):
             cells.append({"day": lab, "hour": h, **stats_of(vals)})
-        quiet = min(buckets.items(), key=lambda kv: statistics.median(kv[1])) if buckets else None
         allv = [v for _, v in rows]
         days.append({
-            "label": lab, "offset": d["offset"], "date": d["date"],
-            **stats_of(allv),
-            "note": (f"{len(allv)} readings · quietest around {fmt_hour(quiet[0])} "
-                     f"({round(statistics.median(quiet[1]))}m)") if quiet else f"{len(allv)} readings",
+            "label": lab, "offset": d["offset"], "date": d["date"], **stats_of(allv),
         })
     days.sort(key=lambda x: x["offset"])
     # A phase built from one or two stray posts describes nothing; drop it so the

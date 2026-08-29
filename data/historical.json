@@ -1,6 +1,6 @@
 {
  "status": "ok",
- "generatedAt": "2026-08-29T16:22:13Z",
+ "generatedAt": "2026-08-29T16:52:23Z",
  "coverageYears": [
   2018,
   2019,
@@ -38,8 +38,7 @@
       "mean": 147,
       "min": 25,
       "max": 300,
-      "n": 12,
-      "note": "12 readings \u00b7 quietest around 6am (25m)"
+      "n": 12
      },
      {
       "label": "Sat -1",
@@ -49,8 +48,7 @@
       "mean": 162,
       "min": 35,
       "max": 320,
-      "n": 21,
-      "note": "21 readings \u00b7 quietest around 10am (35m)"
+      "n": 21
      },
      {
       "label": "SUN open",
@@ -60,8 +58,7 @@
       "mean": 374,
       "min": 180,
       "max": 480,
-      "n": 17,
-      "note": "17 readings \u00b7 quietest around 4am (240m)"
+      "n": 17
      },
      {
       "label": "Mon +1",
@@ -71,8 +68,7 @@
       "mean": 433,
       "min": 360,
       "max": 520,
-      "n": 15,
-      "note": "15 readings \u00b7 quietest around 6pm (360m)"
+      "n": 15
      },
      {
       "label": "Tue +2",
@@ -82,8 +78,7 @@
       "mean": 259,
       "min": 120,
       "max": 450,
-      "n": 18,
-      "note": "18 readings \u00b7 quietest around 10am (120m)"
+      "n": 18
      },
      {
       "label": "Wed +3",
@@ -93,8 +88,7 @@
       "mean": 152,
       "min": 20,
       "max": 350,
-      "n": 5,
-      "note": "5 readings \u00b7 quietest around 12pm (20m)"
+      "n": 5
      },
      {
       "label": "Thu +4",
@@ -104,8 +98,7 @@
       "mean": 178,
       "min": 15,
       "max": 480,
-      "n": 19,
-      "note": "19 readings \u00b7 quietest around 8am (20m)"
+      "n": 19
      }
     ],
     "cells": [
@@ -661,8 +654,7 @@
       "mean": 30,
       "min": 30,
       "max": 30,
-      "n": 3,
-      "note": "3 readings \u00b7 quietest around 10pm (30m)"
+      "n": 3
      },
      {
       "label": "Sun +7",
@@ -672,8 +664,7 @@
       "mean": 125,
       "min": 30,
       "max": 320,
-      "n": 37,
-      "note": "37 readings \u00b7 quietest around 2am (30m)"
+      "n": 37
      },
      {
       "label": "Mon +8",
@@ -683,8 +674,7 @@
       "mean": 246,
       "min": 105,
       "max": 360,
-      "n": 38,
-      "note": "38 readings \u00b7 quietest around 6am (130m)"
+      "n": 38
      },
      {
       "label": "Tue +9",
@@ -694,8 +684,7 @@
       "mean": 40,
       "min": 30,
       "max": 240,
-      "n": 21,
-      "note": "21 readings \u00b7 quietest around 12am (30m)"
+      "n": 21
      }
     ],
     "cells": [
@@ -1030,8 +1019,7 @@
       "mean": 45,
       "min": 20,
       "max": 90,
-      "n": 6,
-      "note": "6 readings \u00b7 quietest around 10am (20m)"
+      "n": 6
      },
      {
       "label": "Fri -2",
@@ -1041,8 +1029,7 @@
       "mean": 174,
       "min": 60,
       "max": 220,
-      "n": 18,
-      "note": "18 readings \u00b7 quietest around 8am (60m)"
+      "n": 18
      },
      {
       "label": "Sat -1",
@@ -1052,8 +1039,7 @@
       "mean": 77,
       "min": 20,
       "max": 180,
-      "n": 12,
-      "note": "12 readings \u00b7 quietest around 4am (20m)"
+      "n": 12
      },
      {
       "label": "SUN open",
@@ -1063,8 +1049,7 @@
       "mean": 52,
       "min": 25,
       "max": 70,
-      "n": 26,
-      "note": "26 readings \u00b7 quietest around 6am (30m)"
+      "n": 26
      },
      {
       "label": "Mon +1",
@@ -1074,8 +1059,7 @@
       "mean": 61,
       "min": 45,
       "max": 75,
-      "n": 4,
-      "note": "4 readings \u00b7 quietest around 4pm (45m)"
+      "n": 4
      },
      {
       "label": "Tue +2",
@@ -1085,8 +1069,7 @@
       "mean": 79,
       "min": 30,
       "max": 120,
-      "n": 7,
-      "note": "7 readings \u00b7 quietest around 10pm (38m)"
+      "n": 7
      },
      {
       "label": "Wed +3",
@@ -1096,8 +1079,7 @@
       "mean": 27,
       "min": 20,
       "max": 40,
-      "n": 3,
-      "note": "3 readings \u00b7 quietest around 2am (20m)"
+      "n": 3
      },
      {
       "label": "Thu +4",
@@ -1107,8 +1089,7 @@
       "mean": 26,
       "min": 20,
       "max": 60,
-      "n": 14,
-      "note": "14 readings \u00b7 quietest around 8am (20m)"
+      "n": 14
      }
     ],
     "cells": [
@@ -1502,8 +1483,7 @@
       "mean": 149,
       "min": 80,
       "max": 360,
-      "n": 19,
-      "note": "19 readings \u00b7 quietest around 2pm (80m)"
+      "n": 19
      },
      {
       "label": "Mon +8",
@@ -1513,8 +1493,7 @@
       "mean": 85,
       "min": 60,
       "max": 150,
-      "n": 14,
-      "note": "14 readings \u00b7 quietest around 4am (60m)"
+      "n": 14
      },
      {
       "label": "Tue +9",
@@ -1524,8 +1503,7 @@
       "mean": 47,
       "min": 20,
       "max": 60,
-      "n": 25,
-      "note": "25 readings \u00b7 quietest around 2pm (20m)"
+      "n": 25
      }
     ],
     "cells": [
@@ -1707,8 +1685,7 @@
       "mean": 60,
       "min": 0,
       "max": 120,
-      "n": 4,
-      "note": "4 readings \u00b7 quietest around 4pm (0m)"
+      "n": 4
      },
      {
       "label": "Mon +1",
@@ -1718,8 +1695,7 @@
       "mean": 75,
       "min": 0,
       "max": 160,
-      "n": 5,
-      "note": "5 readings \u00b7 quietest around 10am (0m)"
+      "n": 5
      },
      {
       "label": "Tue +2",
@@ -1729,8 +1705,7 @@
       "mean": 62,
       "min": 0,
       "max": 170,
-      "n": 14,
-      "note": "14 readings \u00b7 quietest around 12pm (0m)"
+      "n": 14
      },
      {
       "label": "Wed +3",
@@ -1740,8 +1715,7 @@
       "mean": 32,
       "min": 5,
       "max": 90,
-      "n": 9,
-      "note": "9 readings \u00b7 quietest around 12pm (10m)"
+      "n": 9
      },
      {
       "label": "Thu +4",
@@ -1751,8 +1725,7 @@
       "mean": 6,
       "min": 0,
       "max": 15,
-      "n": 5,
-      "note": "5 readings \u00b7 quietest around 4pm (0m)"
+      "n": 5
      }
     ],
     "cells": [
@@ -2038,8 +2011,7 @@
       "mean": 4,
       "min": 0,
       "max": 10,
-      "n": 5,
-      "note": "5 readings \u00b7 quietest around 12pm (0m)"
+      "n": 5
      },
      {
       "label": "Sat +6",
@@ -2049,8 +2021,7 @@
       "mean": 24,
       "min": 0,
       "max": 120,
-      "n": 5,
-      "note": "5 readings \u00b7 quietest around 6am (0m)"
+      "n": 5
      },
      {
       "label": "Sun +7",
@@ -2060,8 +2031,7 @@
       "mean": 251,
       "min": 60,
       "max": 450,
-      "n": 8,
-      "note": "8 readings \u00b7 quietest around 12am (60m)"
+      "n": 8
      },
      {
       "label": "Mon +8",
@@ -2071,8 +2041,7 @@
       "mean": 452,
       "min": 420,
       "max": 525,
-      "n": 6,
-      "note": "6 readings \u00b7 quietest around 12am (420m)"
+      "n": 6
      }
     ],
     "cells": [
@@ -2294,8 +2263,7 @@
       "mean": 12,
       "min": 0,
       "max": 70,
-      "n": 13,
-      "note": "13 readings \u00b7 quietest around 8am (0m)"
+      "n": 13
      },
      {
       "label": "Sun +7",
@@ -2305,8 +2273,7 @@
       "mean": 64,
       "min": 0,
       "max": 150,
-      "n": 7,
-      "note": "7 readings \u00b7 quietest around 2am (0m)"
+      "n": 7
      },
      {
       "label": "Mon +8",
@@ -2316,8 +2283,7 @@
       "mean": 186,
       "min": 60,
       "max": 315,
-      "n": 17,
-      "note": "17 readings \u00b7 quietest around 4am (60m)"
+      "n": 17
      },
      {
       "label": "Tue +9",
@@ -2327,8 +2293,7 @@
       "mean": 7,
       "min": 0,
       "max": 60,
-      "n": 9,
-      "note": "9 readings \u00b7 quietest around 12am (0m)"
+      "n": 9
      }
     ],
     "cells": [
@@ -2627,8 +2592,7 @@
       "mean": 122,
       "min": 90,
       "max": 180,
-      "n": 10,
-      "note": "10 readings \u00b7 quietest around 10pm (90m)"
+      "n": 10
      },
      {
       "label": "Fri -2",
@@ -2638,8 +2602,7 @@
       "mean": 174,
       "min": 80,
       "max": 240,
-      "n": 22,
-      "note": "22 readings \u00b7 quietest around 12am (85m)"
+      "n": 22
      },
      {
       "label": "Sat -1",
@@ -2649,8 +2612,7 @@
       "mean": 205,
       "min": 90,
       "max": 480,
-      "n": 23,
-      "note": "23 readings \u00b7 quietest around 10pm (105m)"
+      "n": 23
      },
      {
       "label": "SUN open",
@@ -2660,8 +2622,7 @@
       "mean": 248,
       "min": 110,
       "max": 450,
-      "n": 15,
-      "note": "15 readings \u00b7 quietest around 2am (130m)"
+      "n": 15
      },
      {
       "label": "Mon +1",
@@ -2671,8 +2632,7 @@
       "mean": 212,
       "min": 0,
       "max": 510,
-      "n": 18,
-      "note": "18 readings \u00b7 quietest around 12pm (0m)"
+      "n": 18
      },
      {
       "label": "Tue +2",
@@ -2682,8 +2642,7 @@
       "mean": 34,
       "min": 0,
       "max": 75,
-      "n": 18,
-      "note": "18 readings \u00b7 quietest around 4am (0m)"
+      "n": 18
      }
     ],
     "cells": [
@@ -3239,8 +3198,7 @@
       "mean": 0,
       "min": 0,
       "max": 0,
-      "n": 2,
-      "note": "2 readings \u00b7 quietest around 6pm (0m)"
+      "n": 2
      },
      {
       "label": "Sun +7",
@@ -3250,8 +3208,7 @@
       "mean": 84,
       "min": 0,
       "max": 240,
-      "n": 16,
-      "note": "16 readings \u00b7 quietest around 2am (0m)"
+      "n": 16
      },
      {
       "label": "Mon +8",
@@ -3261,8 +3218,7 @@
       "mean": 125,
       "min": 60,
       "max": 240,
-      "n": 12,
-      "note": "12 readings \u00b7 quietest around 6am (90m)"
+      "n": 12
      }
     ],
     "cells": [

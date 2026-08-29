@@ -17,7 +17,7 @@ export type HistCell = {
 };
 export type HistDay = {
   label: string; offset: number; date: string;
-  median: number; mean: number; min: number; max: number; n: number; note?: string;
+  median: number; mean: number; min: number; max: number; n: number;
 };
 export type HistPhase = { days: HistDay[]; cells: HistCell[] };
 export type HistYear = { label: string; note: string; arrival: HistPhase; exodus: HistPhase };

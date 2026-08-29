@@ -94,7 +94,7 @@ export default function HistoricalSection({
               <h2>{year} by {phase === "arrival" ? "arrival" : "departure"} day</h2>
             </div>
           </div>
-          <DayBars rows={block.days} stat={stat} />
+          <DayBars rows={block.days} cells={block.cells} stat={stat} />
           <p className="note">
             Solid bar is the selected statistic; the faint bar behind it is always that day&rsquo;s worst reading, so
             switching never hides how bad a day could get. Best case seen was{" "}

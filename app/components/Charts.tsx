@@ -227,7 +227,22 @@ export function HeatClock({
 
 /* --------------------------------------------------------------- day bars */
 
-export function DayBars({ rows, stat }: { rows: HistDay[]; stat: Stat }) {
+export function DayBars({ rows, cells, stat }: { rows: HistDay[]; cells: HistCell[]; stat: Stat }) {
+  // The "quietest block" has to be found with the SAME statistic that is on
+  // screen. Deriving it from medians while the bar showed a minimum made the
+  // two numbers contradict each other.
+  const byDay = new Map<string, HistCell[]>();
+  for (const c of cells) {
+    const list = byDay.get(c.day);
+    if (list) list.push(c); else byDay.set(c.day, [c]);
+  }
+  const quietest = (day: string): HistCell | null => {
+    const cs = byDay.get(day);
+    if (!cs || cs.length === 0) return null;
+    return cs.reduce((a, b) => (a[stat] <= b[stat] ? a : b));
+  };
+  const hourLabel = (h: number) => `${h % 12 || 12}${h < 12 ? "am" : "pm"}`;
+
   // The faint bar behind is always the day's worst reading, so switching the
   // statistic never hides how bad that day could get.
   const scale = Math.max(60, ...rows.map((r) => Math.max(r.max, r[stat])));
@@ -235,6 +250,7 @@ export function DayBars({ rows, stat }: { rows: HistDay[]; stat: Stat }) {
     <div className="rows">
       {rows.map((r) => {
         const v = r[stat];
+        const q = quietest(r.label);
         return (
           <div className="row" key={r.label}>
             <div className="row-top">
@@ -247,11 +263,10 @@ export function DayBars({ rows, stat }: { rows: HistDay[]; stat: Stat }) {
               <i style={{ width: `${(r.max / scale) * 100}%`, background: waitColor(r.max), opacity: 0.3 }} />
               <i style={{ width: `${(v / scale) * 100}%`, background: waitColor(v) }} />
             </div>
-            {r.note && (
-              <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink2)", marginTop: 6, textTransform: "uppercase", letterSpacing: ".06em" }}>
-                {r.note}
-              </div>
-            )}
+            <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink2)", marginTop: 6, textTransform: "uppercase", letterSpacing: ".06em" }}>
+              {r.n} readings
+              {q && ` · quietest 2h block ${hourLabel(q.hour)} (${fmtMins(q[stat])})`}
+            </div>
           </div>
         );
       })}
