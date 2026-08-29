@@ -3,12 +3,12 @@
 import { useState } from "react";
 import { DayBars, HeatClock, HeatGrid, Legend } from "./Charts";
 import { fmtMins } from "@/lib/format";
-import type { Historical } from "@/lib/historical";
+import type { Historical, Stat } from "@/lib/historical";
 
 export default function HistoricalSection({
-  historical, nowDay, nowHour, num,
+  historical, nowDay, nowHour, num, stat,
 }: {
-  historical: Historical; nowDay?: string; nowHour?: number; num: string;
+  historical: Historical; nowDay?: string; nowHour?: number; num: string; stat: Stat;
 }) {
   const yearKeys = Object.keys(historical.years ?? {});
   const [year, setYear] = useState(historical.defaultYear ?? yearKeys[0] ?? "");
@@ -69,17 +69,17 @@ export default function HistoricalSection({
           <p className="lede">No {phase} readings were recovered for {year}.</p>
         ) : view === "grid" ? (
           <HeatGrid
-            days={days} cells={block.cells} bucket={2}
+            days={days} cells={block.cells} stat={stat} bucket={2}
             nowDay={phase === "arrival" ? nowDay : undefined} nowHour={nowHour}
           />
         ) : (
-          <HeatClock days={days} cells={block.cells} nowHour={phase === "arrival" ? nowHour : undefined} />
+          <HeatClock days={days} cells={block.cells} stat={stat} nowHour={phase === "arrival" ? nowHour : undefined} />
         )}
 
         <Legend />
 
         <p className="note">
-          Median Gravel-to-Gate time by day and hour, from {block.days.reduce((a, d) => a + d.n, 0)} hourly
+          Gravel-to-Gate time by day and hour, from {block.days.reduce((a, d) => a + d.n, 0)} hourly
           @bmantraffic readings. Rows are days relative to gate open, so they line up across years. Blank means
           nobody reported. The wording of the official posts changed between years, so the measured stretch of road
           is not identical year to year — compare shapes, not decimals.
@@ -94,11 +94,12 @@ export default function HistoricalSection({
               <h2>{year} by {phase === "arrival" ? "arrival" : "departure"} day</h2>
             </div>
           </div>
-          <DayBars rows={block.days.map((d) => ({ label: d.label, typical: d.typical, peak: d.peak, note: d.note }))} />
+          <DayBars rows={block.days} stat={stat} />
           <p className="note">
-            Solid bar is the median for the day; the faint bar behind it is that day&rsquo;s worst reading. Best case
-            seen was {fmtMins(Math.min(...block.days.map((d) => d.floor)))}, worst{" "}
-            {fmtMins(Math.max(...block.days.map((d) => d.peak)))}. Each year is a separate scenario, not a trend —
+            Solid bar is the selected statistic; the faint bar behind it is always that day&rsquo;s worst reading, so
+            switching never hides how bad a day could get. Best case seen was{" "}
+            {fmtMins(Math.min(...block.days.map((d) => d.min)))}, worst{" "}
+            {fmtMins(Math.max(...block.days.map((d) => d.max)))}. Each year is a separate scenario, not a trend —
             weather and gate staffing differed. Do not read them as a curve.
           </p>
         </section>

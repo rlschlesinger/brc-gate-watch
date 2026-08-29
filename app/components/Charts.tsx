@@ -3,6 +3,7 @@
 import { Fragment, useMemo, useState } from "react";
 import type { WaitSample } from "@/lib/types";
 import { RAMP, RAMP_LABELS, fmtMins, waitColor } from "@/lib/format";
+import type { HistCell, HistDay, Stat } from "@/lib/historical";
 
 const PT = "America/Los_Angeles";
 const pt = (d: Date | number | string, o: Intl.DateTimeFormatOptions) =>
@@ -91,13 +92,11 @@ export function Legend() {
 
 /* ----------------------------------------------------------------- heatmap */
 
-export type HeatCell = { day: string; hour: number; typical: number; n: number };
-
 /** Grid view: one horizontal band per day, 24 hours across. */
 export function HeatGrid({
-  days, cells, bucket = 2, nowDay, nowHour,
+  days, cells, stat, bucket = 2, nowDay, nowHour,
 }: {
-  days: string[]; cells: HeatCell[]; bucket?: number; nowDay?: string; nowHour?: number;
+  days: string[]; cells: HistCell[]; stat: Stat; bucket?: number; nowDay?: string; nowHour?: number;
 }) {
   const cols = Math.ceil(24 / bucket);
   const cellW = 22;
@@ -124,10 +123,10 @@ export function HeatGrid({
               return (
                 <span
                   key={h}
-                  title={`${d} ${h}:00 — ${c ? `${fmtMins(c.typical)} (${c.n} readings)` : "no data"}`}
+                  title={`${d} ${h}:00 — ${c ? `${fmtMins(c[stat])} (${c.n} readings)` : "no data"}`}
                   style={{
                     height: 30,
-                    background: c ? waitColor(c.typical) : "var(--paper2)",
+                    background: c ? waitColor(c[stat]) : "var(--paper2)",
                     borderRight: "2px solid var(--paper)",
                     outline: isNow ? "2px solid var(--ink)" : undefined,
                     outlineOffset: isNow ? -2 : undefined,
@@ -148,14 +147,14 @@ export function HeatGrid({
  * days stack as concentric rings — outermost first.
  */
 export function HeatClock({
-  days, cells, nowHour,
+  days, cells, stat, nowHour,
 }: {
-  days: string[]; cells: HeatCell[]; nowHour?: number;
+  days: string[]; cells: HistCell[]; stat: Stat; nowHour?: number;
 }) {
   const rings = days.slice(0, 6);
   if (rings.length === 0) return null;
   const bandWidth = 40 / Math.max(rings.length, 1);
-  const byDay = new Map<string, Map<number, HeatCell>>();
+  const byDay = new Map<string, Map<number, HistCell>>();
   for (const c of cells) {
     if (!byDay.has(c.day)) byDay.set(c.day, new Map());
     byDay.get(c.day)!.set(c.hour, c);
@@ -169,7 +168,7 @@ export function HeatClock({
           const stops: string[] = [];
           for (let h = 0; h < 24; h++) {
             const c = hours?.get(Math.floor(h / 2) * 2);
-            stops.push(`${c ? waitColor(c.typical) : "var(--paper2)"} ${h * 15}deg ${(h + 1) * 15}deg`);
+            stops.push(`${c ? waitColor(c[stat]) : "var(--paper2)"} ${h * 15}deg ${(h + 1) * 15}deg`);
           }
           return (
             <div
@@ -228,28 +227,34 @@ export function HeatClock({
 
 /* --------------------------------------------------------------- day bars */
 
-export function DayBars({
-  rows,
-}: {
-  rows: { label: string; typical: number | null; peak: number | null; note?: string }[];
-}) {
-  const max = Math.max(60, ...rows.map((r) => r.peak ?? r.typical ?? 0));
+export function DayBars({ rows, stat }: { rows: HistDay[]; stat: Stat }) {
+  // The faint bar behind is always the day's worst reading, so switching the
+  // statistic never hides how bad that day could get.
+  const scale = Math.max(60, ...rows.map((r) => Math.max(r.max, r[stat])));
   return (
     <div className="rows">
-      {rows.map((r) => (
-        <div className="row" key={r.label}>
-          <div className="row-top">
-            <span className="lab">{r.label}</span>
-            <span className="val">{fmtMins(r.typical)}</span>
-            {r.peak != null && r.peak !== r.typical && <span className="sub">peak {fmtMins(r.peak)}</span>}
+      {rows.map((r) => {
+        const v = r[stat];
+        return (
+          <div className="row" key={r.label}>
+            <div className="row-top">
+              <span className="lab">{r.label}</span>
+              <span className="val">{fmtMins(v)}</span>
+              {stat !== "max" && <span className="sub">worst {fmtMins(r.max)}</span>}
+              {stat !== "min" && <span className="sub">best {fmtMins(r.min)}</span>}
+            </div>
+            <div className="track">
+              <i style={{ width: `${(r.max / scale) * 100}%`, background: waitColor(r.max), opacity: 0.3 }} />
+              <i style={{ width: `${(v / scale) * 100}%`, background: waitColor(v) }} />
+            </div>
+            {r.note && (
+              <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink2)", marginTop: 6, textTransform: "uppercase", letterSpacing: ".06em" }}>
+                {r.note}
+              </div>
+            )}
           </div>
-          <div className="track">
-            {r.peak != null && <i style={{ width: `${(r.peak / max) * 100}%`, background: waitColor(r.peak), opacity: 0.34 }} />}
-            {r.typical != null && <i style={{ width: `${(r.typical / max) * 100}%`, background: waitColor(r.typical) }} />}
-          </div>
-          {r.note && <div className="sub" style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink2)", marginTop: 6, textTransform: "uppercase", letterSpacing: ".06em" }}>{r.note}</div>}
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }

@@ -83,7 +83,11 @@ Verify the data side with `curl -s https://brc-gate-watch.vercel.app/api/live | 
 | 63 | Deep-linkable panels | `#plan`, `#road`, … survive reload and sharing |
 | 64 | Alert pips on tabs | NOW flags active alerts, ROAD flags a stale camera |
 | 65 | Critical notices are global | placeholder mode, stale reading and NWS alerts show on every panel |
-| 66 | Equal-height bar labels | unlabelled columns reserve the same space, or the row camels |
+| 66 | **MEDIAN / AVG / MIN / MAX selector** | drives the ranking, the heatmap and the day bars together; the copy under each restates which one is showing |
+| 67 | Day bars always keep the worst | the faint bar behind stays `max` whatever is selected, so switching cannot hide a bad day |
+| 68 | Per-year figures on every ranked row | a calm median hiding one brutal year stays visible |
+| 69 | Live social card | `/opengraph-image` renders the real current wait, sparkline and 24h median/min/max, in Barlow Condensed |
+| 70 | Equal-height bar labels | unlabelled columns reserve the same space, or the row camels |
 
 Colour is load-bearing here: the ramp is the only saturated thing on the page,
 so it must keep meaning wait time and nothing else.
@@ -96,7 +100,7 @@ so it must keep meaning wait time and nothing else.
 | 42 | Camera refresh 90s | separate cache-bust key |
 | 43 | Mobile-first, 390px, 56px tab targets | **verified** at 390px: chart draws in real pixels, heatmap uses `minmax(0,1fr)` inside a scroll container |
 | 44 | `prefers-reduced-motion` honoured | `globals.css` |
-| 45 | OG / Twitter card | `/opengraph-image` returns a PNG, paper/ink, marked SAMPLE FIGURE |
+| 45 | OG / Twitter card | `/opengraph-image` renders live data, 5-min revalidate, falls back to a neutral card if the feed is down |
 | 46 | Favicon | `/icon.svg` |
 | 47 | PWA manifest, add-to-home-screen | `/manifest.webmanifest` |
 | 48 | Publicly reachable, no deploy protection | `curl -o /dev/null -w '%{http_code}'` → 200 |

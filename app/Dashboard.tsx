@@ -6,7 +6,7 @@ import HistoricalSection from "./components/Historical";
 import WhenToLeave from "./components/WhenToLeave";
 import ThemeToggle from "./components/ThemeToggle";
 import { ago, fmtClock, fmtMins, waitColor, waitWord } from "@/lib/format";
-import type { Historical } from "@/lib/historical";
+import { STATS, type Historical, type Stat } from "@/lib/historical";
 import type { LivePayload, WaitSample } from "@/lib/types";
 
 type Live = LivePayload & { archiveUpdatedAt?: string; archiveCount?: number };
@@ -37,6 +37,7 @@ export default function Dashboard({ historical }: { historical: Historical }) {
   const [now, setNow] = useState(() => Date.now());
   const [camKey, setCamKey] = useState(() => Date.now());
   const [tab, setTab] = useState<TabId>("now");
+  const [stat, setStat] = useState<Stat>("median");
   const inflight = useRef(false);
 
   /* -------------------------------------------------- load + auto-refresh */
@@ -322,8 +323,21 @@ export default function Dashboard({ historical }: { historical: Historical }) {
 
       {tab === "plan" && (
         <>
-          <WhenToLeave historical={historical} now={now} num="01" />
-          <HistoricalSection historical={historical} nowDay={histDayLabel(now)} nowHour={nowHour} num="02" />
+          <section className="sec" style={{ paddingBottom: 0 }}>
+            <div className="seg wrap" role="group" aria-label="Statistic">
+              {STATS.map((o) => (
+                <button key={o.id} data-on={stat === o.id ? "1" : "0"} onClick={() => setStat(o.id)}>
+                  {o.label}
+                </button>
+              ))}
+            </div>
+            <p className="lede" style={{ marginTop: 10, marginBottom: 0 }}>
+              Showing the <strong style={{ color: "var(--ink)" }}>{STATS.find((o) => o.id === stat)?.prose}</strong>{" "}
+              — {STATS.find((o) => o.id === stat)?.blurb}. Applies to the ranking and the history below.
+            </p>
+          </section>
+          <WhenToLeave historical={historical} now={now} num="01" stat={stat} />
+          <HistoricalSection historical={historical} nowDay={histDayLabel(now)} nowHour={nowHour} num="02" stat={stat} />
         </>
       )}
 

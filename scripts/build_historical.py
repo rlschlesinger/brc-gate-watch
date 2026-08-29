@@ -48,6 +48,24 @@ MIN_DAY_READINGS = 2
 MIN_PHASE_READINGS = 5
 
 
+def stats_of(vals):
+    """Every statistic the UI can switch between, from one list of readings."""
+    return {
+        "median": round(statistics.median(vals)),
+        "mean": round(statistics.fmean(vals)),
+        "min": min(vals),
+        "max": max(vals),
+        "n": len(vals),
+    }
+
+
+def day_readings(d):
+    """(hour, minutes) pairs for a day, preferring raw readings over pre-medians."""
+    if isinstance(d.get("readings"), list) and d["readings"]:
+        return [(int(h), int(v)) for h, v in d["readings"]]
+    return [(int(h), int(v)) for h, v in (d.get("hours") or {}).items()]
+
+
 def build_direction(year_block, keep):
     """keep(offset) decides which days belong to this phase."""
     days, cells = [], []
@@ -55,17 +73,21 @@ def build_direction(year_block, keep):
         if not keep(d["offset"]) or d["n"] < MIN_DAY_READINGS:
             continue
         lab = day_label(d["offset"], d["weekday"])
+        rows = day_readings(d)
+        if not rows:
+            continue
         buckets = {}
-        for h, v in d["hours"].items():
-            buckets.setdefault((int(h) // BUCKET) * BUCKET, []).append(v)
+        for h, v in rows:
+            buckets.setdefault((h // BUCKET) * BUCKET, []).append(v)
         for h, vals in sorted(buckets.items()):
-            cells.append({"day": lab, "hour": h, "typical": round(statistics.median(vals)), "n": len(vals)})
+            cells.append({"day": lab, "hour": h, **stats_of(vals)})
         quiet = min(buckets.items(), key=lambda kv: statistics.median(kv[1])) if buckets else None
+        allv = [v for _, v in rows]
         days.append({
             "label": lab, "offset": d["offset"], "date": d["date"],
-            "typical": d["median"], "peak": d["max"], "floor": d["min"], "n": d["n"],
-            "note": (f"{d['n']} readings · quietest around {fmt_hour(quiet[0])} "
-                     f"({round(statistics.median(quiet[1]))}m)") if quiet else f"{d['n']} readings",
+            **stats_of(allv),
+            "note": (f"{len(allv)} readings · quietest around {fmt_hour(quiet[0])} "
+                     f"({round(statistics.median(quiet[1]))}m)") if quiet else f"{len(allv)} readings",
         })
     days.sort(key=lambda x: x["offset"])
     # A phase built from one or two stray posts describes nothing; drop it so the
@@ -156,6 +178,7 @@ def load_archive_years():
                 out_days.append({
                     "date": date, "weekday": wd, "offset": offset,
                     "hours": {h: round(statistics.median(v)) for h, v in hours.items()},
+                    "readings": [[r["hour"], r["minutes"]] for r in rs],
                     "median": round(statistics.median([r["minutes"] for r in rs])),
                     "min": min(r["minutes"] for r in rs), "max": max(r["minutes"] for r in rs),
                     "n": len(rs),
@@ -206,7 +229,7 @@ def main():
         if a and b:
             head.append({
                 "text": f"Opening Sunday is the least predictable day of the week: a typical "
-                        f"{fmt_mins(a['typical'])} in 2025 versus {fmt_mins(b['typical'])} in 2024. "
+                        f"{fmt_mins(a['median'])} in 2025 versus {fmt_mins(b['median'])} in 2024. "
                         f"The difference was weather, not demand — treat the two years as separate "
                         f"scenarios rather than averaging them.",
             })
