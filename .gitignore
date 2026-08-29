@@ -5,3 +5,5 @@ node_modules
 *.tsbuildinfo
 next-env.d.ts
 .env*
+data/_scratch/
+data/raw_entries.json
