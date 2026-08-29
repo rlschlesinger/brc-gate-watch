@@ -1,5 +1,5 @@
 "use client";
-import { Fragment, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import type { WaitSample } from "@/lib/types";
 import { fmtMins, waitColor } from "@/lib/format";
 
@@ -11,7 +11,19 @@ const clock = (d: Date, opts: Intl.DateTimeFormatOptions = { hour: "numeric" }) 
 
 export function LiveChart({ samples, hours }: { samples: WaitSample[]; hours: number }) {
   const [hover, setHover] = useState<number | null>(null);
-  const W = 720, H = 240, PL = 34, PR = 10, PT_ = 14, PB = 26;
+  const box = useRef<HTMLDivElement>(null);
+  // Draw in real CSS pixels rather than a fixed viewBox: a 720-unit chart squashed
+  // into a 360px phone renders its 9px axis labels at four and a half pixels.
+  const [w, setW] = useState(720);
+  useEffect(() => {
+    const el = box.current;
+    if (!el) return;
+    const ro = new ResizeObserver(([e]) => setW(Math.max(280, Math.round(e.contentRect.width))));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  const W = w, H = w < 460 ? 200 : 240, PL = 34, PR = 10, PT_ = 14, PB = 26;
 
   const view = useMemo(() => {
     const cut = Date.now() - hours * 3600_000;
@@ -19,7 +31,11 @@ export function LiveChart({ samples, hours }: { samples: WaitSample[]; hours: nu
   }, [samples, hours]);
 
   if (view.length < 2) {
-    return <p className="sub">Not enough recorded points yet for a {hours}-hour chart. It fills in as the dashboard polls.</p>;
+    return (
+      <div ref={box}>
+        <p className="sub">Not enough recorded points yet for a {hours}-hour chart. It fills in as the dashboard polls.</p>
+      </div>
+    );
   }
 
   const t0 = new Date(view[0].at).getTime();
@@ -39,16 +55,17 @@ export function LiveChart({ samples, hours }: { samples: WaitSample[]; hours: nu
 
   // one tick per ~3 hours, snapped to the hour
   const xTicks: number[] = [];
-  const tickStep = Math.max(1, Math.round(hours / 5)) * 3600_000;
+  const perTick = W < 460 ? 3 : 5;
+  const tickStep = Math.max(1, Math.round(hours / perTick)) * 3600_000;
   let tk = Math.ceil(t0 / tickStep) * tickStep;
   while (tk <= t1) { xTicks.push(tk); tk += tickStep; }
 
   const hv = hover === null ? null : view[hover];
 
   return (
-    <div className="chartbox">
+    <div className="chartbox" ref={box}>
       <svg
-        className="chart" viewBox={`0 0 ${W} ${H}`} role="img"
+        className="chart" viewBox={`0 0 ${W} ${H}`} width={W} height={H} role="img"
         aria-label={`Gravel to Gate travel time over the last ${hours} hours`}
         onMouseLeave={() => setHover(null)}
       >
@@ -115,7 +132,8 @@ export function Heatmap({
 
   return (
     <>
-      <div className="hm" style={{ gridTemplateColumns: `34px repeat(${cols},1fr)` }}>
+      <div className="hmwrap">
+      <div className="hm" style={{ gridTemplateColumns: `30px repeat(${cols},minmax(0,1fr))` }}>
         <div />
         {Array.from({ length: cols }, (_, i) => {
           const h = i * bucket;
@@ -148,6 +166,7 @@ export function Heatmap({
             })}
           </Fragment>
         ))}
+      </div>
       </div>
       <div className="legend">
         <span>faster</span>

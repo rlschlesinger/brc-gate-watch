@@ -75,12 +75,14 @@ header.top{
 
 /* ------------------------------------------------------------------ chart */
 .chartbox{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
-svg.chart{display:block;width:100%;height:auto;touch-action:pan-y}
-.axis{font-family:var(--mono);font-size:9px;fill:var(--sand-faint)}
+svg.chart{display:block;width:100%;height:auto;max-width:100%;touch-action:pan-y}
+.axis{font-family:var(--mono);font-size:10px;fill:var(--sand-faint)}
 .gl{stroke:var(--line);stroke-width:1}
 
 /* ---------------------------------------------------------------- heatmap */
-.hm{display:grid;gap:3px;font-family:var(--mono);font-size:9.5px}
+.hmwrap{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.hm{display:grid;gap:3px;font-family:var(--mono);font-size:9.5px;min-width:300px}
+.hm > *{min-width:0}
 .hm .hcell{border-radius:3px;aspect-ratio:1;display:grid;place-items:center;font-size:8.5px;color:rgba(0,0,0,.62);font-weight:700}
 .hm .rowlab{display:grid;place-items:center;color:var(--sand-faint);font-size:9.5px}
 .legend{display:flex;align-items:center;gap:7px;margin-top:10px;font-family:var(--mono);font-size:9.5px;color:var(--sand-faint);flex-wrap:wrap}
