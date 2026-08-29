@@ -57,9 +57,18 @@ export default function WhenToLeave({ historical, now }: { historical: Historica
 
   if (windows.length === 0) return null;
 
+  const yearCount = Object.keys(historical.years).length;
+
+  // Only compare like with like: a window that just happens to lack a reading
+  // from the bad year would otherwise sort straight to the top.
+  const reachable = windows.filter((w) => w.start - DRIVE_TO_GRAVEL_MIN * 60_000 > now - 30 * 60_000);
+  const full = reachable.filter((w) => w.byYear.length === yearCount);
+  const pool = full.length >= 3 ? full : reachable;
+
   // Rank by the pessimistic case — you cannot pick which year you get.
-  const ranked = [...windows].sort((a, b) => a.high - b.high || a.low - b.low).slice(0, 4);
-  const worst = [...windows].sort((a, b) => b.high - a.high)[0];
+  const ranked = [...pool].sort((a, b) => a.high - b.high || a.low - b.low).slice(0, 4);
+  const worst = [...pool].sort((a, b) => b.high - a.high)[0];
+  const partial = pool !== full;
 
   return (
     <section className="card">
@@ -102,6 +111,9 @@ export default function WhenToLeave({ historical, now }: { historical: Historica
                 </div>
                 <div style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--sand-faint)", marginTop: 2 }}>
                   {w.byYear.map((b) => `${b.year}: ${fmtMins(b.typical)}`).join("  ·  ")}
+                  {w.byYear.length < yearCount && (
+                    <span style={{ color: "var(--warn)" }}> · only {w.byYear.length} of {yearCount} years</span>
+                  )}
                 </div>
               </div>
               <div style={{ textAlign: "right", flexShrink: 0 }}>
@@ -119,7 +131,12 @@ export default function WhenToLeave({ historical, now }: { historical: Historica
           Worst upcoming window on the same measure: <strong style={{ color: waitColor(worst.high) }}>
             {pt(worst.start, { weekday: "short" })} {pt(worst.start, { hour: "numeric" })}
           </strong>{" "}
-          — up to {fmtMins(worst.high)}. &ldquo;Leave Reno&rdquo; assumes about {Math.round(DRIVE_TO_GRAVEL_MIN / 60 * 10) / 10}h
+          — up to {fmtMins(worst.high)}.{" "}
+          {partial && (
+            <>Some windows below are scored on a single year because the other had no reading at that hour — those
+            are marked. </>
+          )}
+          &ldquo;Leave Reno&rdquo; assumes about {Math.round(DRIVE_TO_GRAVEL_MIN / 60 * 10) / 10}h
           to the gravel and does not include the queue itself. This is a historical prior, not a forecast — when the
           live number disagrees with it, believe the live number.
         </p>
