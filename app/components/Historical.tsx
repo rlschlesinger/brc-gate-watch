@@ -39,10 +39,20 @@ export default function HistoricalSection({
           {yearKeys.map((k) => (
             <button key={k} data-on={year === k ? "1" : "0"} onClick={() => setYear(k)}>{k}</button>
           ))}
-          <span style={{ width: 10 }} />
-          {(["arrival", "exodus"] as const).map((p) => (
-            <button key={p} data-on={phase === p ? "1" : "0"} onClick={() => setPhase(p)}>{p}</button>
-          ))}
+        </div>
+        <div className="tabs" style={{ marginTop: 0, marginBottom: 6 }}>
+          {(["arrival", "exodus"] as const).map((p) => {
+            const empty = (p === "arrival" ? y.arrival : y.exodus).days.length === 0;
+            return (
+              <button
+                key={p} data-on={phase === p ? "1" : "0"} onClick={() => setPhase(p)}
+                style={empty ? { opacity: 0.42 } : undefined}
+                title={empty ? `no ${p} readings recovered for ${year}` : undefined}
+              >
+                {p}{empty ? " ·" : ""}
+              </button>
+            );
+          })}
         </div>
 
         <p className="sub" style={{ marginTop: 0, marginBottom: 12 }}>
