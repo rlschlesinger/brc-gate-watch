@@ -1,17 +1,17 @@
 # @bmantraffic historical gate wait times — archive recovery
 
-Collected 2026-08-29T15:41:54Z. Machine-readable companion: `bmantraffic-archive.json`.
+Collected 2026-08-29T16:04:32Z. Machine-readable companion: `bmantraffic-archive.json`.
 
-**685 samples**, every one carrying a real source URL and a verifiable timestamp.
+**746 samples**, every one carrying a real source URL and a verifiable timestamp.
 Nothing here is estimated, interpolated, or reconstructed from memory.
 
 ## Coverage
 
 | Year | Samples | Individual posts | Hourly buckets | Arrival rows | Local date span          | Max arrival (min) |
 |------|---------|------------------|----------------|--------------|--------------------------|-------------------|
-| 2018 | 134     | 134              | 0              | 110          | 2018-08-23 to 2018-09-03 | 510               |
-| 2019 | 44      | 44               | 0              | 5            | 2019-08-25 to 2019-09-03 | 0                 |
-| 2022 | 9       | 9                | 0              | 0            | 2022-09-04 to 2022-09-05 | -                 |
+| 2018 | 138     | 138              | 0              | 113          | 2018-08-23 to 2018-09-04 | 510               |
+| 2019 | 47      | 47               | 0              | 6            | 2019-08-25 to 2019-09-03 | 0                 |
+| 2022 | 63      | 63               | 0              | 35           | 2022-08-28 to 2022-09-06 | 360               |
 | 2023 | 1       | 1                | 0              | 1            | 2023-09-01 to 2023-09-01 | 45                |
 | 2024 | 313     | 202              | 111            | 191          | 2024-08-22 to 2024-09-03 | 220               |
 | 2025 | 184     | 9                | 175            | 117          | 2025-08-21 to 2025-09-02 | 500               |
@@ -47,41 +47,41 @@ you can see which cells are actually supported.
 
 | Year | Thu-3      | Fri-2      | Sat-1      | Sun (open) | Mon+1      | Tue+2      | Wed+3     | Thu+4     |
 |------|------------|------------|------------|------------|------------|------------|-----------|-----------|
-| 2018 | 120 (n=10) | 180 (n=22) | 180 (n=22) | 240 (n=15) | 120 (n=18) | 30 (n=18)  | -         | -         |
-| 2019 | -          | -          | -          | -          | -          | -          | -         | -         |
-| 2022 | -          | -          | -          | -          | -          | -          | -         | -         |
+| 2018 | 120 (n=10) | 180 (n=22) | 180 (n=23) | 240 (n=15) | 120 (n=18) | 30 (n=18)  | -         | -         |
+| 2019 | -          | -          | -          | 0 (n=1)    | -          | -          | -         | -         |
+| 2022 | -          | -          | -          | 0 (n=1)    | 70 (n=4)   | 15 (n=14)  | 18 (n=6)  | 0 (n=3)   |
 | 2023 | -          | -          | -          | -          | -          | -          | -         | -         |
 | 2024 | 60 (n=15)  | 180 (n=24) | 42 (n=18)  | 60 (n=31)  | 55 (n=20)  | 60 (n=18)  | 20 (n=13) | 20 (n=26) |
 | 2025 | 80 (n=1)   | 128 (n=14) | 130 (n=17) | 390 (n=14) | 420 (n=14) | 285 (n=16) | 60 (n=5)  | 55 (n=17) |
 
 ## Median arrival wait by hour of day (opening Sunday + Monday, all years pooled)
 
-| Playa hour | Median arrival wait (min) | n |
-|------------|---------------------------|---|
-| 00:00      | 150                       | 5 |
-| 01:00      | 100                       | 5 |
-| 02:00      | 255                       | 2 |
-| 03:00      | 145                       | 4 |
-| 04:00      | 240                       | 3 |
-| 05:00      | 240                       | 3 |
-| 06:00      | 88                        | 4 |
-| 07:00      | 138                       | 4 |
-| 08:00      | 35                        | 5 |
-| 09:00      | 120                       | 8 |
-| 10:00      | 180                       | 6 |
-| 11:00      | 60                        | 9 |
-| 12:00      | 60                        | 5 |
-| 13:00      | 60                        | 7 |
-| 14:00      | 270                       | 4 |
-| 15:00      | 60                        | 7 |
-| 16:00      | 60                        | 5 |
-| 17:00      | 60                        | 4 |
-| 18:00      | 70                        | 5 |
-| 19:00      | 120                       | 3 |
-| 20:00      | 60                        | 3 |
-| 21:00      | 208                       | 6 |
-| 22:00      | 45                        | 4 |
-| 23:00      | 450                       | 1 |
+| Playa hour | Median arrival wait (min) | n  |
+|------------|---------------------------|----|
+| 00:00      | 150                       | 5  |
+| 01:00      | 100                       | 5  |
+| 02:00      | 255                       | 2  |
+| 03:00      | 145                       | 4  |
+| 04:00      | 240                       | 3  |
+| 05:00      | 240                       | 3  |
+| 06:00      | 88                        | 4  |
+| 07:00      | 160                       | 5  |
+| 08:00      | 78                        | 6  |
+| 09:00      | 120                       | 8  |
+| 10:00      | 180                       | 6  |
+| 11:00      | 60                        | 10 |
+| 12:00      | 60                        | 5  |
+| 13:00      | 60                        | 7  |
+| 14:00      | 120                       | 5  |
+| 15:00      | 60                        | 8  |
+| 16:00      | 52                        | 6  |
+| 17:00      | 60                        | 4  |
+| 18:00      | 70                        | 5  |
+| 19:00      | 120                       | 3  |
+| 20:00      | 60                        | 3  |
+| 21:00      | 208                       | 6  |
+| 22:00      | 45                        | 4  |
+| 23:00      | 450                       | 1  |
 
 ## What could not be recovered
 
@@ -106,15 +106,17 @@ RECOVERED / NOT RECOVERED, year by year (target years were 2025, 2024, 2023, 202
   opened; and the 2023 profile snapshots are post-login-wall SPA shells with no tweet text. The
   2023 mud-year arrival series does not appear to survive in any public archive reachable from here.
 
-2022 - PARTIAL. Wayback holds 303 archived @bmantraffic tweet permalinks for 2022;
-  38 were fetched and parsed within the time available, yielding 9 samples
-  (0 arrival, 8 exodus). This year is fetch-limited, NOT extraction-limited:
-  the method works (2022 pages carry the post text in the HTML <title>), so re-running the fetch
-  loop over _scratch/tweet_list.txt will keep adding 2022 samples without any code change.
-  Archived 2022 permalinks cover Aug 24 - Sep 6, so both arrival and exodus are reachable.
+2022 - PARTIAL, and limited by what @bmantraffic actually posted. Wayback holds 303
+  archived 2022 permalinks and 302 were fetched, but only 63 carry a stated
+  duration (35 arrival, 13 exodus, 15 direction not stated in the post).
+  The shortfall is NOT an extraction failure: the 60 archived posts from Aug 24-27 2022 are advisory
+  ("read your Survival Guide", "don't speed on 447", whiteout warnings) and contain no numbers,
+  because in 2022 the account did not begin hourly travel-time reporting until the gate opened on
+  Aug 28. Recovered arrival coverage therefore starts Aug 28 and runs to Sep 6. A further 32 of the
+  2022 captures are Twitter login walls with no text at all.
 
 2019 - PARTIAL, and skewed by what was archived. Wayback holds 116 archived 2019 permalinks;
-  107 fetched, giving 44 samples (5 arrival, 32 exodus).
+  116 fetched, giving 47 samples (6 arrival, 39 exodus).
   The archive itself is the constraint: only 8 of those 116 permalinks fall in the Aug 21-28 arrival
   window, the rest being Aug 31 - Sep 3 exodus. So 2019 exodus is reasonably covered and 2019
   ARRIVAL is close to a hole - not because extraction failed, but because those posts were never
@@ -123,7 +125,7 @@ RECOVERED / NOT RECOVERED, year by year (target years were 2025, 2024, 2023, 202
 
 2018 - BONUS, not requested. Wayback archived more individual @bmantraffic permalinks for 2018
   (255) than for any other year, and 2018 pages are legacy server-rendered Twitter HTML, so
-  extraction is clean: 134 samples, 110 of them arrival, covering Aug 23-28
+  extraction is clean: 138 samples, 113 of them arrival, covering Aug 23-28
   arrival plus Sep 2-3 exodus. Included and labelled.
 
 CROSS-YEAR CAVEAT: @bmantraffic changed its wording repeatedly - "wait time at Gate", "travel time

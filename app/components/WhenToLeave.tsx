@@ -27,7 +27,7 @@ function labelFor(ms: number): string {
 const pt = (ms: number, o: Intl.DateTimeFormatOptions) =>
   new Intl.DateTimeFormat("en-US", { timeZone: PT, ...o }).format(new Date(ms));
 
-export default function WhenToLeave({ historical, now }: { historical: Historical; now: number }) {
+export default function WhenToLeave({ historical, now, num }: { historical: Historical; now: number; num: string }) {
   const windows = useMemo<Window[]>(() => {
     if (historical.status !== "ok") return [];
     const allow = historical.rankingYears?.length
@@ -75,74 +75,53 @@ export default function WhenToLeave({ historical, now }: { historical: Historica
   const partial = pool !== full;
 
   return (
-    <section className="card">
-      <h2>
-        When to roll in
-        <span className="tag">next 72h</span>
-      </h2>
-      <p className="sub" style={{ marginTop: 0, marginBottom: 12 }}>
+    <section className="sec">
+      <div className="sec-hd">
+        <div className="l">
+          <span className="sec-num">{num}</span>
+          <h2>When to arrive</h2>
+        </div>
+      </div>
+      <p className="lede">
         Every upcoming two-hour arrival window, scored by what that same day-and-hour actually cost in{" "}
         {rankedYears.join(", ")}. Ranked by the <em>worst</em> of those years, because you do not get to pick which
         one you are in. Thinner years in the record below are left out of the scoring.
       </p>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+      <div className="rows">
         {ranked.map((w, i) => {
           const leave = w.start - DRIVE_TO_GRAVEL_MIN * 60_000;
           const past = leave < now;
           return (
-            <div
-              key={w.start}
-              style={{
-                display: "flex", alignItems: "center", gap: 10, padding: "10px 11px",
-                borderRadius: 11, border: `1px solid ${i === 0 ? "rgba(255,158,61,.4)" : "var(--line)"}`,
-                background: i === 0 ? "rgba(255,158,61,.08)" : "rgba(255,255,255,.022)",
-              }}
-            >
-              <span
-                style={{
-                  width: 26, height: 26, borderRadius: 8, flexShrink: 0, display: "grid", placeItems: "center",
-                  background: waitColor(w.high), color: "rgba(0,0,0,.7)",
-                  fontFamily: "var(--mono)", fontSize: 11, fontWeight: 700,
-                }}
-              >
-                {i + 1}
-              </span>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: 14, fontWeight: 700 }}>
-                  arrive {pt(w.start, { weekday: "short" })} {pt(w.start, { hour: "numeric" })}–
+            <div className="rank" key={w.start}>
+              <span className="n" style={{ background: waitColor(w.high) }}>{i + 1}</span>
+              <div className="m">
+                <b>
+                  {pt(w.start, { weekday: "short" })} {pt(w.start, { hour: "numeric" })}–
                   {pt(w.start + BUCKET * 3600_000, { hour: "numeric" })}
-                </div>
-                <div style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--sand-faint)", marginTop: 2 }}>
-                  {w.byYear.map((b) => `${b.year}: ${fmtMins(b.typical)}`).join("  ·  ")}
-                  {w.byYear.length < yearCount && (
-                    <span style={{ color: "var(--warn)" }}> · only {w.byYear.length} of {yearCount} years</span>
-                  )}
-                </div>
+                </b>
+                <span>
+                  {w.byYear.map((b) => `${b.year} ${fmtMins(b.typical)}`).join("  ·  ")}
+                  {w.byYear.length < yearCount && `  ·  ${w.byYear.length}/${yearCount} YEARS ONLY`}
+                </span>
               </div>
-              <div style={{ textAlign: "right", flexShrink: 0 }}>
-                <div style={{ fontFamily: "var(--mono)", fontSize: 11, color: past ? "var(--sand-faint)" : "var(--sand-dim)" }}>
-                  {past ? "leave now" : `leave Reno ${pt(leave, { weekday: "short", hour: "numeric", minute: "2-digit" })}`}
-                </div>
-              </div>
+              <span className="r">{past ? "leave now" : `leave reno ${pt(leave, { weekday: "short", hour: "numeric", minute: "2-digit" })}`}</span>
             </div>
           );
         })}
       </div>
 
       {worst && (
-        <p className="sub">
-          Worst upcoming window on the same measure: <strong style={{ color: waitColor(worst.high) }}>
+        <p className="note">
+          Worst upcoming window on the same measure:{" "}
+          <strong style={{ color: waitColor(worst.high) }}>
             {pt(worst.start, { weekday: "short" })} {pt(worst.start, { hour: "numeric" })}
           </strong>{" "}
           — up to {fmtMins(worst.high)}.{" "}
-          {partial && (
-            <>Some windows below are scored on a single year because the other had no reading at that hour — those
-            are marked. </>
-          )}
-          &ldquo;Leave Reno&rdquo; assumes about {Math.round(DRIVE_TO_GRAVEL_MIN / 60 * 10) / 10}h
-          to the gravel and does not include the queue itself. This is a historical prior, not a forecast — when the
-          live number disagrees with it, believe the live number.
+          {partial && "Some windows are scored on fewer years because the others had no reading at that hour — those are marked. "}
+          &ldquo;Leave Reno&rdquo; assumes about {Math.round((DRIVE_TO_GRAVEL_MIN / 60) * 10) / 10}h to the gravel and
+          does not include the queue itself. This is a historical prior, not a forecast — when the live number
+          disagrees with it, believe the live number.
         </p>
       )}
     </section>

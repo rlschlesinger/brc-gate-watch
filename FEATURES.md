@@ -12,7 +12,7 @@ Verify the data side with `curl -s https://brc-gate-watch.vercel.app/api/live | 
 
 | # | Feature | Payload field | Renders as | State when quiet |
 |---|---|---|---|---|
-| 1 | Current Gravel→Gate time | `current` | hero number + trend | "—" and an explanation |
+| 1 | Current Gravel→Gate time | `current` | hero numeral + trend + verdict word | "—:—" and a "connecting" chip |
 | 2 | Recorded wait chart, 6/12/24/72h | `toc` + archive | SVG line chart, touch scrub | "not enough points yet" |
 | 3 | Half-hourly crossing table | `toc` (source `toc`) | folded into the chart | — |
 | 4 | @bmantraffic hourly posts | `traffic` | feed with parsed minutes | card hidden if empty |
@@ -64,6 +64,24 @@ Verify the data side with `curl -s https://brc-gate-watch.vercel.app/api/live | 
 | 39 | "modelled, not a dust sensor" note | there is no air-quality station near Gerlach |
 | 40 | Empty sources hide their card rather than showing zeros | |
 
+## Design system (Claude Design import, `Gate Watch.dc.html`)
+
+| # | Feature | Notes |
+|---|---|---|
+| 51 | Paper/ink palette, light **and** dark | `--paper`/`--ink`/`--rule` + 5-step ramp `--r1..--r5` |
+| 52 | AUTO / DAY / NIGHT toggle | persists to `localStorage`, applied pre-paint so a night driver is never flashed white |
+| 53 | Dust grain overlay | CSS only, `multiply` on paper, `screen` on night, 30%/22% |
+| 54 | Monumental hero numeral | `clamp(96px,38vw,272px)`, H:MM, tabular |
+| 55 | One-word verdict + ramp swatch | moving / normal / slow / heavy / brutal |
+| 56 | Numbered stencil section headers | `01`–`14`, 2px ink rule |
+| 57 | Bar chart for the live window | replaces the line chart; buckets to ≤~24 bars, NOW outlined |
+| 58 | **GRID / CLOCK** heatmap toggle | clock = BRC's own geometry, hours around the dial, days as rings, live needle |
+| 59 | Ramp legend | thresholds 45m / 90m / 2.5h / 4h |
+| 60 | Segmented controls, 40px min height | hard-edged, inverted when active |
+
+Colour is load-bearing here: the ramp is the only saturated thing on the page,
+so it must keep meaning wait time and nothing else.
+
 ## Platform
 
 | # | Feature | Check |
@@ -72,7 +90,7 @@ Verify the data side with `curl -s https://brc-gate-watch.vercel.app/api/live | 
 | 42 | Camera refresh 90s | separate cache-bust key |
 | 43 | Mobile-first, 390px, 44px targets | **verified** at 390px: chart draws in real pixels, heatmap uses `minmax(0,1fr)` inside a scroll container |
 | 44 | `prefers-reduced-motion` honoured | `globals.css` |
-| 45 | OG / Twitter card | `/opengraph-image` returns a PNG |
+| 45 | OG / Twitter card | `/opengraph-image` returns a PNG, paper/ink, marked SAMPLE FIGURE |
 | 46 | Favicon | `/icon.svg` |
 | 47 | PWA manifest, add-to-home-screen | `/manifest.webmanifest` |
 | 48 | Publicly reachable, no deploy protection | `curl -o /dev/null -w '%{http_code}'` → 200 |
@@ -91,3 +109,9 @@ Verify the data side with `curl -s https://brc-gate-watch.vercel.app/api/live | 
   works, and it burns its whole rate-limit budget in one request — hence exactly
   one call per poll.
 - **Pooled multi-year averages.** See #37.
+
+
+## Carried in the API but not displayed
+
+- `serverTime` — the upstream feed's own clock. Kept in `/api/live` for
+  diagnostics; staleness on the page is measured from `fetchedAt` instead.

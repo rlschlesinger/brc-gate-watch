@@ -1,182 +1,228 @@
 "use client";
-import { Fragment, useEffect, useMemo, useRef, useState } from "react";
+
+import { Fragment, useMemo, useState } from "react";
 import type { WaitSample } from "@/lib/types";
-import { fmtMins, waitColor } from "@/lib/format";
+import { RAMP, RAMP_LABELS, fmtMins, waitColor } from "@/lib/format";
 
 const PT = "America/Los_Angeles";
-const clock = (d: Date, opts: Intl.DateTimeFormatOptions = { hour: "numeric" }) =>
-  new Intl.DateTimeFormat("en-US", { timeZone: PT, ...opts }).format(d);
+const pt = (d: Date | number | string, o: Intl.DateTimeFormatOptions) =>
+  new Intl.DateTimeFormat("en-US", { timeZone: PT, ...o }).format(new Date(d));
 
-/* ------------------------------------------------------------- live chart */
+/* -------------------------------------------------------------- live bars */
 
+/**
+ * Bars rather than a line: at a glance from a driver's seat, height and colour
+ * read faster than a trend line, and they survive being 340px wide.
+ */
 export function LiveChart({ samples, hours }: { samples: WaitSample[]; hours: number }) {
-  const [hover, setHover] = useState<number | null>(null);
-  const box = useRef<HTMLDivElement>(null);
-  // Draw in real CSS pixels rather than a fixed viewBox: a 720-unit chart squashed
-  // into a 360px phone renders its 9px axis labels at four and a half pixels.
-  const [w, setW] = useState(720);
-  useEffect(() => {
-    const el = box.current;
-    if (!el) return;
-    const ro = new ResizeObserver(([e]) => setW(Math.max(280, Math.round(e.contentRect.width))));
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
-
-  const W = w, H = w < 460 ? 200 : 240, PL = 34, PR = 10, PT_ = 14, PB = 26;
-
-  const view = useMemo(() => {
+  const cols = useMemo(() => {
     const cut = Date.now() - hours * 3600_000;
-    return samples.filter((s) => new Date(s.at).getTime() >= cut);
+    const rows = samples.filter((s) => new Date(s.at).getTime() >= cut);
+    if (rows.length === 0) return [];
+
+    // Aim for at most 24 bars so a 72h view stays legible on a phone.
+    const target = hours <= 6 ? 30 : hours <= 12 ? 45 : hours <= 24 ? 60 : 180;
+    const bucketMs = target * 60_000;
+    const groups = new Map<number, number[]>();
+    for (const s of rows) {
+      const k = Math.floor(new Date(s.at).getTime() / bucketMs) * bucketMs;
+      (groups.get(k) ?? groups.set(k, []).get(k)!).push(s.minutes);
+    }
+    return [...groups.entries()]
+      .sort((a, b) => a[0] - b[0])
+      .map(([t, vals]) => ({
+        t,
+        minutes: Math.round(vals.reduce((a, b) => a + b, 0) / vals.length),
+      }));
   }, [samples, hours]);
 
-  if (view.length < 2) {
-    return (
-      <div ref={box}>
-        <p className="sub">Not enough recorded points yet for a {hours}-hour chart. It fills in as the dashboard polls.</p>
-      </div>
-    );
+  if (cols.length < 2) {
+    return <p className="lede">Not enough recorded readings yet for a {hours}-hour view. It fills in as the dashboard polls.</p>;
   }
 
-  const t0 = new Date(view[0].at).getTime();
-  const t1 = new Date(view[view.length - 1].at).getTime();
-  const span = Math.max(t1 - t0, 60_000);
-  const maxY = Math.max(60, Math.ceil((Math.max(...view.map((s) => s.minutes)) * 1.15) / 30) * 30);
-
-  const x = (iso: string) => PL + ((new Date(iso).getTime() - t0) / span) * (W - PL - PR);
-  const y = (m: number) => PT_ + (1 - m / maxY) * (H - PT_ - PB);
-
-  const line = view.map((s, i) => `${i ? "L" : "M"}${x(s.at).toFixed(1)},${y(s.minutes).toFixed(1)}`).join(" ");
-  const area = `${line} L${x(view[view.length - 1].at).toFixed(1)},${H - PB} L${x(view[0].at).toFixed(1)},${H - PB} Z`;
-
-  const yTicks: number[] = [];
-  const step = maxY > 480 ? 120 : maxY > 240 ? 60 : 30;
-  for (let v = 0; v <= maxY; v += step) yTicks.push(v);
-
-  // one tick per ~3 hours, snapped to the hour
-  const xTicks: number[] = [];
-  const perTick = W < 460 ? 3 : 5;
-  const tickStep = Math.max(1, Math.round(hours / perTick)) * 3600_000;
-  let tk = Math.ceil(t0 / tickStep) * tickStep;
-  while (tk <= t1) { xTicks.push(tk); tk += tickStep; }
-
-  const hv = hover === null ? null : view[hover];
+  const max = Math.max(...cols.map((c) => c.minutes), 30);
+  const lastIdx = cols.length - 1;
+  const step = Math.max(1, Math.ceil(cols.length / 7));
 
   return (
-    <div className="chartbox" ref={box}>
-      <svg
-        className="chart" viewBox={`0 0 ${W} ${H}`} width={W} height={H} role="img"
-        aria-label={`Gravel to Gate travel time over the last ${hours} hours`}
-        onMouseLeave={() => setHover(null)}
-      >
-        <defs>
-          <linearGradient id="ag" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#ff9e3d" stopOpacity=".34" />
-            <stop offset="100%" stopColor="#ff9e3d" stopOpacity="0" />
-          </linearGradient>
-        </defs>
-
-        {yTicks.map((v) => (
-          <g key={v}>
-            <line className="gl" x1={PL} x2={W - PR} y1={y(v)} y2={y(v)} />
-            <text className="axis" x={PL - 6} y={y(v) + 3} textAnchor="end">{v >= 60 ? `${v / 60}h` : `${v}m`}</text>
-          </g>
+    <>
+      <div className="bars">
+        {cols.map((c, i) => (
+          <div className={`col${i === lastIdx ? " now" : ""}`} key={c.t}>
+            <div
+              className="b"
+              style={{
+                height: `${Math.max(3, (c.minutes / max) * 100)}%`,
+                background: waitColor(c.minutes),
+                outline: i === lastIdx ? "2px solid var(--ink)" : undefined,
+                outlineOffset: i === lastIdx ? 2 : undefined,
+              }}
+              title={`${pt(c.t, { weekday: "short", hour: "numeric", minute: "2-digit" })} — ${fmtMins(c.minutes)}`}
+            />
+            <span className="t">
+              {i === lastIdx ? "NOW" : i % step === 0 ? pt(c.t, { hour: "numeric" }).replace(/\s?(AM|PM)/i, "") : ""}
+            </span>
+          </div>
         ))}
-        {xTicks.map((t) => (
-          <text key={t} className="axis" x={x(new Date(t).toISOString())} y={H - 9} textAnchor="middle">
-            {clock(new Date(t))}
-          </text>
-        ))}
+      </div>
+      <p className="note">
+        Peak in this window {fmtMins(max)} · latest {fmtMins(cols[lastIdx].minutes)} at{" "}
+        {pt(cols[lastIdx].t, { hour: "numeric", minute: "2-digit" })}. Each bar averages the official readings in
+        its slot.
+      </p>
+    </>
+  );
+}
 
-        <path d={area} fill="url(#ag)" />
-        <path d={line} fill="none" stroke="#ff9e3d" strokeWidth="2.2" strokeLinejoin="round" strokeLinecap="round" />
+/* ------------------------------------------------------------------ legend */
 
-        {view.map((s, i) => (
-          <circle key={s.at + i} cx={x(s.at)} cy={y(s.minutes)} r={hover === i ? 5 : 2.6}
-            fill={waitColor(s.minutes)} stroke="#0d0a07" strokeWidth={hover === i ? 1.6 : 0.8} />
-        ))}
-
-        {/* generous invisible hit targets so this works with a thumb */}
-        {view.map((s, i) => (
-          <rect key={`h${i}`} x={x(s.at) - (W - PL - PR) / view.length / 2} y={0}
-            width={(W - PL - PR) / view.length} height={H} fill="transparent"
-            onMouseEnter={() => setHover(i)} onTouchStart={() => setHover(i)} />
-        ))}
-
-        {hv && (
-          <g>
-            <line className="gl" x1={x(hv.at)} x2={x(hv.at)} y1={PT_} y2={H - PB} stroke="#ff9e3d" strokeOpacity=".45" />
-            <text className="axis" x={Math.min(Math.max(x(hv.at), PL + 42), W - PR - 42)} y={PT_ + 9}
-              textAnchor="middle" fill="#e8dcc6" style={{ fontSize: 11, fontWeight: 700 }}>
-              {fmtMins(hv.minutes)} · {clock(new Date(hv.at), { hour: "numeric", minute: "2-digit" })}
-            </text>
-          </g>
-        )}
-      </svg>
+export function Legend() {
+  return (
+    <div className="legend">
+      {RAMP.map((c, i) => (
+        <span key={c}>
+          <i style={{ background: c }} />
+          {RAMP_LABELS[i].toUpperCase()}
+        </span>
+      ))}
     </div>
   );
 }
 
-/* ---------------------------------------------------------------- heatmap */
+/* ----------------------------------------------------------------- heatmap */
 
-export type HeatCell = { day: string; hour: number; typical: number | null; n: number };
+export type HeatCell = { day: string; hour: number; typical: number; n: number };
 
-export function Heatmap({
+/** Grid view: one horizontal band per day, 24 hours across. */
+export function HeatGrid({
   days, cells, bucket = 2, nowDay, nowHour,
 }: {
   days: string[]; cells: HeatCell[]; bucket?: number; nowDay?: string; nowHour?: number;
 }) {
   const cols = Math.ceil(24 / bucket);
-  const key = (d: string, h: number) => `${d}|${h}`;
-  const map = new Map(cells.map((c) => [key(c.day, Math.floor(c.hour / bucket) * bucket), c]));
+  const cellW = 22;
+  const labW = 52;
+  const map = new Map(cells.map((c) => [`${c.day}|${Math.floor(c.hour / bucket) * bucket}`, c]));
 
   return (
-    <>
-      <div className="hmwrap">
-      <div className="hm" style={{ gridTemplateColumns: `30px repeat(${cols},minmax(0,1fr))` }}>
-        <div />
-        {Array.from({ length: cols }, (_, i) => {
-          const h = i * bucket;
-          return (
-            <div key={h} className="rowlab" style={{ aspectRatio: "auto", fontSize: 8.5 }}>
-              {h % 6 === 0 ? (h === 0 ? "12a" : h === 12 ? "12p" : h > 12 ? `${h - 12}p` : `${h}a`) : ""}
-            </div>
-          );
-        })}
+    <div className="hmscroll">
+      <div style={{ minWidth: labW + cols * cellW }}>
+        <div className="hmhdr" style={{ gridTemplateColumns: `${labW}px repeat(${cols},${cellW}px)` }}>
+          <span />
+          {Array.from({ length: cols }, (_, i) => {
+            const h = i * bucket;
+            return <span key={h}>{h % 6 === 0 ? (h === 0 ? "12a" : h === 12 ? "12p" : h > 12 ? `${h - 12}p` : `${h}a`) : ""}</span>;
+          })}
+        </div>
         {days.map((d) => (
-          <Fragment key={d}>
-            <div className="rowlab">{d}</div>
+          <div className="hmrow" key={d} style={{ gridTemplateColumns: `${labW}px repeat(${cols},${cellW}px)` }}>
+            <span className="lab">{d}</span>
             {Array.from({ length: cols }, (_, i) => {
               const h = i * bucket;
-              const c = map.get(key(d, h));
+              const c = map.get(`${d}|${h}`);
               const isNow = nowDay === d && nowHour !== undefined && Math.floor(nowHour / bucket) * bucket === h;
               return (
-                <div
-                  key={`${d}${h}`} className="hcell"
-                  title={`${d} ${h}:00 — ${c?.typical != null ? fmtMins(c.typical) : "no data"}${c?.n ? ` (${c.n} reports)` : ""}`}
+                <span
+                  key={h}
+                  title={`${d} ${h}:00 — ${c ? `${fmtMins(c.typical)} (${c.n} readings)` : "no data"}`}
                   style={{
-                    background: waitColor(c?.typical ?? null),
-                    outline: isNow ? "2px solid #fff" : undefined,
-                    outlineOffset: isNow ? "-2px" : undefined,
+                    height: 30,
+                    background: c ? waitColor(c.typical) : "var(--paper2)",
+                    borderRight: "2px solid var(--paper)",
+                    outline: isNow ? "2px solid var(--ink)" : undefined,
+                    outlineOffset: isNow ? -2 : undefined,
+                    display: "block",
                   }}
-                >
-                  {c?.typical != null && c.typical >= 60 ? Math.round(c.typical / 60) : ""}
-                </div>
+                />
               );
             })}
-          </Fragment>
+          </div>
         ))}
       </div>
+    </div>
+  );
+}
+
+/**
+ * Clock view: Black Rock City is a clock face, so hours run around the dial and
+ * days stack as concentric rings — outermost first.
+ */
+export function HeatClock({
+  days, cells, nowHour,
+}: {
+  days: string[]; cells: HeatCell[]; nowHour?: number;
+}) {
+  const rings = days.slice(0, 6);
+  if (rings.length === 0) return null;
+  const bandWidth = 40 / Math.max(rings.length, 1);
+  const byDay = new Map<string, Map<number, HeatCell>>();
+  for (const c of cells) {
+    if (!byDay.has(c.day)) byDay.set(c.day, new Map());
+    byDay.get(c.day)!.set(c.hour, c);
+  }
+
+  return (
+    <div className="clockwrap">
+      <div className="clock">
+        {rings.map((d, i) => {
+          const hours = byDay.get(d);
+          const stops: string[] = [];
+          for (let h = 0; h < 24; h++) {
+            const c = hours?.get(Math.floor(h / 2) * 2);
+            stops.push(`${c ? waitColor(c.typical) : "var(--paper2)"} ${h * 15}deg ${(h + 1) * 15}deg`);
+          }
+          return (
+            <div
+              key={d}
+              style={{
+                position: "absolute",
+                inset: `${i * bandWidth}%`,
+                borderRadius: "50%",
+                border: i === 0 ? "2px solid var(--ink)" : "3px solid var(--paper)",
+                backgroundImage: `conic-gradient(from -7.5deg, ${stops.join(", ")})`,
+              }}
+            />
+          );
+        })}
+        <div
+          style={{
+            position: "absolute", inset: 0, borderRadius: "50%", pointerEvents: "none",
+            backgroundImage:
+              "repeating-conic-gradient(from -7.5deg, var(--paper) 0deg 1.2deg, rgba(0,0,0,0) 1.2deg 15deg)",
+          }}
+        />
+        {nowHour !== undefined && (
+          <div
+            style={{
+              position: "absolute", left: "50%", bottom: "50%", width: 2, height: "50%",
+              background: "var(--ink)", transformOrigin: "bottom center",
+              transform: `translateX(-50%) rotate(${nowHour * 15}deg)`, pointerEvents: "none",
+            }}
+          />
+        )}
+        <div className="hub">
+          <em>HOURS</em>
+          <b>24</b>
+        </div>
+        <span className="tick" style={{ top: -4, left: "50%", transform: "translate(-50%,-100%)" }}>12a</span>
+        <span className="tick" style={{ bottom: -4, left: "50%", transform: "translate(-50%,100%)" }}>12p</span>
+        <span className="tick" style={{ right: -6, top: "50%", transform: "translate(100%,-50%)" }}>6a</span>
+        <span className="tick" style={{ left: -6, top: "50%", transform: "translate(-100%,-50%)" }}>6p</span>
       </div>
-      <div className="legend">
-        <span>faster</span>
-        {[0, 45, 90, 180, 300, 480, 720].map((v) => (
-          <span key={v} className="swatch" style={{ background: waitColor(v) }} title={fmtMins(v)} />
+      <div className="ringkey">
+        <span style={{ fontFamily: "var(--mono)", fontSize: 10, fontWeight: 700, letterSpacing: ".12em", color: "var(--ink2)" }}>
+          RINGS, OUTSIDE IN
+        </span>
+        {rings.map((d, i) => (
+          <b key={d} style={{ color: i === 0 ? "var(--ink)" : "var(--ink2)" }}>{d}</b>
         ))}
-        <span>slower</span>
-        <span style={{ marginLeft: "auto" }}>numbers = hours</span>
+        {days.length > rings.length && (
+          <span style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink2)" }}>
+            +{days.length - rings.length} MORE — SEE GRID
+          </span>
+        )}
       </div>
-    </>
+    </div>
   );
 }
 
@@ -189,27 +235,23 @@ export function DayBars({
 }) {
   const max = Math.max(60, ...rows.map((r) => r.peak ?? r.typical ?? 0));
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 9 }}>
+    <div className="rows">
       {rows.map((r) => (
-        <div key={r.label}>
-          <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
-            <span style={{ fontFamily: "var(--mono)", fontSize: 11, minWidth: 74, color: "var(--sand-dim)" }}>{r.label}</span>
-            <span style={{ fontSize: 13, fontWeight: 700 }}>{fmtMins(r.typical)}</span>
-            {r.peak != null && r.peak !== r.typical && (
-              <span style={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--sand-faint)" }}>peak {fmtMins(r.peak)}</span>
-            )}
+        <div className="row" key={r.label}>
+          <div className="row-top">
+            <span className="lab">{r.label}</span>
+            <span className="val">{fmtMins(r.typical)}</span>
+            {r.peak != null && r.peak !== r.typical && <span className="sub">peak {fmtMins(r.peak)}</span>}
           </div>
-          <div style={{ height: 9, borderRadius: 5, background: "rgba(255,255,255,.05)", position: "relative", overflow: "hidden" }}>
-            {r.peak != null && (
-              <div style={{ position: "absolute", inset: 0, width: `${(r.peak / max) * 100}%`, background: waitColor(r.peak), opacity: 0.32 }} />
-            )}
-            {r.typical != null && (
-              <div style={{ position: "absolute", inset: 0, width: `${(r.typical / max) * 100}%`, background: waitColor(r.typical), borderRadius: 5 }} />
-            )}
+          <div className="track">
+            {r.peak != null && <i style={{ width: `${(r.peak / max) * 100}%`, background: waitColor(r.peak), opacity: 0.34 }} />}
+            {r.typical != null && <i style={{ width: `${(r.typical / max) * 100}%`, background: waitColor(r.typical) }} />}
           </div>
-          {r.note && <div style={{ fontSize: 11.5, color: "var(--sand-faint)", marginTop: 3 }}>{r.note}</div>}
+          {r.note && <div className="sub" style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--ink2)", marginTop: 6, textTransform: "uppercase", letterSpacing: ".06em" }}>{r.note}</div>}
         </div>
       ))}
     </div>
   );
 }
+
+export { Fragment };

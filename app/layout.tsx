@@ -17,7 +17,10 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0d0a07",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#EDE4D3" },
+    { media: "(prefers-color-scheme: dark)", color: "#16130F" },
+  ],
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
@@ -30,11 +33,22 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link
-          href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap"
           rel="stylesheet"
         />
       </head>
-      <body>{children}</body>
+      <body>
+        {/* Set the stored theme before first paint so a night driver never gets flashed white. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{var t=localStorage.getItem('gatewatch:theme');" +
+              "if(t==='light'||t==='dark')document.documentElement.setAttribute('data-gw-theme',t);}catch(e){}",
+          }}
+        />
+        <div className="grain" aria-hidden="true" />
+        {children}
+      </body>
     </html>
   );
 }
