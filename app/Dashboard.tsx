@@ -1,7 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { DayBars, Heatmap, LiveChart } from "./components/Charts";
+import { LiveChart } from "./components/Charts";
+import HistoricalSection from "./components/Historical";
+import WhenToLeave from "./components/WhenToLeave";
 import { ago, fmtMins, waitColor } from "@/lib/format";
 import type { Historical } from "@/lib/historical";
 import type { LivePayload, WaitSample } from "@/lib/types";
@@ -129,7 +131,6 @@ export default function Dashboard({ historical }: { historical: Historical }) {
 
   const verdict = buildVerdict({ current, trend, countdown, stats, live, now });
 
-  const nowDay = pt(now, { weekday: "short" });
   const nowHour = Number(pt(now, { hour: "numeric", hour12: false }).replace(/\D/g, "")) % 24;
 
   const alerts = live?.nws?.alerts ?? [];
@@ -223,56 +224,9 @@ export default function Dashboard({ historical }: { historical: Historical }) {
           </p>
         </section>
 
-        {/* --------------------------------------------------- historical */}
-        <section className="card">
-          <h2>
-            How bad is it usually
-            {historical.coverageYears.length > 0 && (
-              <span className="tag">{historical.coverageYears.join(" · ")}</span>
-            )}
-          </h2>
-          {historical.status === "pending" || historical.cells.length === 0 ? (
-            <p className="sub">
-              Historical dataset is still being assembled from past-year reports. Once it lands, this becomes a
-              day × hour map of what the wait actually was.
-            </p>
-          ) : (
-            <>
-              <Heatmap days={historical.days} cells={historical.cells} bucket={2} nowDay={nowDay} nowHour={nowHour} />
-              <p className="sub">
-                Typical reported Gravel-to-Gate time by day of the event and hour of arrival, pooled across{" "}
-                {historical.coverageYears.join(", ")}. Blank cells mean nobody reported. The white outline is right now.
-              </p>
-            </>
-          )}
-        </section>
+        <WhenToLeave historical={historical} now={now} />
 
-        {historical.byDay.length > 0 && (
-          <section className="card">
-            <h2>Wait by arrival day</h2>
-            <DayBars rows={historical.byDay} />
-          </section>
-        )}
-
-        {historical.insights.length > 0 && (
-          <section className="card">
-            <h2>What past years say</h2>
-            <div className="feed">
-              {historical.insights.map((h, i) => (
-                <div className="item" key={i}>
-                  <div className="body">
-                    {h.text}
-                    {h.sourceUrl && (
-                      <div className="meta">
-                        <a href={h.sourceUrl} target="_blank" rel="noreferrer">source ↗</a>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
+        <HistoricalSection historical={historical} nowDay={histDayLabel(now)} nowHour={nowHour} />
 
         {/* --------------------------------------------------- conditions */}
         {live?.conditions && (
@@ -457,6 +411,13 @@ export default function Dashboard({ historical }: { historical: Historical }) {
       </main>
     </>
   );
+}
+
+/** Where today sits relative to gate open, in the same labels the history uses. */
+function histDayLabel(now: number): string {
+  const off = Math.floor((now - GATE_OPEN) / 86_400_000 + 1) - 1;
+  const wd = new Intl.DateTimeFormat("en-US", { timeZone: PT, weekday: "short" }).format(new Date(now));
+  return off === 0 ? "SUN open" : `${wd} ${off >= 0 ? "+" : ""}${off}`;
 }
 
 /* ------------------------------------------------------------------ verdict */

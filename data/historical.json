@@ -1,10 +1,1487 @@
 {
-  "status": "pending",
-  "generatedAt": null,
-  "coverageYears": [],
-  "days": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-  "cells": [],
-  "byDay": [],
-  "insights": [],
-  "sources": []
+ "status": "ok",
+ "generatedAt": "2026-08-29T15:23:21Z",
+ "coverageYears": [
+  2024,
+  2025
+ ],
+ "defaultYear": "2025",
+ "days": [
+  "Thu -3",
+  "Fri -2",
+  "Sat -1",
+  "SUN open",
+  "Mon +1",
+  "Tue +2",
+  "Wed +3",
+  "Thu +4"
+ ],
+ "years": {
+  "2025": {
+   "label": "2025",
+   "note": "Windstorm on the Saturday closed the Gate; the backlog held 6\u20138h for a full day.",
+   "arrival": {
+    "days": [
+     {
+      "label": "Fri -2",
+      "offset": -2,
+      "date": "2025-08-22",
+      "typical": 128,
+      "peak": 300,
+      "floor": 25,
+      "n": 12,
+      "note": "12 readings \u00b7 quietest around 6am (25m)"
+     },
+     {
+      "label": "Sat -1",
+      "offset": -1,
+      "date": "2025-08-23",
+      "typical": 120,
+      "peak": 320,
+      "floor": 35,
+      "n": 21,
+      "note": "21 readings \u00b7 quietest around 10am (35m)"
+     },
+     {
+      "label": "SUN open",
+      "offset": 0,
+      "date": "2025-08-24",
+      "typical": 400,
+      "peak": 480,
+      "floor": 180,
+      "n": 17,
+      "note": "17 readings \u00b7 quietest around 4am (240m)"
+     },
+     {
+      "label": "Mon +1",
+      "offset": 1,
+      "date": "2025-08-25",
+      "typical": 420,
+      "peak": 520,
+      "floor": 360,
+      "n": 15,
+      "note": "15 readings \u00b7 quietest around 6pm (360m)"
+     },
+     {
+      "label": "Tue +2",
+      "offset": 2,
+      "date": "2025-08-26",
+      "typical": 200,
+      "peak": 450,
+      "floor": 120,
+      "n": 18,
+      "note": "18 readings \u00b7 quietest around 10am (120m)"
+     },
+     {
+      "label": "Wed +3",
+      "offset": 3,
+      "date": "2025-08-27",
+      "typical": 60,
+      "peak": 350,
+      "floor": 20,
+      "n": 5,
+      "note": "5 readings \u00b7 quietest around 12pm (20m)"
+     },
+     {
+      "label": "Thu +4",
+      "offset": 4,
+      "date": "2025-08-28",
+      "typical": 55,
+      "peak": 480,
+      "floor": 15,
+      "n": 19,
+      "note": "19 readings \u00b7 quietest around 8am (20m)"
+     }
+    ],
+    "cells": [
+     {
+      "day": "Fri -2",
+      "hour": 6,
+      "typical": 25,
+      "n": 1
+     },
+     {
+      "day": "Fri -2",
+      "hour": 8,
+      "typical": 50,
+      "n": 2
+     },
+     {
+      "day": "Fri -2",
+      "hour": 10,
+      "typical": 92,
+      "n": 2
+     },
+     {
+      "day": "Fri -2",
+      "hour": 12,
+      "typical": 128,
+      "n": 2
+     },
+     {
+      "day": "Fri -2",
+      "hour": 14,
+      "typical": 165,
+      "n": 1
+     },
+     {
+      "day": "Fri -2",
+      "hour": 16,
+      "typical": 180,
+      "n": 1
+     },
+     {
+      "day": "Fri -2",
+      "hour": 20,
+      "typical": 300,
+      "n": 1
+     },
+     {
+      "day": "Fri -2",
+      "hour": 22,
+      "typical": 275,
+      "n": 2
+     },
+     {
+      "day": "Sat -1",
+      "hour": 0,
+      "typical": 260,
+      "n": 2
+     },
+     {
+      "day": "Sat -1",
+      "hour": 2,
+      "typical": 300,
+      "n": 1
+     },
+     {
+      "day": "Sat -1",
+      "hour": 4,
+      "typical": 240,
+      "n": 2
+     },
+     {
+      "day": "Sat -1",
+      "hour": 6,
+      "typical": 106,
+      "n": 2
+     },
+     {
+      "day": "Sat -1",
+      "hour": 8,
+      "typical": 40,
+      "n": 1
+     },
+     {
+      "day": "Sat -1",
+      "hour": 10,
+      "typical": 35,
+      "n": 1
+     },
+     {
+      "day": "Sat -1",
+      "hour": 12,
+      "typical": 68,
+      "n": 2
+     },
+     {
+      "day": "Sat -1",
+      "hour": 14,
+      "typical": 120,
+      "n": 1
+     },
+     {
+      "day": "Sat -1",
+      "hour": 16,
+      "typical": 105,
+      "n": 2
+     },
+     {
+      "day": "Sat -1",
+      "hour": 20,
+      "typical": 240,
+      "n": 1
+     },
+     {
+      "day": "Sat -1",
+      "hour": 22,
+      "typical": 305,
+      "n": 2
+     },
+     {
+      "day": "SUN open",
+      "hour": 0,
+      "typical": 390,
+      "n": 2
+     },
+     {
+      "day": "SUN open",
+      "hour": 2,
+      "typical": 270,
+      "n": 2
+     },
+     {
+      "day": "SUN open",
+      "hour": 4,
+      "typical": 240,
+      "n": 2
+     },
+     {
+      "day": "SUN open",
+      "hour": 6,
+      "typical": 315,
+      "n": 1
+     },
+     {
+      "day": "SUN open",
+      "hour": 8,
+      "typical": 400,
+      "n": 1
+     },
+     {
+      "day": "SUN open",
+      "hour": 10,
+      "typical": 405,
+      "n": 2
+     },
+     {
+      "day": "SUN open",
+      "hour": 12,
+      "typical": 420,
+      "n": 1
+     },
+     {
+      "day": "SUN open",
+      "hour": 14,
+      "typical": 480,
+      "n": 1
+     },
+     {
+      "day": "SUN open",
+      "hour": 16,
+      "typical": 480,
+      "n": 2
+     },
+     {
+      "day": "Mon +1",
+      "hour": 8,
+      "typical": 480,
+      "n": 1
+     },
+     {
+      "day": "Mon +1",
+      "hour": 10,
+      "typical": 460,
+      "n": 2
+     },
+     {
+      "day": "Mon +1",
+      "hour": 12,
+      "typical": 420,
+      "n": 1
+     },
+     {
+      "day": "Mon +1",
+      "hour": 14,
+      "typical": 450,
+      "n": 2
+     },
+     {
+      "day": "Mon +1",
+      "hour": 16,
+      "typical": 450,
+      "n": 1
+     },
+     {
+      "day": "Mon +1",
+      "hour": 18,
+      "typical": 360,
+      "n": 2
+     },
+     {
+      "day": "Mon +1",
+      "hour": 20,
+      "typical": 405,
+      "n": 2
+     },
+     {
+      "day": "Mon +1",
+      "hour": 22,
+      "typical": 420,
+      "n": 1
+     },
+     {
+      "day": "Tue +2",
+      "hour": 0,
+      "typical": 375,
+      "n": 2
+     },
+     {
+      "day": "Tue +2",
+      "hour": 2,
+      "typical": 420,
+      "n": 2
+     },
+     {
+      "day": "Tue +2",
+      "hour": 4,
+      "typical": 415,
+      "n": 2
+     },
+     {
+      "day": "Tue +2",
+      "hour": 6,
+      "typical": 450,
+      "n": 1
+     },
+     {
+      "day": "Tue +2",
+      "hour": 8,
+      "typical": 200,
+      "n": 2
+     },
+     {
+      "day": "Tue +2",
+      "hour": 10,
+      "typical": 120,
+      "n": 1
+     },
+     {
+      "day": "Tue +2",
+      "hour": 12,
+      "typical": 120,
+      "n": 2
+     },
+     {
+      "day": "Tue +2",
+      "hour": 14,
+      "typical": 152,
+      "n": 1
+     },
+     {
+      "day": "Tue +2",
+      "hour": 16,
+      "typical": 188,
+      "n": 1
+     },
+     {
+      "day": "Tue +2",
+      "hour": 18,
+      "typical": 240,
+      "n": 1
+     },
+     {
+      "day": "Wed +3",
+      "hour": 12,
+      "typical": 20,
+      "n": 1
+     },
+     {
+      "day": "Wed +3",
+      "hour": 14,
+      "typical": 45,
+      "n": 2
+     },
+     {
+      "day": "Wed +3",
+      "hour": 22,
+      "typical": 325,
+      "n": 2
+     },
+     {
+      "day": "Thu +4",
+      "hour": 0,
+      "typical": 390,
+      "n": 2
+     },
+     {
+      "day": "Thu +4",
+      "hour": 2,
+      "typical": 450,
+      "n": 2
+     },
+     {
+      "day": "Thu +4",
+      "hour": 4,
+      "typical": 440,
+      "n": 1
+     },
+     {
+      "day": "Thu +4",
+      "hour": 6,
+      "typical": 220,
+      "n": 1
+     },
+     {
+      "day": "Thu +4",
+      "hour": 8,
+      "typical": 20,
+      "n": 1
+     },
+     {
+      "day": "Thu +4",
+      "hour": 10,
+      "typical": 30,
+      "n": 2
+     },
+     {
+      "day": "Thu +4",
+      "hour": 12,
+      "typical": 45,
+      "n": 1
+     },
+     {
+      "day": "Thu +4",
+      "hour": 14,
+      "typical": 55,
+      "n": 1
+     },
+     {
+      "day": "Thu +4",
+      "hour": 16,
+      "typical": 90,
+      "n": 1
+     },
+     {
+      "day": "Thu +4",
+      "hour": 20,
+      "typical": 38,
+      "n": 2
+     },
+     {
+      "day": "Thu +4",
+      "hour": 22,
+      "typical": 20,
+      "n": 2
+     }
+    ]
+   },
+   "exodus": {
+    "days": [
+     {
+      "label": "Sat +6",
+      "offset": 6,
+      "date": "2025-08-30",
+      "typical": 30,
+      "peak": 30,
+      "floor": 30,
+      "n": 3,
+      "note": "3 readings \u00b7 quietest around 10pm (30m)"
+     },
+     {
+      "label": "Sun +7",
+      "offset": 7,
+      "date": "2025-08-31",
+      "typical": 70,
+      "peak": 320,
+      "floor": 30,
+      "n": 37,
+      "note": "37 readings \u00b7 quietest around 2am (30m)"
+     },
+     {
+      "label": "Mon +8",
+      "offset": 8,
+      "date": "2025-09-01",
+      "typical": 255,
+      "peak": 360,
+      "floor": 105,
+      "n": 38,
+      "note": "38 readings \u00b7 quietest around 8am (150m)"
+     },
+     {
+      "label": "Tue +9",
+      "offset": 9,
+      "date": "2025-09-02",
+      "typical": 30,
+      "peak": 240,
+      "floor": 30,
+      "n": 21,
+      "note": "21 readings \u00b7 quietest around 2am (30m)"
+     }
+    ],
+    "cells": [
+     {
+      "day": "Sat +6",
+      "hour": 22,
+      "typical": 30,
+      "n": 2
+     },
+     {
+      "day": "Sun +7",
+      "hour": 0,
+      "typical": 45,
+      "n": 2
+     },
+     {
+      "day": "Sun +7",
+      "hour": 2,
+      "typical": 30,
+      "n": 2
+     },
+     {
+      "day": "Sun +7",
+      "hour": 4,
+      "typical": 30,
+      "n": 2
+     },
+     {
+      "day": "Sun +7",
+      "hour": 6,
+      "typical": 30,
+      "n": 2
+     },
+     {
+      "day": "Sun +7",
+      "hour": 8,
+      "typical": 38,
+      "n": 2
+     },
+     {
+      "day": "Sun +7",
+      "hour": 10,
+      "typical": 54,
+      "n": 2
+     },
+     {
+      "day": "Sun +7",
+      "hour": 12,
+      "typical": 95,
+      "n": 2
+     },
+     {
+      "day": "Sun +7",
+      "hour": 14,
+      "typical": 150,
+      "n": 2
+     },
+     {
+      "day": "Sun +7",
+      "hour": 16,
+      "typical": 190,
+      "n": 2
+     },
+     {
+      "day": "Sun +7",
+      "hour": 18,
+      "typical": 240,
+      "n": 2
+     },
+     {
+      "day": "Sun +7",
+      "hour": 20,
+      "typical": 270,
+      "n": 2
+     },
+     {
+      "day": "Sun +7",
+      "hour": 22,
+      "typical": 295,
+      "n": 2
+     },
+     {
+      "day": "Mon +8",
+      "hour": 0,
+      "typical": 278,
+      "n": 2
+     },
+     {
+      "day": "Mon +8",
+      "hour": 2,
+      "typical": 272,
+      "n": 2
+     },
+     {
+      "day": "Mon +8",
+      "hour": 4,
+      "typical": 315,
+      "n": 2
+     },
+     {
+      "day": "Mon +8",
+      "hour": 6,
+      "typical": 185,
+      "n": 2
+     },
+     {
+      "day": "Mon +8",
+      "hour": 8,
+      "typical": 150,
+      "n": 2
+     },
+     {
+      "day": "Mon +8",
+      "hour": 10,
+      "typical": 192,
+      "n": 2
+     },
+     {
+      "day": "Mon +8",
+      "hour": 12,
+      "typical": 210,
+      "n": 2
+     },
+     {
+      "day": "Mon +8",
+      "hour": 14,
+      "typical": 203,
+      "n": 2
+     },
+     {
+      "day": "Mon +8",
+      "hour": 16,
+      "typical": 210,
+      "n": 2
+     },
+     {
+      "day": "Mon +8",
+      "hour": 18,
+      "typical": 270,
+      "n": 2
+     },
+     {
+      "day": "Mon +8",
+      "hour": 20,
+      "typical": 330,
+      "n": 2
+     },
+     {
+      "day": "Mon +8",
+      "hour": 22,
+      "typical": 360,
+      "n": 1
+     },
+     {
+      "day": "Tue +9",
+      "hour": 0,
+      "typical": 135,
+      "n": 2
+     },
+     {
+      "day": "Tue +9",
+      "hour": 2,
+      "typical": 30,
+      "n": 2
+     },
+     {
+      "day": "Tue +9",
+      "hour": 4,
+      "typical": 30,
+      "n": 2
+     },
+     {
+      "day": "Tue +9",
+      "hour": 6,
+      "typical": 30,
+      "n": 1
+     },
+     {
+      "day": "Tue +9",
+      "hour": 8,
+      "typical": 30,
+      "n": 1
+     },
+     {
+      "day": "Tue +9",
+      "hour": 10,
+      "typical": 30,
+      "n": 2
+     },
+     {
+      "day": "Tue +9",
+      "hour": 12,
+      "typical": 30,
+      "n": 1
+     },
+     {
+      "day": "Tue +9",
+      "hour": 14,
+      "typical": 30,
+      "n": 2
+     },
+     {
+      "day": "Tue +9",
+      "hour": 16,
+      "typical": 30,
+      "n": 2
+     },
+     {
+      "day": "Tue +9",
+      "hour": 18,
+      "typical": 30,
+      "n": 1
+     }
+    ]
+   }
+  },
+  "2024": {
+   "label": "2024",
+   "note": "Rain closed the Gate for ~12h on the Friday, but once open it stayed under ~1h.",
+   "arrival": {
+    "days": [
+     {
+      "label": "Thu -3",
+      "offset": -3,
+      "date": "2024-08-22",
+      "typical": 35,
+      "peak": 90,
+      "floor": 20,
+      "n": 6,
+      "note": "6 readings \u00b7 quietest around 10am (20m)"
+     },
+     {
+      "label": "Fri -2",
+      "offset": -2,
+      "date": "2024-08-23",
+      "typical": 185,
+      "peak": 220,
+      "floor": 60,
+      "n": 18,
+      "note": "18 readings \u00b7 quietest around 8am (60m)"
+     },
+     {
+      "label": "Sat -1",
+      "offset": -1,
+      "date": "2024-08-24",
+      "typical": 45,
+      "peak": 180,
+      "floor": 20,
+      "n": 12,
+      "note": "12 readings \u00b7 quietest around 4am (20m)"
+     },
+     {
+      "label": "SUN open",
+      "offset": 0,
+      "date": "2024-08-25",
+      "typical": 60,
+      "peak": 70,
+      "floor": 25,
+      "n": 26,
+      "note": "26 readings \u00b7 quietest around 6am (30m)"
+     },
+     {
+      "label": "Mon +1",
+      "offset": 1,
+      "date": "2024-08-26",
+      "typical": 62,
+      "peak": 75,
+      "floor": 45,
+      "n": 4,
+      "note": "4 readings \u00b7 quietest around 4pm (45m)"
+     },
+     {
+      "label": "Tue +2",
+      "offset": 2,
+      "date": "2024-08-27",
+      "typical": 90,
+      "peak": 120,
+      "floor": 30,
+      "n": 7,
+      "note": "7 readings \u00b7 quietest around 10pm (38m)"
+     },
+     {
+      "label": "Wed +3",
+      "offset": 3,
+      "date": "2024-08-28",
+      "typical": 20,
+      "peak": 40,
+      "floor": 20,
+      "n": 3,
+      "note": "3 readings \u00b7 quietest around 2am (20m)"
+     },
+     {
+      "label": "Thu +4",
+      "offset": 4,
+      "date": "2024-08-29",
+      "typical": 20,
+      "peak": 60,
+      "floor": 20,
+      "n": 14,
+      "note": "14 readings \u00b7 quietest around 8am (20m)"
+     }
+    ],
+    "cells": [
+     {
+      "day": "Thu -3",
+      "hour": 10,
+      "typical": 20,
+      "n": 2
+     },
+     {
+      "day": "Thu -3",
+      "hour": 12,
+      "typical": 35,
+      "n": 2
+     },
+     {
+      "day": "Thu -3",
+      "hour": 14,
+      "typical": 80,
+      "n": 2
+     },
+     {
+      "day": "Fri -2",
+      "hour": 6,
+      "typical": 120,
+      "n": 2
+     },
+     {
+      "day": "Fri -2",
+      "hour": 8,
+      "typical": 60,
+      "n": 1
+     },
+     {
+      "day": "Fri -2",
+      "hour": 10,
+      "typical": 120,
+      "n": 1
+     },
+     {
+      "day": "Fri -2",
+      "hour": 12,
+      "typical": 155,
+      "n": 1
+     },
+     {
+      "day": "Fri -2",
+      "hour": 14,
+      "typical": 158,
+      "n": 2
+     },
+     {
+      "day": "Fri -2",
+      "hour": 16,
+      "typical": 185,
+      "n": 2
+     },
+     {
+      "day": "Fri -2",
+      "hour": 18,
+      "typical": 180,
+      "n": 1
+     },
+     {
+      "day": "Fri -2",
+      "hour": 20,
+      "typical": 210,
+      "n": 2
+     },
+     {
+      "day": "Fri -2",
+      "hour": 22,
+      "typical": 215,
+      "n": 2
+     },
+     {
+      "day": "Sat -1",
+      "hour": 0,
+      "typical": 165,
+      "n": 2
+     },
+     {
+      "day": "Sat -1",
+      "hour": 2,
+      "typical": 45,
+      "n": 1
+     },
+     {
+      "day": "Sat -1",
+      "hour": 4,
+      "typical": 20,
+      "n": 1
+     },
+     {
+      "day": "Sat -1",
+      "hour": 16,
+      "typical": 20,
+      "n": 1
+     },
+     {
+      "day": "SUN open",
+      "hour": 6,
+      "typical": 30,
+      "n": 2
+     },
+     {
+      "day": "SUN open",
+      "hour": 8,
+      "typical": 48,
+      "n": 2
+     },
+     {
+      "day": "SUN open",
+      "hour": 10,
+      "typical": 60,
+      "n": 2
+     },
+     {
+      "day": "SUN open",
+      "hour": 12,
+      "typical": 59,
+      "n": 2
+     },
+     {
+      "day": "SUN open",
+      "hour": 14,
+      "typical": 60,
+      "n": 1
+     },
+     {
+      "day": "SUN open",
+      "hour": 18,
+      "typical": 65,
+      "n": 1
+     },
+     {
+      "day": "SUN open",
+      "hour": 20,
+      "typical": 55,
+      "n": 2
+     },
+     {
+      "day": "SUN open",
+      "hour": 22,
+      "typical": 30,
+      "n": 1
+     },
+     {
+      "day": "Mon +1",
+      "hour": 0,
+      "typical": 70,
+      "n": 2
+     },
+     {
+      "day": "Mon +1",
+      "hour": 14,
+      "typical": 60,
+      "n": 1
+     },
+     {
+      "day": "Mon +1",
+      "hour": 16,
+      "typical": 45,
+      "n": 1
+     },
+     {
+      "day": "Tue +2",
+      "hour": 16,
+      "typical": 90,
+      "n": 1
+     },
+     {
+      "day": "Tue +2",
+      "hour": 18,
+      "typical": 120,
+      "n": 2
+     },
+     {
+      "day": "Tue +2",
+      "hour": 20,
+      "typical": 75,
+      "n": 2
+     },
+     {
+      "day": "Tue +2",
+      "hour": 22,
+      "typical": 38,
+      "n": 1
+     },
+     {
+      "day": "Wed +3",
+      "hour": 0,
+      "typical": 40,
+      "n": 1
+     },
+     {
+      "day": "Wed +3",
+      "hour": 2,
+      "typical": 20,
+      "n": 1
+     },
+     {
+      "day": "Wed +3",
+      "hour": 4,
+      "typical": 20,
+      "n": 1
+     },
+     {
+      "day": "Thu +4",
+      "hour": 8,
+      "typical": 20,
+      "n": 1
+     },
+     {
+      "day": "Thu +4",
+      "hour": 10,
+      "typical": 20,
+      "n": 2
+     },
+     {
+      "day": "Thu +4",
+      "hour": 12,
+      "typical": 20,
+      "n": 2
+     },
+     {
+      "day": "Thu +4",
+      "hour": 14,
+      "typical": 20,
+      "n": 1
+     },
+     {
+      "day": "Thu +4",
+      "hour": 16,
+      "typical": 20,
+      "n": 1
+     },
+     {
+      "day": "Thu +4",
+      "hour": 18,
+      "typical": 45,
+      "n": 2
+     },
+     {
+      "day": "Thu +4",
+      "hour": 20,
+      "typical": 30,
+      "n": 2
+     },
+     {
+      "day": "Thu +4",
+      "hour": 22,
+      "typical": 30,
+      "n": 2
+     }
+    ]
+   },
+   "exodus": {
+    "days": [
+     {
+      "label": "Sun +7",
+      "offset": 7,
+      "date": "2024-09-01",
+      "typical": 150,
+      "peak": 360,
+      "floor": 80,
+      "n": 19,
+      "note": "19 readings \u00b7 quietest around 2pm (80m)"
+     },
+     {
+      "label": "Mon +8",
+      "offset": 8,
+      "date": "2024-09-02",
+      "typical": 90,
+      "peak": 150,
+      "floor": 60,
+      "n": 14,
+      "note": "14 readings \u00b7 quietest around 4am (60m)"
+     },
+     {
+      "label": "Tue +9",
+      "offset": 9,
+      "date": "2024-09-03",
+      "typical": 60,
+      "peak": 60,
+      "floor": 20,
+      "n": 25,
+      "note": "25 readings \u00b7 quietest around 4pm (20m)"
+     }
+    ],
+    "cells": [
+     {
+      "day": "Sun +7",
+      "hour": 14,
+      "typical": 80,
+      "n": 1
+     },
+     {
+      "day": "Sun +7",
+      "hour": 16,
+      "typical": 86,
+      "n": 2
+     },
+     {
+      "day": "Sun +7",
+      "hour": 18,
+      "typical": 125,
+      "n": 2
+     },
+     {
+      "day": "Sun +7",
+      "hour": 20,
+      "typical": 240,
+      "n": 2
+     },
+     {
+      "day": "Sun +7",
+      "hour": 22,
+      "typical": 188,
+      "n": 2
+     },
+     {
+      "day": "Mon +8",
+      "hour": 0,
+      "typical": 120,
+      "n": 2
+     },
+     {
+      "day": "Mon +8",
+      "hour": 2,
+      "typical": 92,
+      "n": 2
+     },
+     {
+      "day": "Mon +8",
+      "hour": 4,
+      "typical": 60,
+      "n": 2
+     },
+     {
+      "day": "Mon +8",
+      "hour": 6,
+      "typical": 85,
+      "n": 2
+     },
+     {
+      "day": "Mon +8",
+      "hour": 8,
+      "typical": 100,
+      "n": 1
+     },
+     {
+      "day": "Tue +9",
+      "hour": 4,
+      "typical": 60,
+      "n": 1
+     },
+     {
+      "day": "Tue +9",
+      "hour": 6,
+      "typical": 60,
+      "n": 2
+     },
+     {
+      "day": "Tue +9",
+      "hour": 8,
+      "typical": 60,
+      "n": 2
+     },
+     {
+      "day": "Tue +9",
+      "hour": 10,
+      "typical": 60,
+      "n": 2
+     },
+     {
+      "day": "Tue +9",
+      "hour": 12,
+      "typical": 60,
+      "n": 2
+     },
+     {
+      "day": "Tue +9",
+      "hour": 14,
+      "typical": 40,
+      "n": 2
+     },
+     {
+      "day": "Tue +9",
+      "hour": 16,
+      "typical": 20,
+      "n": 2
+     },
+     {
+      "day": "Tue +9",
+      "hour": 18,
+      "typical": 20,
+      "n": 1
+     }
+    ]
+   }
+  }
+ },
+ "insights": [
+  {
+   "text": "Opening Sunday is the least predictable day of the week: a typical 6h 40m in 2025 versus 1h in 2024. The difference was weather, not demand \u2014 treat the two years as separate scenarios rather than averaging them."
+  },
+  {
+   "text": "Wait times during the first 36 hours after opening can be five or more hours.",
+   "sourceUrl": "https://burningman.org/black-rock-city/preparation/getting-there-and-back/gate/",
+   "years": [
+    2023,
+    2024,
+    2025,
+    2026
+   ]
+  },
+  {
+   "text": "If you can arrive Tuesday or later, you will find your wait time to be much shorter.",
+   "sourceUrl": "https://burningman.org/black-rock-city/preparation/getting-there-and-back/gate/",
+   "years": [
+    2023,
+    2024,
+    2025,
+    2026
+   ]
+  },
+  {
+   "text": "On all days but opening night, the shortest lines are usually in the early morning hours, generally from 3 a.m.-10 a.m.",
+   "sourceUrl": "https://burningman.org/black-rock-city/preparation/getting-there-and-back/gate/",
+   "years": [
+    2023,
+    2024,
+    2025,
+    2026
+   ]
+  },
+  {
+   "text": "Heavy traffic and longer wait times indeed happen Saturday, Sunday and Monday.",
+   "sourceUrl": "https://journal.burningman.org/2016/05/black-rock-city/building-brc/getting-to-and-from-black-rock-city-takes-time-and-patience/",
+   "years": [
+    2016
+   ]
+  },
+  {
+   "text": "Gate Road travel times during Exodus peaked at six to nine hours just to get from Greeters to the pavement of County Road 34.",
+   "sourceUrl": "https://survival.burningman.org/transportation-traffic/exodus/",
+   "years": [
+    2024,
+    2025
+   ]
+  },
+  {
+   "text": "Allow up to 12 hours to reach the Reno airport during peak egress (Exodus).",
+   "sourceUrl": "https://survival.burningman.org/transportation-traffic/exodus/",
+   "years": [
+    2026
+   ]
+  },
+  {
+   "text": "Best exodus windows: try to leave very early in the morning, in the later evening, or on Tuesday morning before noon.",
+   "sourceUrl": "https://survival.burningman.org/transportation-traffic/exodus/",
+   "years": [
+    2026
+   ]
+  },
+  {
+   "text": "For 2026 Burning Man is aiming for a maximum ingress travel time - from the gravel to the Gate - of four hours whenever possible.",
+   "sourceUrl": "https://journal.burningman.org/2026/03/black-rock-city/participate-in-brc/gate-improvements-2026/",
+   "years": [
+    2026
+   ]
+  },
+  {
+   "text": "Waits of 6+ hours once you get to the playa are common at peak arrival hours (Sunday mid-day through Tuesday night, with ebbs and flows within that time period).",
+   "sourceUrl": "https://www.burn.life/getting-to-burning-man-entry.html",
+   "years": [
+    2017,
+    2018,
+    2019,
+    2022
+   ]
+  },
+  {
+   "text": "If you arrive from about Wednesday onwards, you're not going to have any real problems with entry lines.",
+   "sourceUrl": "https://www.burn.life/getting-to-burning-man-entry.html",
+   "years": [
+    2017,
+    2018,
+    2019,
+    2022
+   ]
+  },
+  {
+   "text": "Even if you have Early Entry passes you can still expect to wait half an hour to a couple hours at gate.",
+   "sourceUrl": "https://www.burn.life/getting-to-burning-man-entry.html",
+   "years": [
+    2017,
+    2018,
+    2019,
+    2022
+   ]
+  },
+  {
+   "text": "In 2014, some people waited upwards of 18 hours in line after the gate was closed due to rain.",
+   "sourceUrl": "https://www.burn.life/getting-to-burning-man-entry.html",
+   "years": [
+    2014
+   ]
+  },
+  {
+   "text": "Arriving before the 12:01am opening is actively punished: early arrivals without credentials are staged behind on-time drivers. In 2019, arriving at 11:49pm meant ~5 hours; arriving one minute later meant 25 minutes.",
+   "sourceUrl": "https://www.trippingly.net/directions-to-burning-man-portland",
+   "years": [
+    2019
+   ]
+  },
+  {
+   "text": "2023 was the mud-year anomaly: the driving ban meant Exodus, not ingress, was the extreme. Exodus ran 5h10m -> 6h -> 8h through Monday Sept 4 evening and was still ~7.5h Tuesday morning.",
+   "sourceUrl": "https://www.newsweek.com/burning-man-update-exodus-wait-time-travel-information-road-reopens-1824485",
+   "years": [
+    2023
+   ]
+  },
+  {
+   "text": "2024 opening was weather-shifted: the gate closed for rain and reopened around 3:15pm Saturday, roughly 12 hours after closure, with ~20,000 people waiting.",
+   "sourceUrl": "https://www.sfchronicle.com/california/article/burning-man-rain-19721005.php",
+   "years": [
+    2024
+   ]
+  },
+  {
+   "text": "2025 was the worst modern ingress year in this dataset: an Aug 23 windstorm (45-50+ mph gusts) closed the gate, and the backlog produced 6-9 hour official waits through Monday Aug 25 and into Tuesday Aug 26.",
+   "sourceUrl": "https://www.2news.com/news/local/burning-man-gates-reopen-6-9-hour-wait-to-enter-black-rock-city/article_aa2210c0-84d7-4a32-916f-9fcd45959cc6.html",
+   "years": [
+    2025
+   ]
+  },
+  {
+   "text": "Reported wait is self-defeating: when the reported Gate Road travel time is low, many folks choose that moment to leave, which can increase those times faster than they can be reported.",
+   "sourceUrl": "https://survival.burningman.org/transportation-traffic/exodus/",
+   "years": [
+    2026
+   ]
+  },
+  {
+   "text": "More than one third of Burners arrive on the first Monday of the event; a quarter still arrive after Monday, peaking again on the Thursday.",
+   "sourceUrl": "https://blackrockcitycensus.wordpress.com/2014/05/01/burning-man-related-variables-how-do-people-arrive/",
+   "years": [
+    2013,
+    2014
+   ]
+  },
+  {
+   "text": "Early Arrival (work access) holders are ~12% of the population and enter before 6pm Sunday; in 2018 the Early-Arrival-only line still ran 2-4 hours on the Thursday/Friday/Saturday before opening.",
+   "sourceUrl": "https://x.com/bmantraffic/status/1033005050665291776",
+   "years": [
+    2018
+   ]
+  },
+  {
+   "text": "Averaged over 2014-2017, ingress wait peaks roughly 18-26 hours after the gate opens (Sunday evening into Monday pre-dawn) at about 5 hours, is near zero in the first 2-4 hours after opening, and shows a second smaller ~2.5h bump around 58-62 hours after opening.",
+   "sourceUrl": "https://www.trippingly.net/burning-man-transportation-logistics",
+   "years": [
+    2014,
+    2015,
+    2016,
+    2017
+   ]
+  },
+  {
+   "text": "Averaged over 2014-2017, Exodus wait is low until the Temple burn (~24h after Man burn), then rises to a 3-4 hour plateau across the following 12-36 hours.",
+   "sourceUrl": "https://www.trippingly.net/burning-man-transportation-logistics",
+   "years": [
+    2014,
+    2015,
+    2016,
+    2017
+   ]
+  },
+  {
+   "text": "2024 ingress collapsed to a flat 20-minute floor from event Wednesday onward and never exceeded 30 minutes from Thursday to Burn Saturday.",
+   "sourceUrl": "https://www.bmantravel.com/data.js",
+   "years": [
+    2024
+   ]
+  },
+  {
+   "text": "2025 ingress stayed at or above 6 hours from Opening Sunday 09:00 through Tuesday 06:00 almost continuously, peaking at 8h40m on Monday 10:00.",
+   "sourceUrl": "https://www.bmantravel.com/data.js",
+   "years": [
+    2025
+   ]
+  },
+  {
+   "text": "Exodus peaks Sunday night (Temple Sunday ~20:00-23:00) and again Monday evening; the Tuesday-after window collapses to ~25-45 minutes.",
+   "sourceUrl": "https://www.bmantravel.com/data.js",
+   "years": [
+    2024,
+    2025
+   ]
+  },
+  {
+   "text": "BMIR 94.5 / GARS 95.1 FM broadcast hourly Gate Road wait reports at the top of the hour; @bmantraffic posts the same numbers, which is why hourly series exist at all.",
+   "sourceUrl": "https://survival.burningman.org/transportation-traffic/arriving-at-brc/",
+   "years": [
+    2016,
+    2018,
+    2019,
+    2022,
+    2023,
+    2024,
+    2025
+   ]
+  }
+ ],
+ "sources": [
+  {
+   "title": "official",
+   "url": "https://x.com/bmantraffic/status/1032748588399517696",
+   "year": 2018
+  },
+  {
+   "title": "official",
+   "url": "https://x.com/bmantraffic/status/1033005050665291776",
+   "year": 2018
+  },
+  {
+   "title": "official",
+   "url": "https://x.com/bmantraffic/status/1033458186366406656",
+   "year": 2018
+  },
+  {
+   "title": "official",
+   "url": "https://x.com/bmantraffic/status/1033701829698363393",
+   "year": 2018
+  },
+  {
+   "title": "aggregated_official_feed",
+   "url": "https://www.bmantravel.com/data.js",
+   "year": 2024
+  },
+  {
+   "title": "official",
+   "url": "https://x.com/bmantraffic/status/1828238597063114837",
+   "year": 2024
+  },
+  {
+   "title": "official",
+   "url": "https://x.com/bmantraffic/status/1958625959072210992",
+   "year": 2025
+  },
+  {
+   "title": "official",
+   "url": "https://x.com/bmantraffic/status/1959012395550171575",
+   "year": 2025
+  },
+  {
+   "title": "news",
+   "url": "https://mynews4.com/news/local/burning-man-gates-reopen-after-weather-closure-wait-times-upwards-of-8-hours",
+   "year": 2025
+  },
+  {
+   "title": "news",
+   "url": "https://www.2news.com/news/local/burning-man-gates-reopen-6-9-hour-wait-to-enter-black-rock-city/article_aa2210c0-84d7-4a32-916f-9fcd45959cc6.html",
+   "year": 2025
+  },
+  {
+   "title": "official",
+   "url": "https://x.com/bmantraffic/status/1960108005183414415",
+   "year": 2025
+  },
+  {
+   "title": "official",
+   "url": "https://x.com/bmantraffic/status/1960192204481384925",
+   "year": 2025
+  },
+  {
+   "title": "official",
+   "url": "https://x.com/bmantraffic/status/1960311418802311360",
+   "year": 2025
+  }
+ ],
+ "primarySource": {
+  "title": "bmantravel.com aggregation of @bmantraffic hourly posts",
+  "url": "https://bmantravel.com/"
+ }
 }
