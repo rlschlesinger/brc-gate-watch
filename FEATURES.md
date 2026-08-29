@@ -78,6 +78,12 @@ Verify the data side with `curl -s https://brc-gate-watch.vercel.app/api/live | 
 | 58 | **GRID / CLOCK** heatmap toggle | clock = BRC's own geometry, hours around the dial, days as rings, live needle |
 | 59 | Ramp legend | thresholds 45m / 90m / 2.5h / 4h |
 | 60 | Segmented controls, 40px min height | hard-edged, inverted when active |
+| 61 | **Five-panel navigation** | NOW / PLAN / ROAD / FEED / INFO — fixed thumb-reachable bar on mobile, masthead row ≥760px |
+| 62 | Compact wait strip on non-NOW panels | the number stays visible wherever you are |
+| 63 | Deep-linkable panels | `#plan`, `#road`, … survive reload and sharing |
+| 64 | Alert pips on tabs | NOW flags active alerts, ROAD flags a stale camera |
+| 65 | Critical notices are global | placeholder mode, stale reading and NWS alerts show on every panel |
+| 66 | Equal-height bar labels | unlabelled columns reserve the same space, or the row camels |
 
 Colour is load-bearing here: the ramp is the only saturated thing on the page,
 so it must keep meaning wait time and nothing else.
@@ -88,7 +94,7 @@ so it must keep meaning wait time and nothing else.
 |---|---|---|
 | 41 | Auto-refresh 60s, pause-aware | `visibilitychange` + `online` listeners |
 | 42 | Camera refresh 90s | separate cache-bust key |
-| 43 | Mobile-first, 390px, 44px targets | **verified** at 390px: chart draws in real pixels, heatmap uses `minmax(0,1fr)` inside a scroll container |
+| 43 | Mobile-first, 390px, 56px tab targets | **verified** at 390px: chart draws in real pixels, heatmap uses `minmax(0,1fr)` inside a scroll container |
 | 44 | `prefers-reduced-motion` honoured | `globals.css` |
 | 45 | OG / Twitter card | `/opengraph-image` returns a PNG, paper/ink, marked SAMPLE FIGURE |
 | 46 | Favicon | `/icon.svg` |

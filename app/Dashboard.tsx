@@ -16,6 +16,15 @@ const GATE_OPEN = Date.parse("2026-08-30T07:01:00.000Z"); // 12:01am Sun, Pacifi
 const CACHE_KEY = "gatewatch:last";
 const REFRESH_MS = 60_000;
 
+type TabId = "now" | "plan" | "road" | "feed" | "info";
+const TABS: { id: TabId; label: string }[] = [
+  { id: "now", label: "NOW" },
+  { id: "plan", label: "PLAN" },
+  { id: "road", label: "ROAD" },
+  { id: "feed", label: "FEED" },
+  { id: "info", label: "INFO" },
+];
+
 const pt = (d: Date | string | number, o: Intl.DateTimeFormatOptions) =>
   new Intl.DateTimeFormat("en-US", { timeZone: PT, ...o }).format(new Date(d));
 
@@ -27,6 +36,7 @@ export default function Dashboard({ historical }: { historical: Historical }) {
   const [range, setRange] = useState(24);
   const [now, setNow] = useState(() => Date.now());
   const [camKey, setCamKey] = useState(() => Date.now());
+  const [tab, setTab] = useState<TabId>("now");
   const inflight = useRef(false);
 
   /* -------------------------------------------------- load + auto-refresh */
@@ -65,6 +75,14 @@ export default function Dashboard({ historical }: { historical: Historical }) {
       .then((j) => j?.samples && setArchive(j.samples))
       .catch(() => {});
 
+    // Deep-linkable tabs, so a shared link opens where the sender meant.
+    const fromHash = () => {
+      const h = window.location.hash.replace("#", "") as TabId;
+      if (TABS.some((t) => t.id === h)) setTab(h);
+    };
+    fromHash();
+    window.addEventListener("hashchange", fromHash);
+
     const iv = setInterval(load, REFRESH_MS);
     const tick = setInterval(() => setNow(Date.now()), 15_000);
     const cams = setInterval(() => setCamKey(Date.now()), 90_000);
@@ -75,6 +93,7 @@ export default function Dashboard({ historical }: { historical: Historical }) {
       clearInterval(iv); clearInterval(tick); clearInterval(cams);
       document.removeEventListener("visibilitychange", onVis);
       window.removeEventListener("online", load);
+      window.removeEventListener("hashchange", fromHash);
     };
   }, [load]);
 
@@ -126,17 +145,81 @@ export default function Dashboard({ historical }: { historical: Historical }) {
   const nowHour = Number(pt(now, { hour: "numeric", hour12: false }).replace(/\D/g, "")) % 24;
   const alerts = live?.nws?.alerts ?? [];
   const staleCam = live?.cameras?.find((c) => c.ageSec !== null && c.ageSec > 20 * 60);
+  const urgentCount = alerts.length + (live?.flags?.placeholderMode ? 1 : 0) + (live?.banners?.length ?? 0);
+
+  const go = useCallback((id: TabId) => {
+    setTab(id);
+    try { history.replaceState(null, "", id === "now" ? " " : `#${id}`); } catch { /* file:// */ }
+    window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
+  }, []);
 
   return (
     <div className="shell">
-      <header className="hdr">
-        <div className="brand">
-          <b>Gate Watch</b>
-          <span className="coord">BLACK ROCK CITY · 40.7864° N</span>
-        </div>
-        <ThemeToggle />
-      </header>
+      <div className="topbar">
+        <header className="hdr">
+          <div className="brand">
+            <b>Gate Watch</b>
+            <span className="coord">BLACK ROCK CITY · 40.7864° N</span>
+          </div>
+          <ThemeToggle />
+        </header>
 
+        <nav className="tabbar" aria-label="Sections">
+          {TABS.map((t) => (
+            <button
+              key={t.id}
+              data-on={tab === t.id ? "1" : "0"}
+              aria-current={tab === t.id ? "page" : undefined}
+              onClick={() => go(t.id)}
+            >
+              <span className="pip" />
+              {t.label}
+              {t.id === "road" && staleCam && <span className="flag" title="a camera frame is stale" />}
+              {t.id === "now" && urgentCount > 0 && <span className="flag" title="active alert" />}
+            </button>
+          ))}
+        </nav>
+
+        {tab !== "now" && (
+          <div className="strip">
+            <b style={{ color: waitColor(current.minutes) }}>{fmtClock(current.minutes)}</b>
+            <span className="w" style={{ color: waitColor(current.minutes) }}>{waitWord(current.minutes)}</span>
+            <span className="t">
+              gravel → gate<br />
+              {err ? "offline" : loading ? "loading" : ago(live?.fetchedAt, now)}
+            </span>
+          </div>
+        )}
+      </div>
+
+      {/* --------------------------------------------------------- notices */}
+      {live?.flags?.placeholderMode && (
+        <div className="notice">
+          <s style={{ color: "var(--r5)" }}>!</s>
+          <p>
+            <strong>Official dashboard is in placeholder mode.</strong>
+            <span> Burning Man has switched brcdashboard.burningman.org to demo data. The travel time above is not a real reading until they switch it back.</span>
+          </p>
+        </div>
+      )}
+      {current.minutes !== null && current.at && now - Date.parse(current.at) > 90 * 60_000 && (
+        <div className="notice">
+          <s style={{ color: "var(--r3)" }}>!</s>
+          <p>
+            <strong>Reading is {fmtMins((now - Date.parse(current.at)) / 60_000)} old.</strong>
+            <span> The Gate has not posted since. Treat the number above as the last thing they said, not as now.</span>
+          </p>
+        </div>
+      )}
+      {alerts.map((a, i) => (
+        <div className="notice" key={i}>
+          <s style={{ color: "var(--r5)" }}>!</s>
+          <p><strong>{a.event}.</strong> <span>{a.headline}</span></p>
+        </div>
+      ))}
+
+      {tab === "now" && (
+        <>
       {/* ------------------------------------------------------------ hero */}
       <section className="hero">
         <div className="hero-top">
@@ -181,40 +264,6 @@ export default function Dashboard({ historical }: { historical: Historical }) {
         </div>
       </section>
 
-      {/* --------------------------------------------------------- notices */}
-      {live?.flags?.placeholderMode && (
-        <div className="notice">
-          <s style={{ color: "var(--r5)" }}>!</s>
-          <p>
-            <strong>Official dashboard is in placeholder mode.</strong>
-            <span> Burning Man has switched brcdashboard.burningman.org to demo data. The travel time above is not a real reading until they switch it back.</span>
-          </p>
-        </div>
-      )}
-      {current.minutes !== null && current.at && now - Date.parse(current.at) > 90 * 60_000 && (
-        <div className="notice">
-          <s style={{ color: "var(--r3)" }}>!</s>
-          <p>
-            <strong>Reading is {fmtMins((now - Date.parse(current.at)) / 60_000)} old.</strong>
-            <span> The Gate has not posted since. Treat the number above as the last thing they said, not as now.</span>
-          </p>
-        </div>
-      )}
-      {staleCam && (
-        <div className="notice">
-          <s style={{ color: "var(--r3)" }}>!</s>
-          <p>
-            <strong>{staleCam.label} last frame {fmtMins((staleCam.ageSec ?? 0) / 60)} ago.</strong>
-            <span> The camera is not proof of current conditions. Trust the travel time and the radio over the image.</span>
-          </p>
-        </div>
-      )}
-      {alerts.map((a, i) => (
-        <div className="notice" key={i}>
-          <s style={{ color: "var(--r5)" }}>!</s>
-          <p><strong>{a.event}.</strong> <span>{a.headline}</span></p>
-        </div>
-      ))}
       {live?.banners?.map((b) => (
         <div className="notice" key={b.id}>
           <s style={{ color: b.severity === "critical" ? "var(--r5)" : "var(--r3)" }}>!</s>
@@ -268,13 +317,31 @@ export default function Dashboard({ historical }: { historical: Historical }) {
         </p>
       </section>
 
-      <WhenToLeave historical={historical} now={now} num="02" />
-      <HistoricalSection historical={historical} nowDay={histDayLabel(now)} nowHour={nowHour} num="03" />
+        </>
+      )}
 
+      {tab === "plan" && (
+        <>
+          <WhenToLeave historical={historical} now={now} num="01" />
+          <HistoricalSection historical={historical} nowDay={histDayLabel(now)} nowHour={nowHour} num="02" />
+        </>
+      )}
+
+      {tab === "road" && (
+        <>
+      {staleCam && (
+        <div className="notice">
+          <s style={{ color: "var(--r3)" }}>!</s>
+          <p>
+            <strong>{staleCam.label} last frame {fmtMins((staleCam.ageSec ?? 0) / 60)} ago.</strong>
+            <span> The camera is not proof of current conditions. Trust the travel time and the radio over the image.</span>
+          </p>
+        </div>
+      )}
       {/* -------------------------------------------------- 06 gate status */}
       <section className="sec">
         <div className="sec-hd">
-          <div className="l"><span className="sec-num">06</span><h2>Gate lanes</h2></div>
+          <div className="l"><span className="sec-num">01</span><h2>Gate lanes</h2></div>
           <span className="chip chip--dash">{live?.flags?.gateVisible ? "reporting" : "not yet reporting"}</span>
         </div>
         {live?.flags?.gateVisible && live?.gate ? (
@@ -307,7 +374,7 @@ export default function Dashboard({ historical }: { historical: Historical }) {
       {live?.conditions && (
         <section className="sec">
           <div className="sec-hd">
-            <div className="l"><span className="sec-num">07</span><h2>On the playa</h2></div>
+            <div className="l"><span className="sec-num">02</span><h2>On the playa</h2></div>
             <span className="chip chip--dash">open-meteo</span>
           </div>
           <div className="stats">
@@ -338,7 +405,7 @@ export default function Dashboard({ historical }: { historical: Historical }) {
       {live?.cameras && live.cameras.length > 0 && (
         <section className="sec">
           <div className="sec-hd">
-            <div className="l"><span className="sec-num">08</span><h2>Cameras</h2></div>
+            <div className="l"><span className="sec-num">03</span><h2>Cameras</h2></div>
             <span className="chip chip--dash">refreshes 90s</span>
           </div>
           {live.cameras.map((c) => {
@@ -375,7 +442,7 @@ export default function Dashboard({ historical }: { historical: Historical }) {
       {live?.forecasts && live.forecasts.length > 0 ? (
         <section className="sec">
           <div className="sec-hd">
-            <div className="l"><span className="sec-num">09</span><h2>Forecast</h2></div>
+            <div className="l"><span className="sec-num">04</span><h2>Forecast</h2></div>
             <span className="chip chip--dash">NWS Reno</span>
           </div>
           <div className="wx">
@@ -392,7 +459,7 @@ export default function Dashboard({ historical }: { historical: Historical }) {
       ) : live?.weatherText && live.weatherText.length > 0 ? (
         <section className="sec">
           <div className="sec-hd">
-            <div className="l"><span className="sec-num">09</span><h2>Forecast</h2></div>
+            <div className="l"><span className="sec-num">04</span><h2>Forecast</h2></div>
             <span className="chip chip--dash">as posted by BRC</span>
           </div>
           <div className="stream">
@@ -403,11 +470,16 @@ export default function Dashboard({ historical }: { historical: Historical }) {
         </section>
       ) : null}
 
+        </>
+      )}
+
+      {tab === "feed" && (
+        <>
       {/* --------------------------------------------- 10 official traffic */}
       {live?.traffic && live.traffic.length > 0 && (
         <section className="sec">
           <div className="sec-hd">
-            <div className="l"><span className="sec-num">10</span><h2>@bmantraffic</h2></div>
+            <div className="l"><span className="sec-num">01</span><h2>@bmantraffic</h2></div>
             <span className="chip"><i style={{ background: "var(--r1)" }} />official</span>
           </div>
           <div className="stream">
@@ -431,7 +503,7 @@ export default function Dashboard({ historical }: { historical: Historical }) {
       {live?.social && live.social.length > 0 && (
         <section className="sec">
           <div className="sec-hd">
-            <div className="l"><span className="sec-num">11</span><h2>Chatter</h2></div>
+            <div className="l"><span className="sec-num">02</span><h2>Chatter</h2></div>
           </div>
           <p className="lede" style={{ fontFamily: "var(--mono)", fontSize: 11, letterSpacing: ".06em", textTransform: "uppercase" }}>
             None of this is verified. Read it as rumour, not data.
@@ -454,7 +526,7 @@ export default function Dashboard({ historical }: { historical: Historical }) {
       {live?.bmir && (
         <section className="sec">
           <div className="sec-hd">
-            <div className="l"><span className="sec-num">12</span><h2>BMIR 94.5</h2></div>
+            <div className="l"><span className="sec-num">03</span><h2>BMIR 94.5</h2></div>
             <span className="chip chip--dash">{live.bmir.enabled ? "on air" : "off"}</span>
           </div>
           <div className="stats">
@@ -480,7 +552,7 @@ export default function Dashboard({ historical }: { historical: Historical }) {
       {live?.webcast && (
         <section className="sec">
           <div className="sec-hd">
-            <div className="l"><span className="sec-num">13</span><h2>Webcast</h2></div>
+            <div className="l"><span className="sec-num">04</span><h2>Webcast</h2></div>
             <span className="chip chip--dash">{live.webcast.available ? "live" : "off air"}</span>
           </div>
           {live.webcast.available && live.webcast.playbackId ? (
@@ -502,10 +574,15 @@ export default function Dashboard({ historical }: { historical: Historical }) {
         </section>
       )}
 
+        </>
+      )}
+
+      {tab === "info" && (
+        <>
       {/* ----------------------------------------------------- 14 sources */}
       <section className="sec">
         <div className="sec-hd">
-          <div className="l"><span className="sec-num">14</span><h2>Sources</h2></div>
+          <div className="l"><span className="sec-num">01</span><h2>Sources</h2></div>
         </div>
         <div className="chips" style={{ marginTop: 0 }}>
           {Object.entries(live?.sourceHealth ?? {}).map(([k, v]) => (
@@ -537,6 +614,8 @@ export default function Dashboard({ historical }: { historical: Historical }) {
         </div>
         <div>Unofficial · not affiliated with Burning Man Project</div>
       </footer>
+        </>
+      )}
     </div>
   );
 }
