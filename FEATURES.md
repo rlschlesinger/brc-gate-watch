@@ -38,11 +38,11 @@ Verify the data side with `curl -s https://brc-gate-watch.vercel.app/api/live | 
 | 19 | Persistent wait archive | `/api/history`, Vercel Blob | grows on every `/api/live` call |
 | 20 | Rolling-window backfill | `mergeIntoArchive` | one call recovers the whole 6–12h window |
 | 21 | GitHub Actions heartbeat | `.github/workflows/heartbeat.yml` | every 10 min |
-| 22 | Day × hour heatmap, **per year** | `Historical.tsx` | 2024 and 2025 must stay separate |
-| 23 | Arrival / exodus toggle | `Historical.tsx` | exodus data exists for both years |
+| 22 | Day × hour heatmap, **per year** | `Historical.tsx` | 2018/2019/2022/2024/2025 must stay separate, never pooled |
+| 23 | Arrival / exodus toggle | `Historical.tsx` | a phase with too few readings is dropped and its toggle dimmed |
 | 24 | Wait by day, median + peak | `DayBars` | |
 | 25 | Sourced pattern statements | `historical.insights` | each links its source |
-| 26 | "When to roll in" ranking | `WhenToLeave.tsx` | ranks by the **worse** year; flags single-year coverage |
+| 26 | "When to roll in" ranking | `WhenToLeave.tsx` | ranks by the **worst** of `rankingYears` only (years with ≥60 readings); flags partial coverage |
 | 27 | Leave-Reno back-calculation | `WhenToLeave.tsx` | 135 min to the gravel |
 | 28 | Verdict sentence | `buildVerdict` | plain-language read of the current number |
 | 29 | 24h median / best / worst | `stats` | |
@@ -59,7 +59,8 @@ Verify the data side with `curl -s https://brc-gate-watch.vercel.app/api/live | 
 | 35 | Camera frame age + dimming past 20 min | Bruno's serves hours-old night frames with a broken clock |
 | 36 | "unverified" tag on social chatter | strangers, not the Gate |
 | 37 | Separate-years framing on historical | pooling 2024+2025 describes a year that never happened |
-| 38 | Single-year coverage warning in rankings | |
+| 38 | Partial-coverage warning in rankings | |
+| 38b | Thin years excluded from ranking, kept in the record | 2019 arrival was one reading rendering as "0m" |
 | 39 | "modelled, not a dust sensor" note | there is no air-quality station near Gerlach |
 | 40 | Empty sources hide their card rather than showing zeros | |
 
@@ -69,7 +70,7 @@ Verify the data side with `curl -s https://brc-gate-watch.vercel.app/api/live | 
 |---|---|---|
 | 41 | Auto-refresh 60s, pause-aware | `visibilitychange` + `online` listeners |
 | 42 | Camera refresh 90s | separate cache-bust key |
-| 43 | Mobile-first, 390px, 44px targets | resize and scroll — no horizontal page scroll |
+| 43 | Mobile-first, 390px, 44px targets | **verified** at 390px: chart draws in real pixels, heatmap uses `minmax(0,1fr)` inside a scroll container |
 | 44 | `prefers-reduced-motion` honoured | `globals.css` |
 | 45 | OG / Twitter card | `/opengraph-image` returns a PNG |
 | 46 | Favicon | `/icon.svg` |
