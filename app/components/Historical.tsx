@@ -49,7 +49,9 @@ export default function HistoricalSection({
           <strong style={{ color: "var(--sand)" }}>{year}:</strong> {y.note}
         </p>
 
-        {block.cells.length > 0 ? (
+        {block.days.length === 0 ? (
+          <p className="sub">No {phase} readings were recovered for {year}.</p>
+        ) : block.cells.length > 0 ? (
           <Heatmap
             days={days} cells={block.cells} bucket={2}
             nowDay={phase === "arrival" ? nowDay : undefined} nowHour={nowHour}
@@ -64,6 +66,7 @@ export default function HistoricalSection({
         </p>
       </section>
 
+      {block.days.length > 0 && (
       <section className="card">
         <h2>{year} · wait by {phase === "arrival" ? "arrival" : "departure"} day</h2>
         <DayBars
@@ -77,6 +80,7 @@ export default function HistoricalSection({
           {fmtMins(Math.max(...block.days.map((d) => d.peak)))}.
         </p>
       </section>
+      )}
 
       {historical.insights.length > 0 && (
         <section className="card">

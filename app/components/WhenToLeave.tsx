@@ -30,7 +30,10 @@ const pt = (ms: number, o: Intl.DateTimeFormatOptions) =>
 export default function WhenToLeave({ historical, now }: { historical: Historical; now: number }) {
   const windows = useMemo<Window[]>(() => {
     if (historical.status !== "ok") return [];
-    const years = Object.entries(historical.years);
+    const allow = historical.rankingYears?.length
+      ? new Set(historical.rankingYears)
+      : new Set(Object.keys(historical.years));
+    const years = Object.entries(historical.years).filter(([k]) => allow.has(k));
     const out: Window[] = [];
 
     // Walk the next three days in two-hour arrival buckets.
@@ -57,7 +60,8 @@ export default function WhenToLeave({ historical, now }: { historical: Historica
 
   if (windows.length === 0) return null;
 
-  const yearCount = Object.keys(historical.years).length;
+  const yearCount = (historical.rankingYears?.length ?? Object.keys(historical.years).length);
+  const rankedYears = historical.rankingYears ?? Object.keys(historical.years);
 
   // Only compare like with like: a window that just happens to lack a reading
   // from the bad year would otherwise sort straight to the top.
@@ -78,8 +82,8 @@ export default function WhenToLeave({ historical, now }: { historical: Historica
       </h2>
       <p className="sub" style={{ marginTop: 0, marginBottom: 12 }}>
         Every upcoming two-hour arrival window, scored by what that same day-and-hour actually cost in{" "}
-        {historical.coverageYears.join(" and ")}. Ranked by the <em>worse</em> of the two years, because you do not
-        get to pick which one you are in.
+        {rankedYears.join(", ")}. Ranked by the <em>worst</em> of those years, because you do not get to pick which
+        one you are in. Thinner years in the record below are left out of the scoring.
       </p>
 
       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>

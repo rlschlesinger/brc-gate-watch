@@ -1,11 +1,19 @@
 {
  "status": "ok",
- "generatedAt": "2026-08-29T15:23:21Z",
+ "generatedAt": "2026-08-29T15:55:07Z",
  "coverageYears": [
+  2018,
+  2019,
+  2022,
   2024,
   2025
  ],
  "defaultYear": "2025",
+ "rankingYears": [
+  "2025",
+  "2024",
+  "2018"
+ ],
  "days": [
   "Thu -3",
   "Fri -2",
@@ -1195,6 +1203,1054 @@
       "hour": 18,
       "typical": 20,
       "n": 1
+     }
+    ]
+   }
+  },
+  "2022": {
+   "label": "2022",
+   "note": "First full-size year after the pandemic pause. Sparse coverage \u2014 treat as indicative.",
+   "arrival": {
+    "days": [
+     {
+      "label": "SUN open",
+      "offset": 0,
+      "date": "2022-08-28",
+      "typical": 60,
+      "peak": 120,
+      "floor": 0,
+      "n": 4,
+      "note": "4 readings \u00b7 quietest around 4pm (0m)"
+     },
+     {
+      "label": "Mon +1",
+      "offset": 1,
+      "date": "2022-08-29",
+      "typical": 75,
+      "peak": 160,
+      "floor": 0,
+      "n": 5,
+      "note": "5 readings \u00b7 quietest around 10am (0m)"
+     },
+     {
+      "label": "Tue +2",
+      "offset": 2,
+      "date": "2022-08-30",
+      "typical": 15,
+      "peak": 160,
+      "floor": 15,
+      "n": 12,
+      "note": "12 readings \u00b7 quietest around 12am (15m)"
+     }
+    ],
+    "cells": [
+     {
+      "day": "SUN open",
+      "hour": 4,
+      "typical": 90,
+      "n": 1
+     },
+     {
+      "day": "SUN open",
+      "hour": 6,
+      "typical": 120,
+      "n": 1
+     },
+     {
+      "day": "SUN open",
+      "hour": 10,
+      "typical": 30,
+      "n": 1
+     },
+     {
+      "day": "SUN open",
+      "hour": 16,
+      "typical": 0,
+      "n": 1
+     },
+     {
+      "day": "Mon +1",
+      "hour": 6,
+      "typical": 118,
+      "n": 2
+     },
+     {
+      "day": "Mon +1",
+      "hour": 8,
+      "typical": 120,
+      "n": 1
+     },
+     {
+      "day": "Mon +1",
+      "hour": 10,
+      "typical": 0,
+      "n": 1
+     },
+     {
+      "day": "Mon +1",
+      "hour": 14,
+      "typical": 20,
+      "n": 1
+     },
+     {
+      "day": "Tue +2",
+      "hour": 0,
+      "typical": 15,
+      "n": 2
+     },
+     {
+      "day": "Tue +2",
+      "hour": 2,
+      "typical": 15,
+      "n": 2
+     },
+     {
+      "day": "Tue +2",
+      "hour": 4,
+      "typical": 15,
+      "n": 1
+     },
+     {
+      "day": "Tue +2",
+      "hour": 8,
+      "typical": 15,
+      "n": 1
+     },
+     {
+      "day": "Tue +2",
+      "hour": 10,
+      "typical": 15,
+      "n": 1
+     },
+     {
+      "day": "Tue +2",
+      "hour": 16,
+      "typical": 30,
+      "n": 1
+     },
+     {
+      "day": "Tue +2",
+      "hour": 18,
+      "typical": 120,
+      "n": 1
+     },
+     {
+      "day": "Tue +2",
+      "hour": 20,
+      "typical": 155,
+      "n": 2
+     },
+     {
+      "day": "Tue +2",
+      "hour": 22,
+      "typical": 130,
+      "n": 1
+     }
+    ]
+   },
+   "exodus": {
+    "days": [
+     {
+      "label": "Sun +7",
+      "offset": 7,
+      "date": "2022-09-04",
+      "typical": 360,
+      "peak": 450,
+      "floor": 300,
+      "n": 3,
+      "note": "3 readings \u00b7 quietest around 6pm (300m)"
+     },
+     {
+      "label": "Mon +8",
+      "offset": 8,
+      "date": "2022-09-05",
+      "typical": 435,
+      "peak": 525,
+      "floor": 420,
+      "n": 6,
+      "note": "6 readings \u00b7 quietest around 12am (420m)"
+     }
+    ],
+    "cells": [
+     {
+      "day": "Sun +7",
+      "hour": 18,
+      "typical": 300,
+      "n": 1
+     },
+     {
+      "day": "Sun +7",
+      "hour": 20,
+      "typical": 360,
+      "n": 1
+     },
+     {
+      "day": "Sun +7",
+      "hour": 22,
+      "typical": 450,
+      "n": 1
+     },
+     {
+      "day": "Mon +8",
+      "hour": 0,
+      "typical": 420,
+      "n": 1
+     },
+     {
+      "day": "Mon +8",
+      "hour": 2,
+      "typical": 420,
+      "n": 1
+     },
+     {
+      "day": "Mon +8",
+      "hour": 4,
+      "typical": 420,
+      "n": 1
+     },
+     {
+      "day": "Mon +8",
+      "hour": 6,
+      "typical": 450,
+      "n": 1
+     },
+     {
+      "day": "Mon +8",
+      "hour": 8,
+      "typical": 525,
+      "n": 1
+     },
+     {
+      "day": "Mon +8",
+      "hour": 10,
+      "typical": 480,
+      "n": 1
+     }
+    ]
+   }
+  },
+  "2019": {
+   "label": "2019",
+   "note": "The last pre-pandemic year, and the cleanest weather of the set.",
+   "arrival": {
+    "days": [],
+    "cells": []
+   },
+   "exodus": {
+    "days": [
+     {
+      "label": "Sat +6",
+      "offset": 6,
+      "date": "2019-08-31",
+      "typical": 0,
+      "peak": 70,
+      "floor": 0,
+      "n": 13,
+      "note": "13 readings \u00b7 quietest around 8am (0m)"
+     },
+     {
+      "label": "Sun +7",
+      "offset": 7,
+      "date": "2019-09-01",
+      "typical": 60,
+      "peak": 150,
+      "floor": 0,
+      "n": 7,
+      "note": "7 readings \u00b7 quietest around 2am (0m)"
+     },
+     {
+      "label": "Mon +8",
+      "offset": 8,
+      "date": "2019-09-02",
+      "typical": 150,
+      "peak": 315,
+      "floor": 60,
+      "n": 17,
+      "note": "17 readings \u00b7 quietest around 4am (60m)"
+     },
+     {
+      "label": "Tue +9",
+      "offset": 9,
+      "date": "2019-09-03",
+      "typical": 0,
+      "peak": 60,
+      "floor": 0,
+      "n": 9,
+      "note": "9 readings \u00b7 quietest around 12am (0m)"
+     }
+    ],
+    "cells": [
+     {
+      "day": "Sat +6",
+      "hour": 8,
+      "typical": 0,
+      "n": 1
+     },
+     {
+      "day": "Sat +6",
+      "hour": 10,
+      "typical": 0,
+      "n": 1
+     },
+     {
+      "day": "Sat +6",
+      "hour": 14,
+      "typical": 0,
+      "n": 2
+     },
+     {
+      "day": "Sat +6",
+      "hour": 16,
+      "typical": 28,
+      "n": 2
+     },
+     {
+      "day": "Sat +6",
+      "hour": 20,
+      "typical": 0,
+      "n": 1
+     },
+     {
+      "day": "Sat +6",
+      "hour": 22,
+      "typical": 15,
+      "n": 2
+     },
+     {
+      "day": "Sun +7",
+      "hour": 2,
+      "typical": 0,
+      "n": 1
+     },
+     {
+      "day": "Sun +7",
+      "hour": 4,
+      "typical": 0,
+      "n": 1
+     },
+     {
+      "day": "Sun +7",
+      "hour": 14,
+      "typical": 30,
+      "n": 1
+     },
+     {
+      "day": "Sun +7",
+      "hour": 18,
+      "typical": 90,
+      "n": 1
+     },
+     {
+      "day": "Sun +7",
+      "hour": 20,
+      "typical": 60,
+      "n": 1
+     },
+     {
+      "day": "Sun +7",
+      "hour": 22,
+      "typical": 135,
+      "n": 2
+     },
+     {
+      "day": "Mon +8",
+      "hour": 2,
+      "typical": 105,
+      "n": 2
+     },
+     {
+      "day": "Mon +8",
+      "hour": 4,
+      "typical": 60,
+      "n": 1
+     },
+     {
+      "day": "Mon +8",
+      "hour": 8,
+      "typical": 150,
+      "n": 1
+     },
+     {
+      "day": "Mon +8",
+      "hour": 10,
+      "typical": 210,
+      "n": 2
+     },
+     {
+      "day": "Mon +8",
+      "hour": 12,
+      "typical": 150,
+      "n": 1
+     },
+     {
+      "day": "Mon +8",
+      "hour": 14,
+      "typical": 180,
+      "n": 2
+     },
+     {
+      "day": "Mon +8",
+      "hour": 16,
+      "typical": 270,
+      "n": 1
+     },
+     {
+      "day": "Mon +8",
+      "hour": 18,
+      "typical": 262,
+      "n": 2
+     },
+     {
+      "day": "Mon +8",
+      "hour": 20,
+      "typical": 282,
+      "n": 2
+     },
+     {
+      "day": "Mon +8",
+      "hour": 22,
+      "typical": 105,
+      "n": 1
+     },
+     {
+      "day": "Tue +9",
+      "hour": 0,
+      "typical": 0,
+      "n": 1
+     },
+     {
+      "day": "Tue +9",
+      "hour": 2,
+      "typical": 0,
+      "n": 1
+     },
+     {
+      "day": "Tue +9",
+      "hour": 4,
+      "typical": 0,
+      "n": 1
+     },
+     {
+      "day": "Tue +9",
+      "hour": 6,
+      "typical": 0,
+      "n": 1
+     },
+     {
+      "day": "Tue +9",
+      "hour": 8,
+      "typical": 0,
+      "n": 1
+     },
+     {
+      "day": "Tue +9",
+      "hour": 10,
+      "typical": 0,
+      "n": 1
+     },
+     {
+      "day": "Tue +9",
+      "hour": 12,
+      "typical": 60,
+      "n": 1
+     },
+     {
+      "day": "Tue +9",
+      "hour": 14,
+      "typical": 0,
+      "n": 1
+     },
+     {
+      "day": "Tue +9",
+      "hour": 16,
+      "typical": 0,
+      "n": 1
+     }
+    ]
+   }
+  },
+  "2018": {
+   "label": "2018",
+   "note": "Recovered from archived posts; mostly the early-arrival and opening days.",
+   "arrival": {
+    "days": [
+     {
+      "label": "Thu -3",
+      "offset": -3,
+      "date": "2018-08-23",
+      "typical": 120,
+      "peak": 180,
+      "floor": 90,
+      "n": 10,
+      "note": "10 readings \u00b7 quietest around 10pm (90m)"
+     },
+     {
+      "label": "Fri -2",
+      "offset": -2,
+      "date": "2018-08-24",
+      "typical": 180,
+      "peak": 240,
+      "floor": 80,
+      "n": 22,
+      "note": "22 readings \u00b7 quietest around 12am (85m)"
+     },
+     {
+      "label": "Sat -1",
+      "offset": -1,
+      "date": "2018-08-25",
+      "typical": 180,
+      "peak": 480,
+      "floor": 90,
+      "n": 23,
+      "note": "23 readings \u00b7 quietest around 10pm (105m)"
+     },
+     {
+      "label": "SUN open",
+      "offset": 0,
+      "date": "2018-08-26",
+      "typical": 240,
+      "peak": 450,
+      "floor": 110,
+      "n": 15,
+      "note": "15 readings \u00b7 quietest around 2am (130m)"
+     },
+     {
+      "label": "Mon +1",
+      "offset": 1,
+      "date": "2018-08-27",
+      "typical": 120,
+      "peak": 510,
+      "floor": 0,
+      "n": 18,
+      "note": "18 readings \u00b7 quietest around 12pm (0m)"
+     },
+     {
+      "label": "Tue +2",
+      "offset": 2,
+      "date": "2018-08-28",
+      "typical": 30,
+      "peak": 75,
+      "floor": 0,
+      "n": 18,
+      "note": "18 readings \u00b7 quietest around 6am (0m)"
+     }
+    ],
+    "cells": [
+     {
+      "day": "Thu -3",
+      "hour": 14,
+      "typical": 128,
+      "n": 2
+     },
+     {
+      "day": "Thu -3",
+      "hour": 16,
+      "typical": 150,
+      "n": 2
+     },
+     {
+      "day": "Thu -3",
+      "hour": 18,
+      "typical": 120,
+      "n": 1
+     },
+     {
+      "day": "Thu -3",
+      "hour": 20,
+      "typical": 128,
+      "n": 2
+     },
+     {
+      "day": "Thu -3",
+      "hour": 22,
+      "typical": 90,
+      "n": 1
+     },
+     {
+      "day": "Fri -2",
+      "hour": 0,
+      "typical": 85,
+      "n": 2
+     },
+     {
+      "day": "Fri -2",
+      "hour": 2,
+      "typical": 130,
+      "n": 2
+     },
+     {
+      "day": "Fri -2",
+      "hour": 4,
+      "typical": 150,
+      "n": 2
+     },
+     {
+      "day": "Fri -2",
+      "hour": 6,
+      "typical": 240,
+      "n": 2
+     },
+     {
+      "day": "Fri -2",
+      "hour": 8,
+      "typical": 210,
+      "n": 2
+     },
+     {
+      "day": "Fri -2",
+      "hour": 12,
+      "typical": 120,
+      "n": 1
+     },
+     {
+      "day": "Fri -2",
+      "hour": 14,
+      "typical": 180,
+      "n": 2
+     },
+     {
+      "day": "Fri -2",
+      "hour": 16,
+      "typical": 150,
+      "n": 2
+     },
+     {
+      "day": "Fri -2",
+      "hour": 18,
+      "typical": 210,
+      "n": 1
+     },
+     {
+      "day": "Fri -2",
+      "hour": 20,
+      "typical": 210,
+      "n": 2
+     },
+     {
+      "day": "Fri -2",
+      "hour": 22,
+      "typical": 240,
+      "n": 2
+     },
+     {
+      "day": "Sat -1",
+      "hour": 0,
+      "typical": 480,
+      "n": 1
+     },
+     {
+      "day": "Sat -1",
+      "hour": 2,
+      "typical": 330,
+      "n": 2
+     },
+     {
+      "day": "Sat -1",
+      "hour": 4,
+      "typical": 238,
+      "n": 2
+     },
+     {
+      "day": "Sat -1",
+      "hour": 6,
+      "typical": 300,
+      "n": 1
+     },
+     {
+      "day": "Sat -1",
+      "hour": 8,
+      "typical": 250,
+      "n": 1
+     },
+     {
+      "day": "Sat -1",
+      "hour": 10,
+      "typical": 120,
+      "n": 2
+     },
+     {
+      "day": "Sat -1",
+      "hour": 12,
+      "typical": 180,
+      "n": 2
+     },
+     {
+      "day": "Sat -1",
+      "hour": 14,
+      "typical": 180,
+      "n": 1
+     },
+     {
+      "day": "Sat -1",
+      "hour": 16,
+      "typical": 150,
+      "n": 1
+     },
+     {
+      "day": "Sat -1",
+      "hour": 18,
+      "typical": 150,
+      "n": 2
+     },
+     {
+      "day": "Sat -1",
+      "hour": 20,
+      "typical": 155,
+      "n": 2
+     },
+     {
+      "day": "Sat -1",
+      "hour": 22,
+      "typical": 105,
+      "n": 2
+     },
+     {
+      "day": "SUN open",
+      "hour": 0,
+      "typical": 150,
+      "n": 1
+     },
+     {
+      "day": "SUN open",
+      "hour": 2,
+      "typical": 130,
+      "n": 2
+     },
+     {
+      "day": "SUN open",
+      "hour": 4,
+      "typical": 155,
+      "n": 2
+     },
+     {
+      "day": "SUN open",
+      "hour": 6,
+      "typical": 195,
+      "n": 2
+     },
+     {
+      "day": "SUN open",
+      "hour": 8,
+      "typical": 210,
+      "n": 2
+     },
+     {
+      "day": "SUN open",
+      "hour": 10,
+      "typical": 330,
+      "n": 2
+     },
+     {
+      "day": "SUN open",
+      "hour": 12,
+      "typical": 360,
+      "n": 2
+     },
+     {
+      "day": "SUN open",
+      "hour": 20,
+      "typical": 360,
+      "n": 1
+     },
+     {
+      "day": "SUN open",
+      "hour": 22,
+      "typical": 450,
+      "n": 1
+     },
+     {
+      "day": "Mon +1",
+      "hour": 0,
+      "typical": 420,
+      "n": 2
+     },
+     {
+      "day": "Mon +1",
+      "hour": 2,
+      "typical": 480,
+      "n": 1
+     },
+     {
+      "day": "Mon +1",
+      "hour": 4,
+      "typical": 420,
+      "n": 2
+     },
+     {
+      "day": "Mon +1",
+      "hour": 6,
+      "typical": 390,
+      "n": 1
+     },
+     {
+      "day": "Mon +1",
+      "hour": 8,
+      "typical": 255,
+      "n": 2
+     },
+     {
+      "day": "Mon +1",
+      "hour": 10,
+      "typical": 60,
+      "n": 1
+     },
+     {
+      "day": "Mon +1",
+      "hour": 12,
+      "typical": 0,
+      "n": 1
+     },
+     {
+      "day": "Mon +1",
+      "hour": 14,
+      "typical": 105,
+      "n": 2
+     },
+     {
+      "day": "Mon +1",
+      "hour": 16,
+      "typical": 60,
+      "n": 1
+     },
+     {
+      "day": "Mon +1",
+      "hour": 18,
+      "typical": 90,
+      "n": 1
+     },
+     {
+      "day": "Mon +1",
+      "hour": 22,
+      "typical": 60,
+      "n": 1
+     },
+     {
+      "day": "Tue +2",
+      "hour": 0,
+      "typical": 75,
+      "n": 2
+     },
+     {
+      "day": "Tue +2",
+      "hour": 2,
+      "typical": 60,
+      "n": 1
+     },
+     {
+      "day": "Tue +2",
+      "hour": 4,
+      "typical": 25,
+      "n": 2
+     },
+     {
+      "day": "Tue +2",
+      "hour": 6,
+      "typical": 0,
+      "n": 1
+     },
+     {
+      "day": "Tue +2",
+      "hour": 8,
+      "typical": 30,
+      "n": 2
+     },
+     {
+      "day": "Tue +2",
+      "hour": 10,
+      "typical": 30,
+      "n": 2
+     },
+     {
+      "day": "Tue +2",
+      "hour": 12,
+      "typical": 0,
+      "n": 1
+     },
+     {
+      "day": "Tue +2",
+      "hour": 14,
+      "typical": 30,
+      "n": 1
+     },
+     {
+      "day": "Tue +2",
+      "hour": 16,
+      "typical": 30,
+      "n": 1
+     },
+     {
+      "day": "Tue +2",
+      "hour": 18,
+      "typical": 30,
+      "n": 1
+     },
+     {
+      "day": "Tue +2",
+      "hour": 20,
+      "typical": 60,
+      "n": 1
+     },
+     {
+      "day": "Tue +2",
+      "hour": 22,
+      "typical": 60,
+      "n": 1
+     }
+    ]
+   },
+   "exodus": {
+    "days": [
+     {
+      "label": "Sat +6",
+      "offset": 6,
+      "date": "2018-09-01",
+      "typical": 0,
+      "peak": 0,
+      "floor": 0,
+      "n": 2,
+      "note": "2 readings \u00b7 quietest around 6pm (0m)"
+     },
+     {
+      "label": "Sun +7",
+      "offset": 7,
+      "date": "2018-09-02",
+      "typical": 75,
+      "peak": 240,
+      "floor": 0,
+      "n": 14,
+      "note": "14 readings \u00b7 quietest around 2am (0m)"
+     },
+     {
+      "label": "Mon +8",
+      "offset": 8,
+      "date": "2018-09-03",
+      "typical": 90,
+      "peak": 240,
+      "floor": 60,
+      "n": 11,
+      "note": "11 readings \u00b7 quietest around 6am (90m)"
+     }
+    ],
+    "cells": [
+     {
+      "day": "Sat +6",
+      "hour": 18,
+      "typical": 0,
+      "n": 1
+     },
+     {
+      "day": "Sat +6",
+      "hour": 20,
+      "typical": 0,
+      "n": 1
+     },
+     {
+      "day": "Sun +7",
+      "hour": 2,
+      "typical": 0,
+      "n": 1
+     },
+     {
+      "day": "Sun +7",
+      "hour": 4,
+      "typical": 0,
+      "n": 1
+     },
+     {
+      "day": "Sun +7",
+      "hour": 6,
+      "typical": 0,
+      "n": 2
+     },
+     {
+      "day": "Sun +7",
+      "hour": 8,
+      "typical": 0,
+      "n": 2
+     },
+     {
+      "day": "Sun +7",
+      "hour": 10,
+      "typical": 60,
+      "n": 1
+     },
+     {
+      "day": "Sun +7",
+      "hour": 12,
+      "typical": 90,
+      "n": 1
+     },
+     {
+      "day": "Sun +7",
+      "hour": 14,
+      "typical": 135,
+      "n": 2
+     },
+     {
+      "day": "Sun +7",
+      "hour": 18,
+      "typical": 210,
+      "n": 2
+     },
+     {
+      "day": "Sun +7",
+      "hour": 20,
+      "typical": 210,
+      "n": 1
+     },
+     {
+      "day": "Sun +7",
+      "hour": 22,
+      "typical": 150,
+      "n": 1
+     },
+     {
+      "day": "Mon +8",
+      "hour": 0,
+      "typical": 150,
+      "n": 1
+     },
+     {
+      "day": "Mon +8",
+      "hour": 6,
+      "typical": 90,
+      "n": 1
+     },
+     {
+      "day": "Mon +8",
+      "hour": 8,
+      "typical": 90,
+      "n": 2
+     },
+     {
+      "day": "Mon +8",
+      "hour": 10,
+      "typical": 90,
+      "n": 1
+     },
+     {
+      "day": "Mon +8",
+      "hour": 12,
+      "typical": 90,
+      "n": 1
+     },
+     {
+      "day": "Mon +8",
+      "hour": 16,
+      "typical": 210,
+      "n": 1
+     },
+     {
+      "day": "Mon +8",
+      "hour": 18,
+      "typical": 240,
+      "n": 1
+     },
+     {
+      "day": "Mon +8",
+      "hour": 20,
+      "typical": 105,
+      "n": 2
      }
     ]
    }

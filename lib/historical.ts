@@ -11,6 +11,8 @@ export type Historical = {
   generatedAt: string | null;
   coverageYears: number[];
   defaultYear?: string;
+  /** years dense enough to rank arrival windows against */
+  rankingYears?: string[];
   days: string[];
   years: Record<string, HistYear>;
   insights: { text: string; sourceUrl?: string | null; years?: number[] | null }[];

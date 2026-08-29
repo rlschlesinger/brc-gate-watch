@@ -9,15 +9,28 @@ against tweet snowflake timestamps. Years are kept SEPARATE on purpose: 2024 and
 windstorm closure), so a pooled median would describe a year that never happened.
 """
 import datetime, json, os, statistics, sys
+from zoneinfo import ZoneInfo
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 D = lambda *p: os.path.join(ROOT, "data", *p)
 BUCKET = 2
+PT = ZoneInfo("America/Los_Angeles")
 
 YEAR_NOTES = {
     "2025": "Windstorm on the Saturday closed the Gate; the backlog held 6–8h for a full day.",
     "2024": "Rain closed the Gate for ~12h on the Friday, but once open it stayed under ~1h.",
+    "2022": "First full-size year after the pandemic pause. Sparse coverage — treat as indicative.",
+    "2019": "The last pre-pandemic year, and the cleanest weather of the set.",
+    "2018": "Recovered from archived posts; mostly the early-arrival and opening days.",
 }
+
+GATE_OPEN = {
+    2018: "2018-08-26", 2019: "2019-08-25", 2022: "2022-08-28",
+    2023: "2023-08-27", 2024: "2024-08-25", 2025: "2025-08-24", 2026: "2026-08-30",
+}
+# Years whose hourly series comes from the bmantravel aggregation instead.
+AGGREGATED_YEARS = {"2024", "2025"}
+MIN_READINGS = 20
 
 
 def load_bm_data():
@@ -31,11 +44,15 @@ def day_label(offset: int, weekday: str) -> str:
     return f"{weekday} {offset:+d}"
 
 
+MIN_DAY_READINGS = 2
+MIN_PHASE_READINGS = 5
+
+
 def build_direction(year_block, keep):
     """keep(offset) decides which days belong to this phase."""
     days, cells = [], []
     for d in year_block["days"]:
-        if not keep(d["offset"]):
+        if not keep(d["offset"]) or d["n"] < MIN_DAY_READINGS:
             continue
         lab = day_label(d["offset"], d["weekday"])
         buckets = {}
@@ -51,6 +68,10 @@ def build_direction(year_block, keep):
                      f"({round(statistics.median(quiet[1]))}m)") if quiet else f"{d['n']} readings",
         })
     days.sort(key=lambda x: x["offset"])
+    # A phase built from one or two stray posts describes nothing; drop it so the
+    # UI says "not recovered" instead of drawing a confident line through noise.
+    if sum(d["n"] for d in days) < MIN_PHASE_READINGS:
+        return [], []
     return days, cells
 
 
@@ -86,19 +107,85 @@ def load_extra_insights():
     return out, srcs[:40]
 
 
+def load_archive_years():
+    """Per-year day/hour blocks recovered from archived posts (2018/2019/2022)."""
+    import collections
+    p = D("bmantraffic-archive.json")
+    if not os.path.exists(p):
+        return {}
+    samples = json.load(open(p)).get("samples", [])
+    by_year = collections.defaultdict(lambda: {"arrival": [], "exodus": []})
+
+    for s in samples:
+        yr = s.get("year")
+        mins = s.get("travel_time_minutes")
+        ts = s.get("timestamp_utc")
+        if yr is None or mins is None or not ts or str(yr) in AGGREGATED_YEARS:
+            continue
+        if s.get("source") == "bmantravel-aggregate":
+            continue  # already covered by the primary aggregation
+        try:
+            dt = datetime.datetime.fromisoformat(ts.replace("Z", "+00:00")).astimezone(PT)
+        except ValueError:
+            continue
+        if yr not in GATE_OPEN:
+            continue
+        offset = (dt.date() - datetime.date.fromisoformat(GATE_OPEN[yr])).days
+        phase = "exodus" if (s.get("direction") == "exodus" or offset >= 5) else "arrival"
+        if s.get("direction") == "unknown" and offset >= 5:
+            phase = "exodus"
+        by_year[str(yr)][phase].append({
+            "offset": offset, "weekday": dt.strftime("%a"), "date": dt.date().isoformat(),
+            "hour": dt.hour, "minutes": int(mins),
+        })
+
+    out = {}
+    for yr, phases in by_year.items():
+        if len(phases["arrival"]) + len(phases["exodus"]) < MIN_READINGS:
+            continue
+        block = {}
+        for phase, rows in phases.items():
+            days = collections.defaultdict(list)
+            for r in rows:
+                days[(r["offset"], r["weekday"], r["date"])].append(r)
+            out_days = []
+            for (offset, wd, date), rs in sorted(days.items()):
+                hours = collections.defaultdict(list)
+                for r in rs:
+                    hours[str(r["hour"])].append(r["minutes"])
+                out_days.append({
+                    "date": date, "weekday": wd, "offset": offset,
+                    "hours": {h: round(statistics.median(v)) for h, v in hours.items()},
+                    "median": round(statistics.median([r["minutes"] for r in rs])),
+                    "min": min(r["minutes"] for r in rs), "max": max(r["minutes"] for r in rs),
+                    "n": len(rs),
+                })
+            block[phase] = {"days": out_days}
+        out[yr] = block
+    return out
+
+
 def main():
     bm = load_bm_data()
+    archive = load_archive_years()
     years = {}
-    for y in ("2025", "2024"):
-        if y not in bm:
-            continue
-        ing_days, ing_cells = build_direction(bm[y]["in"], lambda o: -3 <= o <= 4)
-        out_days, out_cells = build_direction(bm[y].get("out", {"days": []}), lambda o: o >= 5)
+    ordered = [y for y in ("2025", "2024") if y in bm] + sorted(archive, reverse=True)
+    for y in ordered:
+        if y in bm:
+            src_in, src_out = bm[y]["in"], bm[y].get("out", {"days": []})
+        else:
+            src_in = archive[y].get("arrival", {"days": []})
+            src_out = archive[y].get("exodus", {"days": []})
+        ing_days, ing_cells = build_direction(src_in, lambda o: -3 <= o <= 4)
+        out_days, out_cells = build_direction(src_out, lambda o: o >= 5)
         years[y] = {
             "label": y, "note": YEAR_NOTES.get(y, ""),
             "arrival": {"days": ing_days, "cells": ing_cells},
             "exodus": {"days": out_days, "cells": out_cells},
         }
+
+    years = {y: v for y, v in years.items()
+             if v["arrival"]["days"] or v["exodus"]["days"]}
 
     day_order, seen = [], set()
     for y in years.values():
@@ -128,6 +215,10 @@ def main():
         "generatedAt": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
         "coverageYears": sorted(int(y) for y in years),
         "defaultYear": "2025",
+        # Only years with a dense hourly series are used to rank arrival windows;
+        # the thin ones would otherwise let a single lucky reading win.
+        "rankingYears": [y for y, v in years.items()
+                         if sum(d["n"] for d in v["arrival"]["days"]) >= 60],
         "days": day_order,
         "years": years,
         "insights": head + insights,
